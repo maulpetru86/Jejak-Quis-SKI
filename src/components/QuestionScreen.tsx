@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CheckCircle2,
   XCircle,
@@ -23,10 +23,10 @@ import {
   ZoomIn,
   X,
   Image as ImageIcon,
-  MoreVertical,
 } from 'lucide-react';
 import {
   AnswerLetter,
+  GradeLevel,
   OPTION_STYLES,
   QuizQuestion,
   QuizSettings,
@@ -38,6 +38,7 @@ import { OttomanStarIcon } from './OttomanDecorations';
 
 interface QuestionScreenProps {
   packageName: string;
+  gradeLevel?: GradeLevel;
   question: QuizQuestion;
   questionIndex: number;
   totalQuestions: number;
@@ -68,6 +69,7 @@ interface QuestionScreenProps {
 
 export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   packageName,
+  gradeLevel,
   question,
   questionIndex,
   totalQuestions,
@@ -98,7 +100,6 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const [showTouchPanel, setShowTouchPanel] = useState(false);
   const [imageLoadFailed, setImageLoadFailed] = useState(false);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const isSolo = settings.gameMode === 'solo';
   const isTrueFalse = question.type === 'true_false';
@@ -117,51 +118,79 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const lockedCount = teams.filter((t) => t.selectedAnswer !== null).length;
   const isLastQuestion = questionIndex + 1 >= totalQuestions;
 
-  // Keyboard shortcut for Solo Mode (A, B, C, D, E or 1, 2, 3, 4, 5)
-  React.useEffect(() => {
-    if (!isSolo || isRevealed) return;
-
-    const handleSoloKeyDown = (e: KeyboardEvent) => {
-      // Ignore if user is inside an input
+  // Keyboard shortcut listener:
+  // - In Solo mode: keys A, B, C, D, E or 1, 2, 3, 4, 5 to select options
+  // - In any mode: Space to Reveal Answer, and Enter/Space to go to Next Question
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is inside an input or textarea
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return;
 
       const key = e.key.toUpperCase();
-      let picked: AnswerLetter | null = null;
 
-      if (key === 'A' || key === '1') picked = 'A';
-      else if (key === 'B' || key === '2') picked = 'B';
-      else if ((key === 'C' || key === '3') && !isTrueFalse) picked = 'C';
-      else if ((key === 'D' || key === '4') && !isTrueFalse) picked = 'D';
-      else if ((key === 'E' || key === '5') && hasOptionE) picked = 'E';
+      // Keyboard option selection in Solo mode
+      if (isSolo && !isRevealed) {
+        let picked: AnswerLetter | null = null;
+        if (key === 'A' || key === '1') picked = 'A';
+        else if (key === 'B' || key === '2') picked = 'B';
+        else if ((key === 'C' || key === '3') && !isTrueFalse) picked = 'C';
+        else if ((key === 'D' || key === '4') && !isTrueFalse) picked = 'D';
+        else if ((key === 'E' || key === '5') && hasOptionE) picked = 'E';
 
-      if (picked && onSelectSoloAnswer) {
-        e.preventDefault();
-        onSelectSoloAnswer(picked);
+        if (picked && onSelectSoloAnswer) {
+          e.preventDefault();
+          onSelectSoloAnswer(picked);
+          return;
+        }
+      }
+
+      // Space / Enter for smooth progression
+      if (e.code === 'Space' || e.key === ' ' || e.key === 'Enter') {
+        if (!isRevealed) {
+          // In Solo mode, require an answer to be picked before space reveals, or allow teacher anytime
+          if (!isSolo || soloSelectedAnswer !== null) {
+            e.preventDefault();
+            onRevealAnswer();
+          }
+        } else {
+          e.preventDefault();
+          onNextQuestion();
+        }
       }
     };
 
-    window.addEventListener('keydown', handleSoloKeyDown);
-    return () => window.removeEventListener('keydown', handleSoloKeyDown);
-  }, [isSolo, isRevealed, isTrueFalse, hasOptionE, onSelectSoloAnswer]);
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [
+    isSolo,
+    isRevealed,
+    isTrueFalse,
+    hasOptionE,
+    soloSelectedAnswer,
+    onSelectSoloAnswer,
+    onRevealAnswer,
+    onNextQuestion,
+  ]);
 
   const correctTeams = teams.filter((t) => t.selectedAnswer === question.correctAnswer);
   const wrongTeams = teams.filter(
     (t) => t.selectedAnswer !== null && t.selectedAnswer !== question.correctAnswer
   );
-  const unansweredTeams = teams.filter((t) => t.selectedAnswer === null);
-
   const hasImage = Boolean(question.imageUrl && !imageLoadFailed);
 
   return (
-    <div className="w-full min-h-screen overflow-x-hidden overflow-y-auto bg-[#0F1B3D] flex flex-col justify-between py-2 sm:py-3 lg:py-4">
-      {/* Central Responsive Container with Tailwind Utilities */}
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 max-w-7xl w-full flex-1 flex flex-col justify-between gap-2.5 sm:gap-4">
-        {/* TOP BAR: Progress + Package Info + Responsive Controls */}
-        <header className="w-full flex flex-col gap-1.5 sm:gap-2">
-          <div className="flex items-center justify-between gap-2 rounded-xl sm:rounded-2xl border border-white/15 bg-[#162654]/95 px-2.5 py-2 sm:px-4 sm:py-2.5 shadow-lg min-w-0">
-            {/* Left: Question counter & Package (with safe truncation) */}
+    <div className="w-full min-h-screen bg-[#0F1B3D] flex flex-col justify-between py-2 sm:py-3 lg:py-4 pb-20 sm:pb-24">
+      {/* Central Container */}
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 max-w-7xl w-full flex-1 flex flex-col justify-start gap-3 sm:gap-4">
+        {/* ========================================================= */}
+        {/* TOP BAR & LIVE SCOREBOARD (DI PALING ATAS / TOP BAR)      */}
+        {/* ========================================================= */}
+        <header className="w-full space-y-2">
+          {/* Main Top Header Bar */}
+          <div className="flex items-center justify-between gap-2 rounded-xl sm:rounded-2xl border border-white/15 bg-[#162654]/95 px-3 py-2 sm:px-4 sm:py-2.5 shadow-lg min-w-0">
+            {/* Left: Question counter & Package */}
             <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 flex-1">
-              <div className="flex items-center gap-1 sm:gap-1.5 text-[#F2B705] shrink-0">
+              <div className="flex items-center gap-1.5 text-[#F2B705] shrink-0">
                 <OttomanStarIcon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
                 <span className="font-mono-tabular text-xs sm:text-base font-extrabold tracking-wide text-[#FFFDF7]">
                   #{questionIndex + 1}/{totalQuestions}
@@ -171,11 +200,16 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                 ·
               </span>
               <span
-                className="truncate text-xs sm:text-sm font-semibold text-slate-200 min-w-0 max-w-[110px] min-[420px]:max-w-[170px] sm:max-w-xs md:max-w-md"
+                className="truncate text-xs sm:text-sm font-semibold text-slate-200 min-w-0 max-w-[120px] min-[420px]:max-w-[180px] sm:max-w-xs md:max-w-md"
                 title={packageName}
               >
                 {packageName}
               </span>
+              {gradeLevel && (
+                <span className="hidden min-[480px]:inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-extrabold border bg-[#F2B705]/20 text-[#F2B705] border-[#F2B705]/40 shrink-0">
+                  Kelas {gradeLevel}
+                </span>
+              )}
               {hasImage && (
                 <span className="hidden sm:inline-flex items-center gap-1 rounded bg-[#10B981]/20 px-1.5 py-0.5 text-[10px] font-bold text-[#6EE7B7] shrink-0">
                   <ImageIcon className="h-3 w-3" />
@@ -184,206 +218,131 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               )}
             </div>
 
-            {/* Right: Actions */}
-            <div className="flex items-center gap-1.5 shrink-0">
-              {/* Primary Action Button (Big on both mobile & desktop, no clipping) */}
-              {!isRevealed ? (
+            {/* Center: Solo Score Stats in Top Bar */}
+            {isSolo && (
+              <div className="flex items-center gap-2.5 sm:gap-4 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#0F1B3D]/90 border border-[#F2B705]/40 font-mono-tabular shrink-0">
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <span className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase hidden min-[440px]:inline">
+                    Poin:
+                  </span>
+                  <span className="text-xs sm:text-base font-black text-[#F2B705]">
+                    {soloScore}p
+                  </span>
+                </div>
+                <div className="h-3.5 w-px bg-white/20" />
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <span className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase hidden min-[440px]:inline">
+                    Benar:
+                  </span>
+                  <span className="text-xs sm:text-base font-extrabold text-[#34D399]">
+                    {soloCorrectCount}
+                    <span className="text-slate-400 font-normal mx-0.5">/</span>
+                    <span className="text-[#FCA5A5]">{soloWrongCount}</span>
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Right: Quick Controls & Timer */}
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+              {/* Circular Timer */}
+              <div className="shrink-0">
+                <CircularTimer
+                  totalSeconds={settings.timerSeconds}
+                  remainingSeconds={remainingSeconds}
+                  enabled={settings.timerEnabled}
+                  isPaused={isPaused}
+                  isRevealed={isRevealed}
+                  compact={true}
+                  onTogglePause={onTogglePause}
+                />
+              </div>
+
+              {/* Pause Toggle */}
+              {!isRevealed && settings.timerEnabled && (
                 <button
                   type="button"
-                  onClick={onRevealAnswer}
-                  title="Buka Jawaban Benar (Pintasan: Spasi)"
-                  className="flex items-center gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl bg-[#F2B705] px-2.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-extrabold text-[#0F1B3D] shadow-md hover:bg-[#facc15] active:scale-95 transition-all whitespace-nowrap shrink-0 min-h-[34px] sm:min-h-[38px]"
+                  onClick={onTogglePause}
+                  title={isPaused ? 'Lanjutkan Timer (P)' : 'Jeda Timer (P)'}
+                  className={`flex items-center gap-1 rounded-lg sm:rounded-xl border px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-bold transition-colors ${
+                    isPaused
+                      ? 'border-[#F2B705] bg-[#F2B705] text-[#0F1B3D]'
+                      : 'border-white/20 bg-white/10 text-[#FFFDF7] hover:bg-white/20'
+                  }`}
                 >
-                  <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
-                  <span>Buka Jawaban</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={onNextQuestion}
-                  title="Lanjut ke soal berikutnya (Pintasan: Spasi)"
-                  className="flex items-center gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl bg-[#10B981] px-2.5 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-extrabold text-[#0F1B3D] shadow-lg hover:bg-[#34D399] active:scale-95 transition-all whitespace-nowrap shrink-0 min-h-[34px] sm:min-h-[38px]"
-                >
-                  {isLastQuestion ? (
-                    <>
-                      <Trophy className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
-                      <span>Lihat Podium</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Lanjut</span>
-                      <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
-                    </>
-                  )}
+                  {isPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+                  <span className="hidden sm:inline">{isPaused ? 'Jalan' : 'Jeda'}</span>
                 </button>
               )}
 
-              {/* Desktop-only Quick Buttons */}
-              <div className="hidden lg:flex items-center gap-1.5">
-                {!isRevealed && settings.timerEnabled && (
-                  <button
-                    type="button"
-                    onClick={onTogglePause}
-                    title="Jeda / Lanjutkan Timer (P)"
-                    className={`flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-xs font-bold transition-colors whitespace-nowrap ${
-                      isPaused
-                        ? 'border-[#F2B705] bg-[#F2B705] text-[#0F1B3D]'
-                        : 'border-white/20 bg-white/10 text-[#FFFDF7] hover:bg-white/20'
-                    }`}
-                  >
-                    {isPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
-                    <span>{isPaused ? 'Lanjut' : 'Jeda'}</span>
-                  </button>
-                )}
-
-                {!isRevealed && (
-                  <button
-                    type="button"
-                    onClick={onResetAllAnswers}
-                    disabled={lockedCount === 0}
-                    className="rounded-xl border border-white/20 bg-white/10 px-2.5 py-1.5 text-xs font-bold text-[#FFFDF7] hover:bg-white/20 disabled:opacity-40"
-                    title="Reset Jawaban Soal Ini"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                  </button>
-                )}
-
-                {!isRevealed && !isLastQuestion && (
-                  <button
-                    type="button"
-                    onClick={onSkipQuestion}
-                    title="Lewati soal ini"
-                    className="rounded-xl border border-white/15 bg-white/5 px-2.5 py-1.5 text-xs font-semibold text-slate-200 hover:bg-white/15"
-                  >
-                    <SkipForward className="h-3.5 w-3.5" />
-                  </button>
-                )}
-
+              {/* Reset Answers Button */}
+              {!isRevealed && !isSolo && (
                 <button
                   type="button"
-                  onClick={onToggleSound}
-                  className="rounded-xl border border-white/15 bg-white/5 p-1.5 text-slate-200 hover:bg-white/15"
-                  title="Suara"
+                  onClick={onResetAllAnswers}
+                  disabled={lockedCount === 0}
+                  className="rounded-lg sm:rounded-xl border border-white/20 bg-white/10 p-1.5 sm:px-2 sm:py-1.5 text-xs font-bold text-[#FFFDF7] hover:bg-white/20 disabled:opacity-40"
+                  title="Reset Jawaban Soal Ini"
+                  aria-label="Reset jawaban soal ini"
                 >
-                  {settings.soundEnabled ? <Volume2 className="h-4 w-4 text-[#F2B705]" /> : <VolumeX className="h-4 w-4 text-slate-400" />}
+                  <RotateCcw className="h-3.5 w-3.5" />
                 </button>
+              )}
 
+              {/* Skip Question Button */}
+              {!isRevealed && !isLastQuestion && (
                 <button
                   type="button"
-                  onClick={onToggleFullscreen}
-                  className="rounded-xl border border-white/15 bg-white/5 p-1.5 text-slate-200 hover:bg-white/15"
-                  title="Layar Penuh"
+                  onClick={onSkipQuestion}
+                  title="Lewati soal ini"
+                  className="rounded-lg sm:rounded-xl border border-white/15 bg-white/5 p-1.5 sm:px-2.5 sm:py-1.5 text-xs font-semibold text-slate-200 hover:bg-white/15"
+                  aria-label="Lewati soal ini"
                 >
-                  {isFullscreen ? <Minimize2 className="h-4 w-4 text-[#F2B705]" /> : <Maximize2 className="h-4 w-4" />}
+                  <SkipForward className="h-3.5 w-3.5" />
                 </button>
+              )}
 
-                <button
-                  type="button"
-                  onClick={onRequestExitHome}
-                  className="flex items-center gap-1 rounded-xl border border-[#C8102E]/60 bg-[#C8102E]/25 px-2.5 py-1.5 text-xs font-bold text-[#FFE4E8] hover:bg-[#C8102E]"
-                  title="Kembali ke Beranda"
-                >
-                  <Home className="h-3.5 w-3.5" />
-                  <span>Beranda</span>
-                </button>
-              </div>
-
-              {/* Mobile Overflow Menu Toggle */}
-              <div className="relative lg:hidden">
-                <button
-                  type="button"
-                  onClick={() => setShowMobileMenu((prev) => !prev)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/20 bg-white/10 text-slate-200 hover:bg-white/20"
-                  aria-label="Menu Opsi Guru"
-                >
-                  <MoreVertical className="h-4 w-4" />
-                </button>
-
-                {showMobileMenu && (
-                  <div className="absolute right-0 top-10 z-50 w-48 rounded-xl border border-white/20 bg-[#162654] p-1.5 shadow-2xl space-y-1 animate-fade-slide-up">
-                    {settings.timerEnabled && !isRevealed && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          onTogglePause();
-                          setShowMobileMenu(false);
-                        }}
-                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-200 hover:bg-white/10 text-left"
-                      >
-                        {isPaused ? <Play className="h-3.5 w-3.5 text-[#34D399]" /> : <Pause className="h-3.5 w-3.5 text-[#F2B705]" />}
-                        <span>{isPaused ? 'Lanjutkan Timer' : 'Jeda Timer'}</span>
-                      </button>
-                    )}
-
-                    {!isRevealed && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          onResetAllAnswers();
-                          setShowMobileMenu(false);
-                        }}
-                        disabled={lockedCount === 0}
-                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-200 hover:bg-white/10 text-left disabled:opacity-40"
-                      >
-                        <RotateCcw className="h-3.5 w-3.5" />
-                        <span>Reset Jawaban Tim</span>
-                      </button>
-                    )}
-
-                    {!isRevealed && !isLastQuestion && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          onSkipQuestion();
-                          setShowMobileMenu(false);
-                        }}
-                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-200 hover:bg-white/10 text-left"
-                      >
-                        <SkipForward className="h-3.5 w-3.5" />
-                        <span>Lewati Soal</span>
-                      </button>
-                    )}
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onToggleSound();
-                        setShowMobileMenu(false);
-                      }}
-                      className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-200 hover:bg-white/10 text-left"
-                    >
-                      {settings.soundEnabled ? <Volume2 className="h-3.5 w-3.5 text-[#F2B705]" /> : <VolumeX className="h-3.5 w-3.5" />}
-                      <span>{settings.soundEnabled ? 'Matikan Suara' : 'Nyalakan Suara'}</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onToggleFullscreen();
-                        setShowMobileMenu(false);
-                      }}
-                      className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-200 hover:bg-white/10 text-left"
-                    >
-                      {isFullscreen ? <Minimize2 className="h-3.5 w-3.5 text-[#F2B705]" /> : <Maximize2 className="h-3.5 w-3.5" />}
-                      <span>{isFullscreen ? 'Keluar Layar Penuh' : 'Mode Layar Penuh'}</span>
-                    </button>
-
-                    <div className="border-t border-white/10 pt-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowMobileMenu(false);
-                          onRequestExitHome();
-                        }}
-                        className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-bold text-[#FCA5A5] hover:bg-[#C8102E]/30 text-left"
-                      >
-                        <Home className="h-3.5 w-3.5" />
-                        <span>Kembali ke Beranda</span>
-                      </button>
-                    </div>
-                  </div>
+              {/* Sound Toggle */}
+              <button
+                type="button"
+                onClick={onToggleSound}
+                className="rounded-lg sm:rounded-xl border border-white/15 bg-white/5 p-1.5 sm:p-2 text-slate-200 hover:bg-white/15 transition-colors"
+                title={settings.soundEnabled ? 'Matikan Suara' : 'Nyalakan Suara'}
+                aria-label="Pengaturan Suara"
+              >
+                {settings.soundEnabled ? (
+                  <Volume2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#F2B705]" />
+                ) : (
+                  <VolumeX className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-400" />
                 )}
-              </div>
+              </button>
+
+              {/* Fullscreen Toggle */}
+              <button
+                type="button"
+                onClick={onToggleFullscreen}
+                className="rounded-lg sm:rounded-xl border border-white/15 bg-white/5 p-1.5 sm:p-2 text-slate-200 hover:bg-white/15 transition-colors hidden sm:block"
+                title="Layar Penuh"
+                aria-label="Layar Penuh"
+              >
+                {isFullscreen ? (
+                  <Minimize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#F2B705]" />
+                ) : (
+                  <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                )}
+              </button>
+
+              {/* Home / Exit Button */}
+              <button
+                type="button"
+                onClick={onRequestExitHome}
+                className="flex items-center gap-1 rounded-lg sm:rounded-xl border border-[#C8102E]/60 bg-[#C8102E]/25 p-1.5 sm:px-2.5 sm:py-1.5 text-xs font-bold text-[#FFE4E8] hover:bg-[#C8102E] transition-colors"
+                title="Kembali ke Beranda"
+                aria-label="Kembali ke Beranda"
+              >
+                <Home className="h-3.5 w-3.5" />
+                <span className="hidden md:inline">Beranda</span>
+              </button>
             </div>
           </div>
 
@@ -394,30 +353,47 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               style={{ width: `${progressPercent}%` }}
             />
           </div>
+
+          {/* TOP SCOREBOARD FOR TEAM MODE (CERDAS CERMAT DITARUH DI PALING ATAS) */}
+          {!isSolo && (
+            <ScoreboardDock
+              teams={teams}
+              isRevealed={isRevealed}
+              correctAnswer={question.correctAnswer}
+              doublePointsPowerUpEnabled={settings.doublePointsPowerUpEnabled}
+              onToggleDoublePoints={onToggleDoublePoints}
+              onManualScoreAdjust={onManualScoreAdjust}
+              onResetSingleTeamAnswer={onResetSingleTeamAnswer}
+            />
+          )}
         </header>
 
-        {/* MAIN STAGE: Question Card + Timer + Options */}
-        <main className="w-full flex-1 flex flex-col justify-center gap-2.5 sm:gap-3.5">
-          {/* Question Banner + Timer */}
-          <div className="relative w-full rounded-xl sm:rounded-2xl lg:rounded-3xl border border-[#F2B705]/45 sm:border-2 bg-gradient-to-b from-[#162654] to-[#111E45] p-3 sm:p-5 lg:p-6 shadow-2xl space-y-2.5">
-            <div className="flex flex-col-reverse min-[480px]:flex-row items-start justify-between gap-2.5 sm:gap-5 min-w-0">
-              <div className="flex-1 space-y-1 sm:space-y-2 min-w-0 w-full">
-                {/* Metadata row */}
+        {/* ========================================================= */}
+        {/* MAIN STAGE: Question Card + Options + Explanation         */}
+        {/* ========================================================= */}
+        <main className="w-full flex-1 flex flex-col justify-start gap-3 sm:gap-4">
+          {/* Question Card */}
+          <div className="relative w-full rounded-xl sm:rounded-2xl lg:rounded-3xl border border-[#F2B705]/45 sm:border-2 bg-gradient-to-b from-[#162654] to-[#111E45] p-3.5 sm:p-5 lg:p-6 shadow-2xl space-y-2.5">
+            <div className="flex items-start justify-between gap-3 min-w-0">
+              <div className="flex-1 space-y-1 sm:space-y-1.5 min-w-0">
+                {/* Meta Indicator */}
                 <div className="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-xs font-semibold text-[#F2B705]">
                   <span>SOAL #{questionIndex + 1}</span>
                   <span aria-hidden="true">·</span>
                   {isSolo ? (
                     <span className="text-[#6EE7B7]">
-                      Mode Individu · {settings.studentName || 'Siswa SKI'}
+                      Latihan Mandiri · {settings.studentName || 'Siswa SKI'}
                     </span>
                   ) : (
                     <span className="text-slate-300">
-                      {lockedCount}/{teams.length} Terkunci
+                      {lockedCount}/{teams.length} Tim Terkunci
                     </span>
                   )}
                   {settings.speedBonusEnabled && !isSolo && (
                     <>
-                      <span aria-hidden="true" className="hidden sm:inline">·</span>
+                      <span aria-hidden="true" className="hidden sm:inline">
+                        ·
+                      </span>
                       <span className="hidden sm:inline-flex items-center gap-1 text-[#34D399]">
                         <Zap className="h-3 w-3" /> Mode Cepat
                       </span>
@@ -425,7 +401,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                   )}
                 </div>
 
-                {/* Question Text (fluid, wrapped, never clipped) */}
+                {/* Question Text */}
                 <h1
                   key={question.id}
                   className="font-sans text-base sm:text-2xl md:text-3xl lg:text-4xl font-extrabold leading-snug sm:leading-tight tracking-tight text-[#FFFDF7] break-words animate-fade-slide-up"
@@ -434,31 +410,18 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                   {question.question}
                 </h1>
               </div>
-
-              {/* Circular Countdown Timer */}
-              <div className="shrink-0 self-end min-[480px]:self-start pt-0.5">
-                <CircularTimer
-                  totalSeconds={settings.timerSeconds}
-                  remainingSeconds={remainingSeconds}
-                  enabled={settings.timerEnabled}
-                  isPaused={isPaused}
-                  isRevealed={isRevealed}
-                  compact={false}
-                  onTogglePause={onTogglePause}
-                />
-              </div>
             </div>
 
-            {/* SOAL BERGAMBAR: Responsive image preview with zoom modal */}
+            {/* Supporting Question Image */}
             {hasImage && question.imageUrl && (
               <div className="relative mt-1 flex flex-col items-center justify-center rounded-lg sm:rounded-xl border border-[#F2B705]/30 bg-[#0B142E]/80 p-1.5 sm:p-2 shadow-inner">
-                <div className="relative group max-h-32 min-[420px]:max-h-40 sm:max-h-56 lg:max-h-68 overflow-hidden rounded-lg">
+                <div className="relative group max-h-36 min-[420px]:max-h-48 sm:max-h-60 lg:max-h-72 overflow-hidden rounded-lg">
                   <img
                     src={question.imageUrl}
                     alt={question.imageCaption || 'Gambar Pendukung Soal'}
                     referrerPolicy="no-referrer"
                     onError={() => setImageLoadFailed(true)}
-                    className="max-h-32 min-[420px]:max-h-40 sm:max-h-56 lg:max-h-68 max-w-full h-auto object-contain rounded-lg"
+                    className="max-h-36 min-[420px]:max-h-48 sm:max-h-60 lg:max-h-72 max-w-full h-auto object-contain rounded-lg"
                   />
 
                   <button
@@ -481,12 +444,10 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
             )}
           </div>
 
-          {/* ANSWER CARDS: Responsive Flexible Grid (1 col on mobile, balanced 2 cols on sm/desktop with option E centered) */}
+          {/* Answer Options Grid */}
           <div
             className={`grid gap-2 sm:gap-3.5 w-full ${
-              isTrueFalse
-                ? 'grid-cols-1 sm:grid-cols-2'
-                : 'grid-cols-1 sm:grid-cols-2'
+              isTrueFalse ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2'
             }`}
           >
             {activeLetters.map((letter) => {
@@ -495,9 +456,10 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               const isCorrectOption = question.correctAnswer === letter;
               const isSoloPicked = isSolo && soloSelectedAnswer === letter;
 
-              const teamsWhoPickedThis = isRevealed && !isSolo
-                ? teams.filter((t) => t.selectedAnswer === letter)
-                : [];
+              const teamsWhoPickedThis =
+                isRevealed && !isSolo
+                  ? teams.filter((t) => t.selectedAnswer === letter)
+                  : [];
 
               let cardStateClasses = `${style.bg} ${style.border} border sm:border-2 shadow-md sm:shadow-lg`;
               if (isRevealed) {
@@ -512,8 +474,13 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                     'bg-[#162654]/50 border border-white/10 opacity-45 grayscale-[40%]';
                 }
               } else if (isSolo) {
-                cardStateClasses +=
-                  ' cursor-pointer hover:brightness-115 hover:border-[#F2B705] hover:ring-2 hover:ring-[#F2B705]/50 active:scale-[0.98]';
+                if (isSoloPicked) {
+                  cardStateClasses +=
+                    ' ring-2 ring-[#F2B705] border-[#F2B705] bg-[#1E3A8A] brightness-110';
+                } else {
+                  cardStateClasses +=
+                    ' cursor-pointer hover:brightness-115 hover:border-[#F2B705] hover:ring-2 hover:ring-[#F2B705]/50 active:scale-[0.98]';
+                }
               }
 
               const isFifthCard = hasOptionE && letter === 'E';
@@ -526,33 +493,35 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                       onSelectSoloAnswer(letter);
                     }
                   }}
-                  className={`relative flex min-h-[52px] sm:min-h-[72px] lg:min-h-[84px] items-center justify-between gap-2.5 sm:gap-4 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 transition-all duration-300 ${
+                  className={`relative flex min-h-[52px] sm:min-h-[68px] lg:min-h-[78px] items-center justify-between gap-2.5 sm:gap-4 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 transition-all duration-300 ${
                     isFifthCard ? 'sm:col-span-2 sm:max-w-2xl sm:mx-auto sm:w-full' : ''
                   } ${cardStateClasses}`}
                   role={isSolo && !isRevealed ? 'button' : undefined}
                   tabIndex={isSolo && !isRevealed ? 0 : undefined}
                 >
                   <div className="flex items-center gap-2 sm:gap-3.5 min-w-0 flex-1">
-                    {/* Option Letter Badge A/B/C/D */}
+                    {/* Option Letter Badge A/B/C/D/E */}
                     <div
-                      className={`flex h-8 w-8 sm:h-11 sm:w-11 lg:h-13 lg:w-13 shrink-0 items-center justify-center rounded-lg sm:rounded-xl border font-mono-tabular text-sm sm:text-xl lg:text-2xl font-extrabold shadow-sm ${
+                      className={`flex h-8 w-8 sm:h-11 sm:w-11 lg:h-12 lg:w-12 shrink-0 items-center justify-center rounded-lg sm:rounded-xl border font-mono-tabular text-sm sm:text-xl lg:text-2xl font-extrabold shadow-sm ${
                         isRevealed && isCorrectOption
                           ? 'border-white bg-[#0F1B3D] text-[#34D399]'
                           : isRevealed && isSoloPicked
                             ? 'border-white bg-[#0F1B3D] text-[#EF4444]'
-                            : 'border-white/40 bg-[#0F1B3D]/90 text-[#F2B705]'
+                            : isSoloPicked
+                              ? 'border-[#F2B705] bg-[#F2B705] text-[#0F1B3D]'
+                              : 'border-white/40 bg-[#0F1B3D]/90 text-[#F2B705]'
                       }`}
                     >
                       {letter}
                     </div>
 
-                    {/* Option Text (break-words prevents any overflow or clipping) */}
+                    {/* Option Text */}
                     <span className="text-xs sm:text-base lg:text-xl font-bold leading-snug text-[#FFFDF7] break-words min-w-0 flex-1">
                       {optionText}
                     </span>
                   </div>
 
-                  {/* Reveal Indicators in Solo Mode */}
+                  {/* Indicators in Solo Mode */}
                   {isRevealed && isSolo && (
                     <div className="flex flex-col items-end gap-1 shrink-0">
                       {isCorrectOption ? (
@@ -569,7 +538,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                     </div>
                   )}
 
-                  {/* Reveal Indicators in Group Mode */}
+                  {/* Indicators in Group Mode */}
                   {isRevealed && !isSolo && (
                     <div className="flex flex-col items-end gap-1 shrink-0 max-w-[120px] sm:max-w-none">
                       {isCorrectOption ? (
@@ -603,71 +572,75 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
             })}
           </div>
 
-          {/* LAYAR PEMBAHASAN */}
+          {/* Discussion & Explanation Section (Clean educational content, NO duplicate next button) */}
           {isRevealed && (
             <section
               aria-label="Pembahasan Soal"
-              className="w-full rounded-xl sm:rounded-2xl border border-[#F2B705] bg-gradient-to-r from-[#162654] via-[#1B2E63] to-[#162654] p-3 sm:p-4 lg:p-5 shadow-2xl animate-fade-slide-up space-y-2"
+              className="w-full rounded-xl sm:rounded-2xl border border-[#F2B705] bg-gradient-to-r from-[#162654] via-[#1B2E63] to-[#162654] p-3.5 sm:p-5 shadow-2xl animate-fade-slide-up space-y-3"
             >
-              <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center justify-between">
-                <div className="space-y-1 flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-1.5 text-xs font-bold text-[#F2B705]">
-                    <Sparkles className="h-3.5 w-3.5 shrink-0" />
-                    <span>PEMBAHASAN MATERI</span>
-                    {question.pageReference && (
-                      <>
-                        <span aria-hidden="true">·</span>
-                        <span className="inline-flex items-center gap-1 text-[#6EE7B7]">
-                          <BookOpen className="h-3 w-3" />
-                          <span>Rujukan: {question.pageReference}</span>
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  <p className="text-xs sm:text-base lg:text-lg font-semibold leading-relaxed text-[#FFFDF7] break-words">
-                    {question.explanation ||
-                      'Jawaban yang tepat adalah pilihan ' + question.correctAnswer + '.'}
-                  </p>
+              <div className="space-y-1.5">
+                <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#F2B705]">
+                  <Sparkles className="h-4 w-4 shrink-0" />
+                  <span className="uppercase tracking-wider">Pembahasan Materi & Analisis Kunci</span>
+                  {question.pageReference && (
+                    <>
+                      <span aria-hidden="true" className="text-white/40">·</span>
+                      <span className="inline-flex items-center gap-1 text-[#6EE7B7] bg-[#0F1B3D]/80 px-2 py-0.5 rounded border border-[#6EE7B7]/40">
+                        <BookOpen className="h-3 w-3" />
+                        <span>Rujukan: {question.pageReference}</span>
+                      </span>
+                    </>
+                  )}
                 </div>
+                <p className="text-xs sm:text-base lg:text-lg font-semibold leading-relaxed text-[#FFFDF7] break-words">
+                  {question.explanation ||
+                    `Jawaban yang tepat adalah pilihan ${question.correctAnswer}.`}
+                </p>
+              </div>
 
+              {/* Outcome feedback card */}
+              <div className="rounded-xl border border-white/15 bg-[#0F1B3D]/80 p-3 text-xs">
                 {isSolo ? (
-                  <div className="flex flex-col gap-1 rounded-lg sm:rounded-xl border border-white/15 bg-[#0F1B3D]/80 p-2.5 sm:p-3 text-xs w-full lg:w-auto lg:min-w-[240px]">
-                    <div className="font-bold text-slate-300 text-[10px] sm:text-[11px]">HASIL EVALUASI:</div>
-                    <div className="text-xs space-y-1">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
                       {soloSelectedAnswer === question.correctAnswer ? (
-                        <div className="text-[#34D399] font-bold flex items-center gap-1">
+                        <div className="text-[#34D399] font-bold flex items-center gap-1.5 text-sm">
                           <CheckCircle2 className="h-4 w-4" />
-                          <span>Jawaban Anda Benar! (+{settings.baseCorrectPoints}p)</span>
+                          <span>Alhamdulillah! Jawaban Anda Benar (+{settings.baseCorrectPoints} poin)</span>
                         </div>
                       ) : (
-                        <div className="text-[#FCA5A5] font-semibold flex items-center gap-1">
+                        <div className="text-[#FCA5A5] font-semibold flex items-center gap-1.5 text-sm">
                           <XCircle className="h-4 w-4 text-[#EF4444]" />
-                          <span>Pilihan Anda ({soloSelectedAnswer || '-'}) belum tepat.</span>
+                          <span>Pilihan Anda ({soloSelectedAnswer || '-'}) belum tepat. Tetap semangat!</span>
                         </div>
                       )}
-                      <div className="text-slate-300 text-[11px]">
-                        Kunci Jawaban: <strong className="text-[#F2B705]">{question.correctAnswer}</strong>
-                      </div>
+                    </div>
+                    <div className="text-slate-300 font-medium">
+                      Kunci Jawaban: <strong className="text-[#F2B705] font-black text-sm">{question.correctAnswer}</strong>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-1 rounded-lg sm:rounded-xl border border-white/15 bg-[#0F1B3D]/80 p-2 sm:p-3 text-xs w-full lg:w-auto lg:min-w-[280px]">
-                    <div className="font-bold text-slate-300 text-[10px] sm:text-[11px]">HASIL TIM:</div>
-                    <div className="text-[11px] sm:text-xs space-y-1">
-                      <div className="text-[#34D399] break-words">
-                        <strong>Benar:</strong>{' '}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div className="text-xs space-y-1">
+                      <div className="text-[#34D399]">
+                        <strong>Tim Menjawab Benar:</strong>{' '}
                         {correctTeams.length > 0
                           ? correctTeams
-                              .map((t) => `${t.emoji} ${t.name} (+${t.lastPointsDelta})`)
+                              .map((t) => `${t.emoji} ${t.name} (+${t.lastPointsDelta}p)`)
                               .join(', ')
-                          : 'Belum ada'}
+                          : 'Tidak ada tim yang benar'}
                       </div>
                       {wrongTeams.length > 0 && (
-                        <div className="text-[#FCA5A5] break-words">
-                          <strong>Salah:</strong>{' '}
-                          {wrongTeams.map((t) => `${t.emoji} ${t.name} (${t.selectedAnswer})`).join(', ')}
+                        <div className="text-[#FCA5A5]">
+                          <strong>Tim Belum Tepat:</strong>{' '}
+                          {wrongTeams
+                            .map((t) => `${t.emoji} ${t.name} (${t.selectedAnswer})`)
+                            .join(', ')}
                         </div>
                       )}
+                    </div>
+                    <div className="text-slate-300 font-medium shrink-0">
+                      Kunci Jawaban: <strong className="text-[#F2B705] font-black text-sm">{question.correctAnswer}</strong>
                     </div>
                   </div>
                 )}
@@ -675,7 +648,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
             </section>
           )}
 
-          {/* PANEL JAWABAN TIM (HANYA MODE KELOMPOK) */}
+          {/* Group Mode: Interactive Touch / Click panel for teams if physical keyboards aren't available */}
           {!isRevealed && !isSolo && (
             <div className="w-full rounded-xl border border-white/15 bg-[#132047]/90 px-3 py-2">
               <button
@@ -685,13 +658,17 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               >
                 <div className="flex items-center gap-1.5 min-w-0">
                   <Hand className="h-3.5 w-3.5 shrink-0" />
-                  <span className="truncate">Panel Klik/Sentuh Jawaban Tim</span>
+                  <span className="truncate">Sentuh / Klik Jawaban Tim di Layar (Jika Tanpa Keyboard)</span>
                 </div>
                 <div className="flex items-center gap-1 shrink-0 text-slate-300">
                   <span className="text-[10px] sm:text-xs">
-                    {showTouchPanel ? 'Tutup' : 'Buka'}
+                    {showTouchPanel ? 'Sembunyikan' : 'Buka Panel'}
                   </span>
-                  {showTouchPanel ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                  {showTouchPanel ? (
+                    <ChevronUp className="h-3.5 w-3.5" />
+                  ) : (
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  )}
                 </div>
               </button>
 
@@ -713,11 +690,13 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
 
                         {isLocked ? (
                           <div className="flex items-center gap-1 shrink-0">
-                            <span className="text-[10px] font-extrabold text-[#F2B705]">Kunci ✓</span>
+                            <span className="text-[10px] font-extrabold text-[#F2B705]">
+                              {team.selectedAnswer} ✓
+                            </span>
                             <button
                               type="button"
                               onClick={() => onResetSingleTeamAnswer(team.id)}
-                              className="rounded bg-white/10 px-1.5 py-1 text-[10px] font-semibold text-slate-200 hover:bg-white/20 active:scale-95"
+                              className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-slate-200 hover:bg-white/20 active:scale-95"
                             >
                               Ulang
                             </button>
@@ -729,7 +708,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                                 key={letter}
                                 type="button"
                                 onClick={() => onSelectTeamAnswer(team.id, letter)}
-                                className={`h-7 w-7 sm:h-8 sm:w-8 rounded-lg font-mono-tabular text-xs font-extrabold text-white shadow active:scale-95 ${OPTION_STYLES[letter].bg} hover:brightness-110`}
+                                className={`h-7 w-7 rounded-lg font-mono-tabular text-xs font-extrabold text-white shadow active:scale-95 ${OPTION_STYLES[letter].bg} hover:brightness-110`}
                                 title={`Pilih ${letter} untuk ${team.name}`}
                               >
                                 {letter}
@@ -745,55 +724,111 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
             </div>
           )}
         </main>
-
-        {/* BOTTOM SCOREBOARD DOCK (SOLO / GROUP) */}
-        <footer className="w-full">
-          {isSolo ? (
-            <div className="w-full rounded-xl sm:rounded-2xl border border-white/15 bg-[#0B142E]/95 p-2.5 sm:p-3.5 shadow-2xl flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#F2B705] to-[#D99B00] text-[#0F1B3D] font-extrabold text-base sm:text-lg shadow">
-                  👤
-                </div>
-                <div className="min-w-0">
-                  <div className="truncate text-xs sm:text-base font-bold text-[#FFFDF7]">
-                    {settings.studentName || 'Siswa Mandiri'}
-                  </div>
-                  <div className="text-[10px] sm:text-xs text-[#F2B705] font-semibold">
-                    Latihan Mandiri Perorangan
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 sm:gap-8 font-mono-tabular">
-                <div className="text-right">
-                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Skor Poin</div>
-                  <div className="text-base sm:text-2xl font-black text-[#F2B705]">{soloScore}p</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Benar / Salah</div>
-                  <div className="text-base sm:text-2xl font-extrabold text-[#34D399]">
-                    {soloCorrectCount}{' '}
-                    <span className="text-xs text-slate-400 font-normal">/</span>{' '}
-                    <span className="text-[#FCA5A5]">{soloWrongCount}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <ScoreboardDock
-              teams={teams}
-              isRevealed={isRevealed}
-              correctAnswer={question.correctAnswer}
-              doublePointsPowerUpEnabled={settings.doublePointsPowerUpEnabled}
-              onToggleDoublePoints={onToggleDoublePoints}
-              onManualScoreAdjust={onManualScoreAdjust}
-              onResetSingleTeamAnswer={onResetSingleTeamAnswer}
-            />
-          )}
-        </footer>
       </div>
 
-      {/* FULLSCREEN ZOOM MODAL */}
+      {/* ========================================================= */}
+      {/* ERGONOMIC DOCKED BOTTOM ACTION BAR (TOMBOL LANJUT DI BAWAH)*/}
+      {/* ========================================================= */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/20 bg-[#0B142E]/95 px-3 py-2.5 sm:px-6 sm:py-3.5 backdrop-blur-md shadow-2xl">
+        <div className="container mx-auto max-w-7xl flex flex-col min-[480px]:flex-row items-center justify-between gap-2.5 sm:gap-4">
+          {/* Left Context / Status */}
+          <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-200 min-w-0 w-full min-[480px]:w-auto">
+            {!isRevealed ? (
+              isSolo ? (
+                soloSelectedAnswer ? (
+                  <div className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#10B981] animate-pulse" />
+                    <span>
+                      Pilihan Anda:{' '}
+                      <strong className="text-[#F2B705] font-black text-base">
+                        {soloSelectedAnswer}
+                      </strong>
+                      . Klik tombol untuk membuka jawaban.
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 text-slate-300">
+                    <span className="h-2 w-2 rounded-full bg-[#F2B705]" />
+                    <span>Pilih salah satu jawaban (A, B, C, D, E) untuk melanjutkan.</span>
+                  </div>
+                )
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#F2B705] animate-pulse" />
+                  <span>
+                    <strong>{lockedCount}</strong> dari <strong>{teams.length}</strong> Tim telah mengunci jawaban.
+                  </span>
+                </div>
+              )
+            ) : (
+              <div className="flex items-center gap-2 font-bold text-sm">
+                <span className="rounded bg-[#059669] px-2 py-0.5 text-xs font-black text-white">
+                  KUNCI: {question.correctAnswer}
+                </span>
+                <span className="hidden min-[600px]:inline text-slate-300 text-xs">
+                  {isSolo
+                    ? soloSelectedAnswer === question.correctAnswer
+                      ? 'Jawaban Anda tepat!'
+                      : 'Simak pembahasan di atas.'
+                    : `${correctTeams.length} tim berhasil menjawab dengan benar.`}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Right: The ONE AND ONLY Primary Navigation Action Button */}
+          <div className="shrink-0 w-full min-[480px]:w-auto flex items-center justify-end">
+            {!isRevealed ? (
+              /* State 1: Buka Jawaban Button */
+              <button
+                type="button"
+                onClick={onRevealAnswer}
+                disabled={isSolo && soloSelectedAnswer === null}
+                title="Buka Jawaban (Pintasan: Spasi)"
+                className="w-full min-[480px]:w-auto flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F2B705] to-[#D99B00] px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-extrabold text-[#0F1B3D] shadow-lg hover:brightness-105 disabled:opacity-40 active:scale-95 transition-all whitespace-nowrap min-h-[44px]"
+              >
+                <Eye className="h-4 w-4 shrink-0" />
+                <span>Buka Jawaban</span>
+                <span className="hidden sm:inline text-[11px] opacity-75 font-normal">
+                  (Spasi)
+                </span>
+              </button>
+            ) : (
+              /* State 2: Lanjut ke Soal Berikutnya / Hasil Akhir (SINGLE PRIMARY BUTTON) */
+              <button
+                type="button"
+                onClick={onNextQuestion}
+                title={
+                  isLastQuestion
+                    ? 'Lihat Hasil Akhir (Spasi / Enter)'
+                    : 'Lanjut ke Soal Berikutnya (Spasi / Enter)'
+                }
+                className="w-full min-[480px]:w-auto flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#10B981] via-[#059669] to-[#047857] px-6 py-2.5 sm:px-8 sm:py-3 text-xs sm:text-base font-extrabold text-white shadow-xl ring-2 ring-[#6EE7B7]/50 hover:brightness-110 active:scale-95 transition-all whitespace-nowrap min-h-[44px]"
+              >
+                {isLastQuestion ? (
+                  <>
+                    <Trophy className="h-4 w-4 sm:h-5 sm:w-5 fill-current text-[#F2B705]" />
+                    <span>Lihat Hasil Akhir (Podium)</span>
+                    <span className="hidden sm:inline text-xs opacity-75 font-normal">
+                      (Enter)
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span>Lanjut ke Soal #{questionIndex + 2}</span>
+                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span className="hidden sm:inline text-xs opacity-75 font-normal">
+                      (Spasi)
+                    </span>
+                  </>
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* FULLSCREEN IMAGE ZOOM MODAL */}
       {isImageZoomed && question.imageUrl && (
         <div
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95 p-3 backdrop-blur-md animate-fade-slide-up"

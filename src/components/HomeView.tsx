@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Play,
   BookOpen,
@@ -12,8 +12,14 @@ import {
   AlertCircle,
   CheckCircle2,
   Image as ImageIcon,
+  GraduationCap,
+  ListOrdered,
+  Lock,
+  Shield,
+  Sliders,
 } from 'lucide-react';
 import {
+  GradeLevel,
   QuestionPackage,
   QuizSettings,
   TeamConfig,
@@ -49,6 +55,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
 }) => {
   const selectedPackage =
     packages.find((p) => p.id === selectedPackageId) || packages[0] || null;
+
+  // Grade filter state: 'ALL' | 'X' | 'XI' | 'XII'
+  const [selectedGradeFilter, setSelectedGradeFilter] = useState<'ALL' | GradeLevel>(() => {
+    return selectedPackage?.gradeLevel || 'ALL';
+  });
+
   const isSolo = settings.gameMode === 'solo';
   const activeTeams = teams.slice(0, settings.teamCount);
   const questionCount = selectedPackage?.questions.length || 0;
@@ -57,10 +69,59 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const imageQuestionsCount =
     selectedPackage?.questions.filter((q) => Boolean(q.imageUrl)).length || 0;
 
+  // Packages filtered by selected grade tab
+  const filteredPackages = selectedGradeFilter === 'ALL'
+    ? packages
+    : packages.filter((p) => (p.gradeLevel || 'XI') === selectedGradeFilter);
+
+  // Grade stats
+  const countX = packages.filter((p) => (p.gradeLevel || 'XI') === 'X').length;
+  const countXI = packages.filter((p) => (p.gradeLevel || 'XI') === 'XI').length;
+  const countXII = packages.filter((p) => (p.gradeLevel || 'XI') === 'XII').length;
+
+  const handleGradeFilterChange = (newGrade: 'ALL' | GradeLevel) => {
+    setSelectedGradeFilter(newGrade);
+    if (newGrade !== 'ALL') {
+      const targetPackages = packages.filter((p) => (p.gradeLevel || 'XI') === newGrade);
+      if (targetPackages.length > 0 && (!selectedPackage || (selectedPackage.gradeLevel || 'XI') !== newGrade)) {
+        onSelectPackage(targetPackages[0].id);
+      }
+    }
+  };
+
+  const getGradeBadgeConfig = (grade: GradeLevel | undefined) => {
+    switch (grade) {
+      case 'X':
+        return {
+          label: 'Kelas X MA',
+          shortLabel: 'Kelas X',
+          bg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+          dot: 'bg-emerald-400',
+        };
+      case 'XII':
+        return {
+          label: 'Kelas XII MA',
+          shortLabel: 'Kelas XII',
+          bg: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+          dot: 'bg-purple-400',
+        };
+      case 'XI':
+      default:
+        return {
+          label: 'Kelas XI MA',
+          shortLabel: 'Kelas XI',
+          bg: 'bg-[#F2B705]/20 text-[#F2B705] border-[#F2B705]/40',
+          dot: 'bg-[#F2B705]',
+        };
+    }
+  };
+
+  const activeGradeBadge = getGradeBadgeConfig(selectedPackage?.gradeLevel);
+
   return (
     <div className="relative min-h-[calc(100vh-64px)] w-full overflow-x-hidden flex flex-col justify-between py-3 sm:py-6 lg:py-8">
       {/* Central Responsive Container */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl w-full flex-1 flex flex-col justify-center space-y-5 sm:space-y-8 animate-fade-slide-up pb-20 md:pb-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl w-full flex-1 flex flex-col justify-center space-y-5 sm:space-y-8 animate-fade-slide-up pb-6">
         {/* HERO BANNER CARD */}
         <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#F2B705]/45 sm:border-2 bg-gradient-to-br from-[#162654] via-[#122047] to-[#0F1B3D] p-4 sm:p-7 lg:p-9 shadow-2xl">
           <ArabesqueCorner className="absolute left-2 top-2 h-7 w-7 sm:h-12 sm:w-12 text-[#F2B705]/40 pointer-events-none" />
@@ -70,11 +131,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center">
             {/* Left Column (7 cols): Title, Selector & Action Buttons */}
             <div className="space-y-4 sm:space-y-5 lg:col-span-7 min-w-0">
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-bold tracking-wider text-[#F2B705]">
-                <OttomanStarIcon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
-                <span>MEDIA PEMBELAJARAN SKI</span>
-                <span aria-hidden="true">·</span>
-                <span className="text-slate-200">KELAS XI MA</span>
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-bold tracking-wider">
+                <OttomanStarIcon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-[#F2B705]" />
+                <span className="text-[#F2B705]">MEDIA PEMBELAJARAN SKI</span>
+                <span className="text-white/40" aria-hidden="true">·</span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-0.5 border border-white/20">
+                  <GraduationCap className="h-3 w-3 text-[#F2B705]" />
+                  <span className="text-emerald-400 font-extrabold">KELAS X</span>
+                  <span className="text-white/40">·</span>
+                  <span className="text-[#F2B705] font-extrabold">XI</span>
+                  <span className="text-white/40">·</span>
+                  <span className="text-purple-400 font-extrabold">XII MA</span>
+                </span>
               </div>
 
               <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-wide text-[#FFFDF7] break-words">
@@ -82,7 +150,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </h1>
 
               <p className="max-w-2xl text-xs sm:text-base leading-relaxed text-slate-200 break-words">
-                Aplikasi kuis interaktif SKI yang mendukung <strong className="text-[#F2B705]">Cerdas Cermat Kelompok</strong> di layar proyektor kelas dan <strong className="text-[#6EE7B7]">Latihan Mandiri Siswa</strong> perorangan di HP/laptop.
+                Aplikasi kuis interaktif SKI terlengkap mencakup kurikulum Madrasah Aliyah <strong className="text-emerald-400">Kelas X</strong>, <strong className="text-[#F2B705]">Kelas XI</strong>, dan <strong className="text-purple-400">Kelas XII</strong> (Kemenag RI), mendukung <strong className="text-[#F2B705]">Cerdas Cermat Kelompok</strong> dan <strong className="text-[#6EE7B7]">Latihan Mandiri Siswa</strong> perorangan.
               </p>
 
               {/* GAME MODE SWITCHER: Kelompok vs Individu */}
@@ -93,31 +161,31 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     {isSolo ? 'Mode Mandiri (1 Siswa)' : `Mode Kelas (${activeTeams.length} Tim)`}
                   </span>
                 </div>
-                <div className="flex rounded-xl sm:rounded-2xl border border-white/20 bg-[#0B142E] p-1 shadow-inner">
+                <div className="flex rounded-xl sm:rounded-2xl border border-white/20 bg-[#0B142E] p-1 shadow-inner gap-1">
                   <button
                     type="button"
                     onClick={() => onUpdateSettings({ ...settings, gameMode: 'group' })}
-                    className={`flex flex-1 items-center justify-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl py-2 sm:py-2.5 px-2 min-[380px]:px-3 text-[11px] min-[380px]:text-xs sm:text-sm font-extrabold transition-all text-center ${
+                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg sm:rounded-xl py-2 sm:py-2.5 px-2 text-xs sm:text-sm font-extrabold transition-all text-center min-w-0 ${
                       !isSolo
                         ? 'bg-[#F2B705] text-[#0F1B3D] shadow-md'
                         : 'text-slate-300 hover:text-white'
                     }`}
                   >
                     <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
-                    <span>Mode Kelompok ({activeTeams.length} Tim)</span>
+                    <span className="truncate">Mode Kelompok ({activeTeams.length} Tim)</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => onUpdateSettings({ ...settings, gameMode: 'solo' })}
-                    className={`flex flex-1 items-center justify-center gap-1 sm:gap-2 rounded-lg sm:rounded-xl py-2 sm:py-2.5 px-2 min-[380px]:px-3 text-[11px] min-[380px]:text-xs sm:text-sm font-extrabold transition-all text-center ${
+                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg sm:rounded-xl py-2 sm:py-2.5 px-2 text-xs sm:text-sm font-extrabold transition-all text-center min-w-0 ${
                       isSolo
                         ? 'bg-[#10B981] text-[#0F1B3D] shadow-md'
                         : 'text-slate-300 hover:text-white'
                     }`}
                   >
                     <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
-                    <span>Mode Individu (Mandiri)</span>
+                    <span className="truncate">Mode Mandiri (1 Siswa)</span>
                   </button>
                 </div>
               </div>
@@ -139,27 +207,154 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 </div>
               )}
 
-              {/* PACKAGE SELECTOR DROPDOWN + QUICK TOGGLES */}
+              {/* TINGKAT KELAS FILTER TABS + PACKAGE SELECTOR */}
               <div className="rounded-xl sm:rounded-2xl border border-white/15 bg-[#0F1B3D]/90 p-3 sm:p-4 lg:p-5 shadow-inner space-y-3 sm:space-y-3.5">
+                {/* Tingkat Kelas Tab Selector */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] sm:text-xs font-bold uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5 text-slate-300">
+                      <GraduationCap className="h-3.5 w-3.5 text-[#F2B705]" />
+                      <span>Filter Tingkat Kelas:</span>
+                    </span>
+                    <span className="text-xs font-extrabold text-[#F2B705]">
+                      {selectedGradeFilter === 'ALL'
+                        ? 'Semua Tingkat'
+                        : `Kelas ${selectedGradeFilter} MA`}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-[#0B142E] p-1 rounded-xl border border-white/10">
+                    <button
+                      type="button"
+                      onClick={() => handleGradeFilterChange('ALL')}
+                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
+                        selectedGradeFilter === 'ALL'
+                          ? 'bg-[#1E3A8A] text-white shadow ring-1 ring-[#60A5FA]'
+                          : 'text-slate-300 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      <span>Semua Kelas</span>
+                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/15">
+                        {packages.length}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleGradeFilterChange('X')}
+                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
+                        selectedGradeFilter === 'X'
+                          ? 'bg-emerald-600 text-white shadow ring-1 ring-emerald-400'
+                          : 'text-emerald-300/80 hover:text-emerald-200 hover:bg-white/5'
+                      }`}
+                    >
+                      <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                      <span>Kelas X</span>
+                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-950/60 text-emerald-300">
+                        {countX}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleGradeFilterChange('XI')}
+                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
+                        selectedGradeFilter === 'XI'
+                          ? 'bg-[#F2B705] text-[#0F1B3D] shadow ring-1 ring-amber-300'
+                          : 'text-amber-300/90 hover:text-amber-200 hover:bg-white/5'
+                      }`}
+                    >
+                      <span className="h-2 w-2 rounded-full bg-[#F2B705]" />
+                      <span>Kelas XI</span>
+                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-950/40 text-amber-200">
+                        {countXI}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleGradeFilterChange('XII')}
+                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
+                        selectedGradeFilter === 'XII'
+                          ? 'bg-purple-600 text-white shadow ring-1 ring-purple-400'
+                          : 'text-purple-300/80 hover:text-purple-200 hover:bg-white/5'
+                      }`}
+                    >
+                      <span className="h-2 w-2 rounded-full bg-purple-400" />
+                      <span>Kelas XII</span>
+                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-950/60 text-purple-300">
+                        {countXII}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Dropdown Paket Soal */}
                 <div className="min-w-0">
-                  <label
-                    htmlFor="select-paket-soal"
-                    className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#F2B705] mb-1.5"
-                  >
-                    Pilih Paket Materi Soal:
-                  </label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label
+                      htmlFor="select-paket-soal"
+                      className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#F2B705]"
+                    >
+                      Pilih Paket Materi Soal:
+                    </label>
+                    {selectedPackage && (
+                      <span
+                        className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold border ${activeGradeBadge.bg}`}
+                      >
+                        <span className={`h-1.5 w-1.5 rounded-full ${activeGradeBadge.dot}`} />
+                        <span>{activeGradeBadge.label}</span>
+                      </span>
+                    )}
+                  </div>
+
                   <select
                     id="select-paket-soal"
                     value={selectedPackage?.id || ''}
                     onChange={(e) => onSelectPackage(e.target.value)}
                     className="w-full max-w-full rounded-xl border sm:border-2 border-[#F2B705]/60 bg-[#162654] px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-base lg:text-lg font-extrabold text-[#FFFDF7] shadow focus:border-[#F2B705] focus:outline-none truncate"
                   >
-                    {packages.map((pkg) => (
-                      <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
-                        {pkg.name} ({pkg.questions.length} Soal)
-                      </option>
-                    ))}
+                    {selectedGradeFilter === 'ALL' ? (
+                      <>
+                        <optgroup label="── KELAS X MA (Peradaban Islam Klasik) ──" className="bg-[#0B142E] text-emerald-400 font-bold">
+                          {packages
+                            .filter((p) => (p.gradeLevel || 'XI') === 'X')
+                            .map((pkg) => (
+                              <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
+                                [Kelas X] {pkg.name} ({pkg.questions.length} Soal)
+                              </option>
+                            ))}
+                        </optgroup>
+
+                        <optgroup label="── KELAS XI MA (Tiga Kerajaan Besar & Pembaruan) ──" className="bg-[#0B142E] text-amber-300 font-bold">
+                          {packages
+                            .filter((p) => (p.gradeLevel || 'XI') === 'XI')
+                            .map((pkg) => (
+                              <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
+                                [Kelas XI] {pkg.name} ({pkg.questions.length} Soal)
+                              </option>
+                            ))}
+                        </optgroup>
+
+                        <optgroup label="── KELAS XII MA (Islam Nusantara & Walisongo) ──" className="bg-[#0B142E] text-purple-300 font-bold">
+                          {packages
+                            .filter((p) => (p.gradeLevel || 'XI') === 'XII')
+                            .map((pkg) => (
+                              <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
+                                [Kelas XII] {pkg.name} ({pkg.questions.length} Soal)
+                              </option>
+                            ))}
+                        </optgroup>
+                      </>
+                    ) : (
+                      filteredPackages.map((pkg) => (
+                        <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
+                          [Kelas {pkg.gradeLevel || 'XI'}] {pkg.name} ({pkg.questions.length} Soal)
+                        </option>
+                      ))
+                    )}
                   </select>
+
                   {selectedPackage && (
                     <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs text-slate-300">
                       <span className="truncate max-w-[200px] sm:max-w-none">{selectedPackage.subtitle}</span>
@@ -180,21 +375,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   )}
                 </div>
 
-                {/* Quick Game Mode Switches: responsive grid on mobile */}
-                <div className="grid grid-cols-1 min-[380px]:grid-cols-3 sm:flex sm:flex-wrap items-center gap-2 border-t border-white/10 pt-2.5 sm:pt-3">
+                {/* Quick Game Mode Switches: clean 2-col on mobile, 4-col on tablet/desktop */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-t border-white/10 pt-2.5 sm:pt-3">
                   <button
                     type="button"
                     onClick={() =>
                       onUpdateSettings({ ...settings, timerEnabled: !settings.timerEnabled })
                     }
-                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-colors whitespace-nowrap min-h-[36px] ${
+                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs font-bold transition-colors min-w-0 ${
                       settings.timerEnabled
-                        ? 'border-[#F2B705]/50 bg-[#F2B705]/15 text-[#F2B705]'
-                        : 'border-white/10 bg-white/5 text-slate-300'
+                        ? 'border-[#F2B705]/60 bg-[#F2B705]/15 text-[#F2B705]'
+                        : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
                     }`}
                   >
                     <Clock className="h-3.5 w-3.5 shrink-0" />
-                    <span>Timer: {settings.timerEnabled ? `${settings.timerSeconds}d` : 'Mati'}</span>
+                    <span className="truncate">Timer: {settings.timerEnabled ? `${settings.timerSeconds}d` : 'Mati'}</span>
                   </button>
 
                   <button
@@ -205,14 +400,14 @@ export const HomeView: React.FC<HomeViewProps> = ({
                         speedBonusEnabled: !settings.speedBonusEnabled,
                       })
                     }
-                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-colors whitespace-nowrap min-h-[36px] ${
+                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs font-bold transition-colors min-w-0 ${
                       settings.speedBonusEnabled
-                        ? 'border-[#10B981]/50 bg-[#10B981]/15 text-[#6EE7B7]'
-                        : 'border-white/10 bg-white/5 text-slate-300'
+                        ? 'border-[#10B981]/60 bg-[#10B981]/15 text-[#6EE7B7]'
+                        : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
                     }`}
                   >
                     <Zap className="h-3.5 w-3.5 shrink-0" />
-                    <span>Bonus Cepat: {settings.speedBonusEnabled ? 'Aktif' : 'Mati'}</span>
+                    <span className="truncate">Bonus Cepat: {settings.speedBonusEnabled ? 'Aktif' : 'Mati'}</span>
                   </button>
 
                   <button
@@ -223,14 +418,32 @@ export const HomeView: React.FC<HomeViewProps> = ({
                         shuffleQuestionsOnStart: !settings.shuffleQuestionsOnStart,
                       })
                     }
-                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-colors whitespace-nowrap min-h-[36px] ${
+                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs font-bold transition-colors min-w-0 ${
                       settings.shuffleQuestionsOnStart
-                        ? 'border-[#60A5FA]/50 bg-[#60A5FA]/15 text-[#93C5FD]'
-                        : 'border-white/10 bg-white/5 text-slate-300'
+                        ? 'border-[#60A5FA]/60 bg-[#60A5FA]/15 text-[#93C5FD]'
+                        : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
                     }`}
                   >
                     <Shuffle className="h-3.5 w-3.5 shrink-0" />
-                    <span>Acak: {settings.shuffleQuestionsOnStart ? 'Ya' : 'Urut'}</span>
+                    <span className="truncate">Acak Soal: {settings.shuffleQuestionsOnStart ? 'Aktif' : 'Urut'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onUpdateSettings({
+                        ...settings,
+                        shuffleOptionsOnStart: !settings.shuffleOptionsOnStart,
+                      })
+                    }
+                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs font-bold transition-colors min-w-0 ${
+                      settings.shuffleOptionsOnStart
+                        ? 'border-[#A78BFA]/60 bg-[#A78BFA]/15 text-[#DDD6FE]'
+                        : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
+                    }`}
+                  >
+                    <ListOrdered className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">Acak Opsi: {settings.shuffleOptionsOnStart ? 'Aktif' : 'Mati'}</span>
                   </button>
                 </div>
               </div>
@@ -246,47 +459,29 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 </div>
               )}
 
-              {/* 3 PRIMARY BUTTONS: Flexible Responsive Grid (1 col on mobile, 3 cols on sm/desktop) */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3.5 w-full pt-1">
+              {/* PRIMARY START ACTION BUTTON (Full width, bold, focus on quiz ready) */}
+              <div className="w-full pt-1">
                 {isSolo ? (
                   <button
                     type="button"
                     disabled={!canStartQuiz}
                     onClick={onStartQuiz}
-                    className="flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#10B981] to-[#059669] py-3.5 px-4 text-base sm:text-lg font-extrabold text-[#0F1B3D] shadow-xl ring-2 ring-[#6EE7B7]/50 hover:brightness-105 active:scale-95 transition-transform whitespace-nowrap min-h-[48px]"
+                    className="w-full flex items-center justify-center gap-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#10B981] via-[#059669] to-[#047857] py-4 px-6 text-base sm:text-lg lg:text-xl font-extrabold text-[#FFFDF7] shadow-xl ring-2 ring-[#6EE7B7]/50 hover:brightness-105 active:scale-95 transition-all whitespace-nowrap min-h-[52px]"
                   >
-                    <Play className="h-4 w-4 sm:h-5 sm:w-5 fill-current shrink-0" />
-                    <span>Mulai Latihan Mandiri</span>
+                    <Play className="h-5 w-5 fill-current shrink-0 text-[#FFFDF7]" />
+                    <span>Mulai Latihan Mandiri Siswa</span>
                   </button>
                 ) : (
                   <button
                     type="button"
                     disabled={!canStartQuiz}
                     onClick={onStartQuiz}
-                    className="flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#F2B705] to-[#F59E0B] py-3.5 px-4 text-base sm:text-lg font-extrabold text-[#0F1B3D] shadow-xl ring-2 ring-[#FFFDF7]/50 hover:brightness-105 disabled:opacity-40 transition-transform active:scale-95 whitespace-nowrap min-h-[48px]"
+                    className="w-full flex items-center justify-center gap-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#F2B705] via-[#F59E0B] to-[#D97706] py-4 px-6 text-base sm:text-lg lg:text-xl font-extrabold text-[#0F1B3D] shadow-xl ring-2 ring-[#FFFDF7]/50 hover:brightness-105 disabled:opacity-40 transition-all active:scale-95 whitespace-nowrap min-h-[52px]"
                   >
-                    <Play className="h-4 w-4 sm:h-5 sm:w-5 fill-current shrink-0" />
-                    <span>Mulai Kuis Kelompok</span>
+                    <Play className="h-5 w-5 fill-current shrink-0" />
+                    <span>Mulai Kuis Cerdas Cermat Kelompok</span>
                   </button>
                 )}
-
-                <button
-                  type="button"
-                  onClick={onOpenQuestionManager}
-                  className="flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-[#F2B705]/60 sm:border-2 bg-[#0F1B3D] py-3 px-3 text-xs sm:text-sm lg:text-base font-bold text-[#FFFDF7] hover:bg-[#1E316B] transition-colors min-h-[48px]"
-                >
-                  <BookOpen className="h-4 w-4 shrink-0 text-[#F2B705]" />
-                  <span className="text-center">Kelola Soal & Gambar</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={onOpenTeamSettings}
-                  className="flex items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-white/25 sm:border-2 bg-white/10 py-3 px-3 text-xs sm:text-sm lg:text-base font-bold text-[#FFFDF7] hover:bg-white/20 transition-colors min-h-[48px]"
-                >
-                  <Users className="h-4 w-4 shrink-0 text-[#F2B705]" />
-                  <span className="text-center">Pengaturan Tim</span>
-                </button>
               </div>
             </div>
 
@@ -311,7 +506,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="h-4 w-4 text-[#34D399] shrink-0 mt-0.5" />
                       <span>
-                        <strong>Klik Langsung:</strong> Pilih jawaban A, B, C, atau D dengan mengklik kartu jawaban di layar atau menekan tombol A/B/C/D di keyboard.
+                        <strong>Klik Langsung:</strong> Pilih jawaban A, B, C, D, atau E dengan mengklik kartu jawaban di layar atau menekan tombol A/B/C/D/E (atau angka 1–5) di keyboard.
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
@@ -408,6 +603,38 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </div>
           </div>
         </section>
+
+        {/* PORTAL KHUSUS GURU (Terpisah di bagian bawah, tenang & terproteksi sandi) */}
+        <div className="pt-2 sm:pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-400">
+          <div className="flex items-center gap-2 text-xs">
+            <Shield className="h-4 w-4 text-[#F2B705]" />
+            <span className="font-semibold text-slate-300">Ruang Pengelolaan Guru</span>
+            <span className="text-slate-500">·</span>
+            <span className="text-[11px] text-slate-400">Akses dibatasi kode rahasia</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onOpenQuestionManager}
+              className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/15 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-[#FFFDF7] transition-colors"
+              title="Kelola butir soal, gambar, dan paket kurikulum (Sandi Guru)"
+            >
+              <Lock className="h-3 w-3 text-[#F2B705]" />
+              <span>Kelola Soal & Bank Materi</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={onOpenTeamSettings}
+              className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/15 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-[#FFFDF7] transition-colors"
+              title="Atur tim, nama regu, dan tombol keyboard (Sandi Guru)"
+            >
+              <Sliders className="h-3 w-3 text-[#F2B705]" />
+              <span>Pengaturan Tim</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Decorative architectural silhouette */}

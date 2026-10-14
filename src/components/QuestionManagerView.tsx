@@ -22,9 +22,13 @@ import {
   UploadCloud,
   Layers,
   ListOrdered,
+  GraduationCap,
+  KeyRound,
+  Lock,
 } from 'lucide-react';
 import {
   AnswerLetter,
+  GradeLevel,
   OPTION_STYLES,
   QuestionPackage,
   QuestionType,
@@ -33,6 +37,7 @@ import {
 } from '../config/quizConfig';
 import { OttomanStarIcon } from './OttomanDecorations';
 import { ConfirmDialog } from './ConfirmDialog';
+import { shuffleQuestionOptions } from '../utils/quizShuffle';
 
 interface QuestionManagerViewProps {
   packages: QuestionPackage[];
@@ -41,6 +46,7 @@ interface QuestionManagerViewProps {
   onUpdatePackages: (packages: QuestionPackage[]) => void;
   onRestoreSamplePackages: () => void;
   onBackHome: () => void;
+  onOpenChangePin?: () => void;
 }
 
 export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
@@ -50,12 +56,16 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
   onUpdatePackages,
   onRestoreSamplePackages,
   onBackHome,
+  onOpenChangePin,
 }) => {
   const activePackage =
     packages.find((p) => p.id === selectedPackageId) || packages[0] || null;
 
   // Mobile Tab View: 'questions' or 'packages'
   const [mobileTab, setMobileTab] = useState<'questions' | 'packages'>('questions');
+
+  // Grade filter state in manager
+  const [mgrGradeFilter, setMgrGradeFilter] = useState<'ALL' | GradeLevel>('ALL');
 
   const [editingQuestion, setEditingQuestion] = useState<QuizQuestion | null>(null);
   const [isCreatingNewQuestion, setIsCreatingNewQuestion] = useState(false);
@@ -64,6 +74,7 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
   const [isRenamingPackage, setIsRenamingPackage] = useState(false);
   const [pkgNameDraft, setPkgNameDraft] = useState('');
   const [pkgSubtitleDraft, setPkgSubtitleDraft] = useState('');
+  const [pkgGradeDraft, setPkgGradeDraft] = useState<GradeLevel>('XI');
 
   const [showPasteModal, setShowPasteModal] = useState(false);
   const [pasteText, setPasteText] = useState(SAMPLE_PASTE_FORMAT_TEXT);
@@ -92,13 +103,48 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
     window.setTimeout(() => setStatusBanner(null), 2600);
   };
 
+  // Filtered packages by grade
+  const filteredPackages = mgrGradeFilter === 'ALL'
+    ? packages
+    : packages.filter((p) => (p.gradeLevel || 'XI') === mgrGradeFilter);
+
+  const countX = packages.filter((p) => (p.gradeLevel || 'XI') === 'X').length;
+  const countXI = packages.filter((p) => (p.gradeLevel || 'XI') === 'XI').length;
+  const countXII = packages.filter((p) => (p.gradeLevel || 'XI') === 'XII').length;
+
+  const getGradeBadgeProps = (grade: GradeLevel | undefined) => {
+    switch (grade) {
+      case 'X':
+        return {
+          label: 'Kelas X',
+          fullLabel: 'Kelas X MA',
+          pillBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        };
+      case 'XII':
+        return {
+          label: 'Kelas XII',
+          fullLabel: 'Kelas XII MA',
+          pillBg: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+        };
+      case 'XI':
+      default:
+        return {
+          label: 'Kelas XI',
+          fullLabel: 'Kelas XI MA',
+          pillBg: 'bg-[#F2B705]/20 text-[#F2B705] border-[#F2B705]/40',
+        };
+    }
+  };
+
   // --- PACKAGE CRUD ---
   const handleCreatePackage = () => {
     const newId = `pkg-${Date.now()}`;
+    const targetGrade: GradeLevel = mgrGradeFilter === 'ALL' ? 'XI' : mgrGradeFilter;
     const newPkg: QuestionPackage = {
       id: newId,
+      gradeLevel: targetGrade,
       name: `Materi Baru (${packages.length + 1})`,
-      subtitle: 'Kelas XI Madrasah Aliyah — SKI',
+      subtitle: `Kelas ${targetGrade} Madrasah Aliyah — SKI`,
       updatedAt: new Date().toISOString().slice(0, 10),
       questions: [
         {
@@ -110,6 +156,7 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
             B: 'Pilihan Jawaban B',
             C: 'Pilihan Jawaban C',
             D: 'Pilihan Jawaban D',
+            E: 'Pilihan Jawaban E',
           },
           correctAnswer: 'A',
           explanation: 'Tuliskan penjelasan singkat di sini.',
@@ -121,9 +168,10 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
     onSelectPackage(newId);
     setPkgNameDraft(newPkg.name);
     setPkgSubtitleDraft(newPkg.subtitle);
+    setPkgGradeDraft(targetGrade);
     setIsRenamingPackage(true);
     setMobileTab('questions');
-    showToast('Paket soal baru berhasil dibuat!');
+    showToast(`Paket soal baru untuk Kelas ${targetGrade} berhasil dibuat!`);
   };
 
   const handleDuplicatePackage = () => {
@@ -132,6 +180,7 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
     const duplicated: QuestionPackage = {
       ...activePackage,
       id: newId,
+      gradeLevel: activePackage.gradeLevel || 'XI',
       name: `${activePackage.name} (Salinan)`,
       updatedAt: new Date().toISOString().slice(0, 10),
       questions: activePackage.questions.map((q, idx) => ({
@@ -170,20 +219,21 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
   const handleSavePackageMeta = () => {
     if (!activePackage) return;
     const cleanName = pkgNameDraft.trim() || 'Paket Materi SKI';
-    const cleanSub = pkgSubtitleDraft.trim() || 'SKI Kelas XI MA';
+    const cleanSub = pkgSubtitleDraft.trim() || `Kelas ${pkgGradeDraft} Madrasah Aliyah — SKI`;
     const updated = packages.map((p) =>
       p.id === activePackage.id
         ? {
             ...p,
             name: cleanName,
             subtitle: cleanSub,
+            gradeLevel: pkgGradeDraft,
             updatedAt: new Date().toISOString().slice(0, 10),
           }
         : p
     );
     onUpdatePackages(updated);
     setIsRenamingPackage(false);
-    showToast('Nama paket soal berhasil diperbarui.');
+    showToast('Identitas paket soal berhasil diperbarui.');
   };
 
   // --- QUESTION CRUD ---
@@ -318,7 +368,14 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     updateActiveQuestions(shuffled);
-    showToast('Urutan soal berhasil diacak!');
+    showToast('Urutan butir soal berhasil diacak!');
+  };
+
+  const handleShuffleAllOptions = () => {
+    if (!activePackage || activePackage.questions.length === 0) return;
+    const shuffled = activePackage.questions.map((q) => shuffleQuestionOptions(q));
+    updateActiveQuestions(shuffled);
+    showToast('Posisi opsi jawaban (A–E) seluruh soal berhasil diacak!');
   };
 
   // Drag & drop handlers
@@ -386,10 +443,14 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
       try {
         const parsed = JSON.parse(String(reader.result));
         if (Array.isArray(parsed.questions)) {
+          const importedGrade: GradeLevel = ['X', 'XI', 'XII'].includes(parsed.gradeLevel)
+            ? parsed.gradeLevel
+            : (mgrGradeFilter !== 'ALL' ? mgrGradeFilter : 'XI');
           const importedPkg: QuestionPackage = {
             id: `pkg-${Date.now()}`,
+            gradeLevel: importedGrade,
             name: parsed.name || file.name.replace(/\.json$/i, ''),
-            subtitle: parsed.subtitle || 'Paket Soal Impor JSON',
+            subtitle: parsed.subtitle || `Paket Soal Impor JSON (Kelas ${importedGrade} MA)`,
             updatedAt: new Date().toISOString().slice(0, 10),
             questions: parsed.questions.map((q: Partial<QuizQuestion>, idx: number) => ({
               id: `q-${Date.now()}-${idx}`,
@@ -571,6 +632,18 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
             </div>
           )}
 
+          {onOpenChangePin && (
+            <button
+              type="button"
+              onClick={onOpenChangePin}
+              className="flex items-center gap-1.5 rounded-xl border border-[#F2B705]/40 bg-[#F2B705]/10 px-3 py-2 text-xs font-bold text-[#F2B705] hover:bg-[#F2B705]/20 transition-colors whitespace-nowrap"
+              title="Atur kode atau sandi rahasia pengelola baru"
+            >
+              <KeyRound className="h-3.5 w-3.5" />
+              <span>Ganti Sandi</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() =>
@@ -648,9 +721,64 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
               </button>
             </div>
 
+            {/* Tingkat Kelas Filter Pills */}
+            <div className="space-y-1">
+              <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1">
+                <GraduationCap className="h-3 w-3 text-[#F2B705]" />
+                <span>Filter Tingkat:</span>
+              </div>
+              <div className="grid grid-cols-4 gap-1 bg-[#0B142E] p-1 rounded-xl border border-white/10 text-[11px]">
+                <button
+                  type="button"
+                  onClick={() => setMgrGradeFilter('ALL')}
+                  className={`py-1 px-1 rounded-lg font-bold transition-all text-center ${
+                    mgrGradeFilter === 'ALL'
+                      ? 'bg-[#1E3A8A] text-white shadow'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Semua ({packages.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMgrGradeFilter('X')}
+                  className={`py-1 px-1 rounded-lg font-bold transition-all text-center ${
+                    mgrGradeFilter === 'X'
+                      ? 'bg-emerald-600 text-white shadow'
+                      : 'text-emerald-400/80 hover:text-emerald-300'
+                  }`}
+                >
+                  X ({countX})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMgrGradeFilter('XI')}
+                  className={`py-1 px-1 rounded-lg font-bold transition-all text-center ${
+                    mgrGradeFilter === 'XI'
+                      ? 'bg-[#F2B705] text-[#0F1B3D] shadow'
+                      : 'text-amber-300/80 hover:text-amber-200'
+                  }`}
+                >
+                  XI ({countXI})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMgrGradeFilter('XII')}
+                  className={`py-1 px-1 rounded-lg font-bold transition-all text-center ${
+                    mgrGradeFilter === 'XII'
+                      ? 'bg-purple-600 text-white shadow'
+                      : 'text-purple-300/80 hover:text-purple-200'
+                  }`}
+                >
+                  XII ({countXII})
+                </button>
+              </div>
+            </div>
+
             <div className="space-y-2">
-              {packages.map((pkg) => {
+              {filteredPackages.map((pkg) => {
                 const isSelected = pkg.id === activePackage?.id;
+                const badge = getGradeBadgeProps(pkg.gradeLevel);
                 return (
                   <button
                     key={pkg.id}
@@ -662,7 +790,7 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
                     }}
                     className={`w-full rounded-xl border p-3 text-left transition-all ${
                       isSelected
-                        ? 'border-[#F2B705] bg-[#0F1B3D] shadow-md'
+                        ? 'border-[#F2B705] bg-[#0F1B3D] shadow-md ring-1 ring-[#F2B705]/50'
                         : 'border-white/10 bg-[#0F1B3D]/45 hover:bg-[#0F1B3D]/80'
                     }`}
                   >
@@ -672,7 +800,12 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
                         {pkg.questions.length} Soal
                       </span>
                     </div>
-                    <p className="mt-0.5 truncate text-[11px] sm:text-xs text-slate-300">{pkg.subtitle}</p>
+                    <div className="mt-1 flex items-center justify-between gap-2">
+                      <p className="truncate text-[11px] sm:text-xs text-slate-300">{pkg.subtitle}</p>
+                      <span className={`inline-flex shrink-0 px-1.5 py-0.2 rounded text-[10px] font-bold border ${badge.pillBg}`}>
+                        {badge.label}
+                      </span>
+                    </div>
                   </button>
                 );
               })}
@@ -689,13 +822,14 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
                     onClick={() => {
                       setPkgNameDraft(activePackage.name);
                       setPkgSubtitleDraft(activePackage.subtitle);
+                      setPkgGradeDraft(activePackage.gradeLevel || 'XI');
                       setIsRenamingPackage(true);
                       setMobileTab('questions');
                     }}
                     className="flex items-center justify-center gap-1 rounded-xl border border-white/15 bg-white/5 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold text-[#FFFDF7] hover:bg-white/15"
                   >
                     <Edit3 className="h-3 w-3" />
-                    <span>Ubah Nama</span>
+                    <span>Ubah Identitas</span>
                   </button>
 
                   <button
@@ -770,8 +904,51 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
                 {isRenamingPackage ? (
                   <div className="space-y-3">
                     <div className="text-xs font-bold text-[#F2B705]">
-                      UBAH IDENTITAS PAKET SOAL
+                      UBAH IDENTITAS & TINGKAT KELAS PAKET SOAL
                     </div>
+
+                    {/* Tingkat Kelas Selector */}
+                    <div>
+                      <label className="block text-xs text-slate-300 mb-1 font-bold">
+                        Tingkat Kelas Madrasah Aliyah:
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setPkgGradeDraft('X')}
+                          className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                            pkgGradeDraft === 'X'
+                              ? 'bg-emerald-600 text-white border-emerald-400 shadow'
+                              : 'bg-[#0F1B3D] text-slate-300 border-white/10 hover:border-emerald-400/50'
+                          }`}
+                        >
+                          Kelas X MA
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPkgGradeDraft('XI')}
+                          className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                            pkgGradeDraft === 'XI'
+                              ? 'bg-[#F2B705] text-[#0F1B3D] border-[#F2B705] shadow'
+                              : 'bg-[#0F1B3D] text-slate-300 border-white/10 hover:border-[#F2B705]/50'
+                          }`}
+                        >
+                          Kelas XI MA
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPkgGradeDraft('XII')}
+                          className={`py-2 px-3 rounded-xl text-xs font-bold border transition-all ${
+                            pkgGradeDraft === 'XII'
+                              ? 'bg-purple-600 text-white border-purple-400 shadow'
+                              : 'bg-[#0F1B3D] text-slate-300 border-white/10 hover:border-purple-400/50'
+                          }`}
+                        >
+                          Kelas XII MA
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                       <div>
                         <label className="block text-xs text-slate-300 mb-1">Judul Paket</label>
@@ -814,10 +991,15 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
                 ) : (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <h2 className="text-xl sm:text-2xl font-extrabold text-[#FFFDF7]">
-                        {activePackage.name}
-                      </h2>
-                      <p className="text-xs text-slate-300">
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-xl sm:text-2xl font-extrabold text-[#FFFDF7]">
+                          {activePackage.name}
+                        </h2>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-bold border ${getGradeBadgeProps(activePackage.gradeLevel).pillBg}`}>
+                          {getGradeBadgeProps(activePackage.gradeLevel).fullLabel}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-300 mt-0.5">
                         {activePackage.subtitle} · {activePackage.questions.length} butir soal
                       </p>
                     </div>
@@ -827,10 +1009,22 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
                         type="button"
                         onClick={handleShuffleQuestions}
                         disabled={activePackage.questions.length < 2}
+                        title="Acak urutan kemunculan nomor soal"
                         className="flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-bold text-[#FFFDF7] hover:bg-white/15 disabled:opacity-40 whitespace-nowrap"
                       >
-                        <Shuffle className="h-3.5 w-3.5 text-[#F2B705]" />
-                        <span>Acak Soal</span>
+                        <Shuffle className="h-3.5 w-3.5 text-[#60A5FA]" />
+                        <span>Acak Urutan Soal</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleShuffleAllOptions}
+                        disabled={activePackage.questions.length === 0}
+                        title="Acak posisi pilihan jawaban A, B, C, D, E pada semua soal"
+                        className="flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-bold text-[#FFFDF7] hover:bg-white/15 disabled:opacity-40 whitespace-nowrap"
+                      >
+                        <ListOrdered className="h-3.5 w-3.5 text-[#A78BFA]" />
+                        <span>Acak Opsi (A–E)</span>
                       </button>
 
                       <button
@@ -992,6 +1186,20 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
                             className="rounded p-1 text-slate-300 hover:bg-white/10 hover:text-white disabled:opacity-30"
                           >
                             <ArrowDown className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = shuffleQuestionOptions(q);
+                              const list = [...activePackage.questions];
+                              list[index] = updated;
+                              updateActiveQuestions(list);
+                              showToast(`Pilihan jawaban soal #${index + 1} diacak!`);
+                            }}
+                            title="Acak posisi opsi A-E khusus soal ini"
+                            className="rounded p-1 text-slate-300 hover:bg-white/10 hover:text-[#A78BFA]"
+                          >
+                            <Shuffle className="h-3.5 w-3.5" />
                           </button>
                           <button
                             type="button"

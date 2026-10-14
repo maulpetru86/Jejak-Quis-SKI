@@ -1,6 +1,6 @@
 {
   "name": "Quiz Sejarah Peradaban Islam",
-  "description": "Aplikasi kuis interaktif kelas untuk guru sejarah, mendukung kustomisasi soal, sistem multi-tim, dan papan skor real-time.",
+  "description": "Aplikasi kuis interaktif SKI Madrasah Aliyah mencakup kurikulum resmi Kemenag RI Kelas X, XI, dan XII, mendukung opsi hingga E, sistem multi-tim, dan evaluasi mandiri.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

@@ -8,11 +8,13 @@ import {
   Home as HomeIcon,
   BookOpen,
   Users,
+  Lock,
 } from 'lucide-react';
 import {
   AnswerLetter,
   DEFAULT_SETTINGS,
   DEFAULT_TEAMS,
+  DEFAULT_TEACHER_PIN,
   INITIAL_PACKAGES,
   QuestionPackage,
   QuizQuestion,
@@ -23,6 +25,7 @@ import {
   TeamGameState,
 } from './config/quizConfig';
 import { soundFX } from './utils/soundEffects';
+import { prepareQuizQuestions } from './utils/quizShuffle';
 import { HomeView } from './components/HomeView';
 import { TeamSettingsView } from './components/TeamSettingsView';
 import { QuestionManagerView } from './components/QuestionManagerView';
@@ -30,6 +33,7 @@ import { QuestionScreen } from './components/QuestionScreen';
 import { PodiumScreen } from './components/PodiumScreen';
 import { SoloResultScreen } from './components/SoloResultScreen';
 import { ConfirmDialog } from './components/ConfirmDialog';
+import { TeacherAuthModal } from './components/TeacherAuthModal';
 
 type AppScreen =
   | 'home'
@@ -42,34 +46,38 @@ type AppScreen =
 export default function App() {
   const [packages, setPackages] = useState<QuestionPackage[]>(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEYS.PACKAGES);
+      const raw =
+        localStorage.getItem(STORAGE_KEYS.PACKAGES) ||
+        localStorage.getItem('ski_quiz_packages_v5');
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Ensure all default packages have the full 10 questions from the SKI curriculum
-          const hasIncompleteDefaults = parsed.some(
-            (p: QuestionPackage) =>
-              (p.id === 'pkg-daulah-safawi' && p.questions.length < 10) ||
-              (p.id === 'pkg-daulah-mughal' && p.questions.length < 10) ||
-              !parsed.some((pkg: QuestionPackage) => pkg.id === 'pkg-pembaruan-islam')
+          const hasAll16Chapters = INITIAL_PACKAGES.every((init) =>
+            parsed.some((p: QuestionPackage) => p.id === init.id)
           );
 
-          if (!hasIncompleteDefaults) {
-            return parsed;
+          if (hasAll16Chapters) {
+            return parsed.map((p: QuestionPackage) => ({
+              ...p,
+              gradeLevel: p.gradeLevel || 'XI',
+            }));
           }
 
-          // Auto-upgrade default packages with complete 10 questions while preserving custom teacher packages
+          // Auto-upgrade: combine all 16 official curriculum packages with any custom teacher packages
           const updatedDefaults = INITIAL_PACKAGES.map((initPkg) => {
             const existing = parsed.find((p: QuestionPackage) => p.id === initPkg.id);
             if (existing && existing.questions.length >= 10) {
-              return existing;
+              return { ...existing, gradeLevel: existing.gradeLevel || initPkg.gradeLevel };
             }
             return initPkg;
           });
 
-          const customTeacherPackages = parsed.filter(
-            (p: QuestionPackage) => !INITIAL_PACKAGES.some((init) => init.id === p.id)
-          );
+          const customTeacherPackages = parsed
+            .filter((p: QuestionPackage) => !INITIAL_PACKAGES.some((init) => init.id === p.id))
+            .map((p: QuestionPackage) => ({
+              ...p,
+              gradeLevel: p.gradeLevel || 'XI',
+            }));
 
           return [...updatedDefaults, ...customTeacherPackages];
         }
@@ -157,6 +165,44 @@ export default function App() {
     soundFX.setEnabled(settings.soundEnabled);
   }, [settings]);
 
+  const [teacherPin, setTeacherPin] = useState<string>(() => {
+    try {
+      return localStorage.getItem(STORAGE_KEYS.TEACHER_PIN) || DEFAULT_TEACHER_PIN;
+    } catch {
+      return DEFAULT_TEACHER_PIN;
+    }
+  });
+
+  const handleUpdateTeacherPin = (newPin: string) => {
+    setTeacherPin(newPin);
+    try {
+      localStorage.setItem(STORAGE_KEYS.TEACHER_PIN, newPin);
+    } catch {
+      // ignore
+    }
+  };
+
+  const [authModalState, setAuthModalState] = useState<{
+    isOpen: boolean;
+    targetScreen: 'question_manager' | 'team_settings' | null;
+    featureName: string;
+  }>({
+    isOpen: false,
+    targetScreen: null,
+    featureName: '',
+  });
+
+  const requestTeacherAccess = useCallback(
+    (targetScreen: 'question_manager' | 'team_settings', featureName: string) => {
+      setAuthModalState({
+        isOpen: true,
+        targetScreen,
+        featureName,
+      });
+    },
+    []
+  );
+
   const [screen, setScreen] = useState<AppScreen>('home');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
@@ -212,16 +258,10 @@ export default function App() {
     const pkg = packages.find((p) => p.id === selectedPackageId) || packages[0];
     if (!pkg || pkg.questions.length === 0) return;
 
-    const preparedQuestions = [...pkg.questions];
-    if (settings.shuffleQuestionsOnStart) {
-      for (let i = preparedQuestions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [preparedQuestions[i], preparedQuestions[j]] = [
-          preparedQuestions[j],
-          preparedQuestions[i],
-        ];
-      }
-    }
+    const preparedQuestions = prepareQuizQuestions(pkg.questions, {
+      shuffleQuestions: settings.shuffleQuestionsOnStart,
+      shuffleOptions: settings.shuffleOptionsOnStart,
+    });
 
     const activeTeamConfigs = teams.slice(0, Math.max(2, Math.min(6, settings.teamCount)));
     const initialTeamStates: TeamGameState[] = activeTeamConfigs.map((tc) => ({
@@ -681,51 +721,25 @@ export default function App() {
     screen !== 'quiz_play' && screen !== 'podium' && screen !== 'solo_result';
 
   return (
-    <div className={`min-h-screen bg-[#0F1B3D] text-[#FFFDF7] ${isNonGameScreen ? 'pb-16 sm:pb-0' : ''}`}>
+    <div className="min-h-screen bg-[#0F1B3D] text-[#FFFDF7]">
       {/* TOP NAVIGATION BAR */}
       {isNonGameScreen && (
         <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/15 bg-[#0B142E]/95 px-3 py-2.5 sm:px-6 sm:py-3.5 lg:px-10 backdrop-blur-md">
-          {/* Zone 1: Brand Title */}
-          <button
-            type="button"
-            onClick={() => setScreen('home')}
-            className="font-display text-base sm:text-lg font-extrabold tracking-wide text-[#F2B705] hover:text-[#FFFDF7] transition-colors whitespace-nowrap truncate max-w-[200px] sm:max-w-none text-left"
-          >
-            Quiz Sejarah Islam
-          </button>
-
-          {/* Zone 2: Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-semibold text-slate-200">
+          {/* Zone 1: Brand Title & Quiz Status */}
+          <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setScreen('home')}
-              className={`hover:text-[#F2B705] hover:underline underline-offset-8 transition-colors whitespace-nowrap ${
-                screen === 'home' ? 'text-[#F2B705] underline font-bold' : ''
-              }`}
+              className="font-display text-base sm:text-lg font-extrabold tracking-wide text-[#F2B705] hover:text-[#FFFDF7] transition-colors whitespace-nowrap text-left flex items-center gap-2"
             >
-              Beranda
+              <span>Quiz Sejarah Islam</span>
             </button>
-            <button
-              type="button"
-              onClick={() => setScreen('question_manager')}
-              className={`hover:text-[#F2B705] hover:underline underline-offset-8 transition-colors whitespace-nowrap ${
-                screen === 'question_manager' ? 'text-[#F2B705] underline font-bold' : ''
-              }`}
-            >
-              Kelola Soal & Gambar ({activePackage?.questions.length || 0})
-            </button>
-            <button
-              type="button"
-              onClick={() => setScreen('team_settings')}
-              className={`hover:text-[#F2B705] hover:underline underline-offset-8 transition-colors whitespace-nowrap ${
-                screen === 'team_settings' ? 'text-[#F2B705] underline font-bold' : ''
-              }`}
-            >
-              Pengaturan Tim ({settings.teamCount} Tim)
-            </button>
-          </nav>
+            <span className="hidden sm:inline-block rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[11px] font-bold text-emerald-300">
+              {activePackage?.gradeLevel ? `Kelas ${activePackage.gradeLevel} MA` : 'Siap Kuis'}
+            </span>
+          </div>
 
-          {/* Zone 3: Quick Action Buttons */}
+          {/* Zone 2: Quick Action Buttons & Play */}
           <div className="flex items-center gap-1.5 sm:gap-2.5">
             <button
               type="button"
@@ -759,10 +773,10 @@ export default function App() {
               type="button"
               onClick={startQuiz}
               disabled={(activePackage?.questions.length || 0) === 0}
-              className="flex items-center gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl bg-[#F2B705] px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-extrabold text-[#0F1B3D] shadow hover:bg-[#facc15] disabled:opacity-40 transition-colors whitespace-nowrap"
+              className="flex items-center gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl bg-[#F2B705] px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-extrabold text-[#0F1B3D] shadow hover:bg-[#facc15] disabled:opacity-40 transition-colors whitespace-nowrap"
             >
               <Play className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" />
-              <span>Mulai</span>
+              <span>Mulai Kuis</span>
             </button>
           </div>
         </header>
@@ -778,8 +792,12 @@ export default function App() {
           onSelectPackage={setSelectedPackageId}
           onUpdateSettings={setSettings}
           onStartQuiz={startQuiz}
-          onOpenQuestionManager={() => setScreen('question_manager')}
-          onOpenTeamSettings={() => setScreen('team_settings')}
+          onOpenQuestionManager={() =>
+            requestTeacherAccess('question_manager', 'Kelola Soal & Gambar')
+          }
+          onOpenTeamSettings={() =>
+            requestTeacherAccess('team_settings', 'Pengaturan Tim & Tombol')
+          }
         />
       )}
 
@@ -802,12 +820,20 @@ export default function App() {
           onUpdatePackages={setPackages}
           onRestoreSamplePackages={handleRestoreSamplePackages}
           onBackHome={() => setScreen('home')}
+          onOpenChangePin={() =>
+            setAuthModalState({
+              isOpen: true,
+              targetScreen: null,
+              featureName: 'Penggantian Sandi Rahasia Guru',
+            })
+          }
         />
       )}
 
       {screen === 'quiz_play' && currentQuestion && (
         <QuestionScreen
           packageName={activePackage?.name || 'Daulah Usmani'}
+          gradeLevel={activePackage?.gradeLevel || 'XI'}
           question={currentQuestion}
           questionIndex={currentQuestionIndex}
           totalQuestions={gameQuestions.length}
@@ -840,6 +866,7 @@ export default function App() {
       {screen === 'podium' && (
         <PodiumScreen
           packageName={activePackage?.name || 'Daulah Usmani'}
+          gradeLevel={activePackage?.gradeLevel || 'XI'}
           totalQuestions={gameQuestions.length}
           teams={gameTeams}
           onPlayAgain={startQuiz}
@@ -850,6 +877,7 @@ export default function App() {
       {screen === 'solo_result' && (
         <SoloResultScreen
           packageName={activePackage?.name || 'Daulah Usmani'}
+          gradeLevel={activePackage?.gradeLevel || 'XI'}
           totalQuestions={gameQuestions.length}
           soloState={soloState}
           onPlayAgain={startQuiz}
@@ -857,46 +885,21 @@ export default function App() {
         />
       )}
 
-      {/* MOBILE BOTTOM NAVIGATION BAR: Anchor for smartphone thumbs */}
-      {isNonGameScreen && (
-        <nav
-          aria-label="Navigasi Bawah Mobile"
-          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B142E]/95 backdrop-blur-md border-t border-white/15 px-2 py-1 shadow-2xl flex items-center justify-around"
-        >
-          <button
-            type="button"
-            onClick={() => setScreen('home')}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-lg transition-colors ${
-              screen === 'home' ? 'text-[#F2B705]' : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <HomeIcon className="h-5 w-5" />
-            <span className="text-[10px] font-semibold mt-0.5">Beranda</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setScreen('question_manager')}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-lg transition-colors ${
-              screen === 'question_manager' ? 'text-[#F2B705]' : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <BookOpen className="h-5 w-5" />
-            <span className="text-[10px] font-semibold mt-0.5">Kelola Soal</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setScreen('team_settings')}
-            className={`flex flex-col items-center justify-center py-1 px-3 rounded-lg transition-colors ${
-              screen === 'team_settings' ? 'text-[#F2B705]' : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Users className="h-5 w-5" />
-            <span className="text-[10px] font-semibold mt-0.5">Atur Tim</span>
-          </button>
-        </nav>
-      )}
+      {/* MODAL OTORISASI SANDI RAHASIA GURU */}
+      <TeacherAuthModal
+        isOpen={authModalState.isOpen}
+        targetFeatureName={authModalState.featureName}
+        currentPin={teacherPin}
+        onUpdatePin={handleUpdateTeacherPin}
+        onClose={() => setAuthModalState({ isOpen: false, targetScreen: null, featureName: '' })}
+        onSuccess={() => {
+          const dest = authModalState.targetScreen;
+          setAuthModalState({ isOpen: false, targetScreen: null, featureName: '' });
+          if (dest) {
+            setScreen(dest);
+          }
+        }}
+      />
 
       <ConfirmDialog
         isOpen={showExitConfirm}

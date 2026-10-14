@@ -72,3 +72,45 @@
     scroll-behavior: auto !important;
   }
 }
+
+@media print {
+  /* Set standard A4 page margin */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm 15mm 10mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* When printing the official sheet, hide entire regular application */
+  #root > *:not(#ski-printable-report-root) {
+    display: none !important;
+  }
+
+  /* If printing from inside the app modal directly */
+  nav,
+  header,
+  aside,
+  .no-print,
+  button,
+  .pointer-events-none {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Prevent page breaks inside cards and table rows */
+  tr, .page-break-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+

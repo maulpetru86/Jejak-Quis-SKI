@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Trophy, RotateCcw, Home, Award, Crown } from 'lucide-react';
-import { TeamGameState } from '../config/quizConfig';
+import { GradeLevel, TeamGameState } from '../config/quizConfig';
 import { HagiaSophiaSilhouette, OttomanStarIcon } from './OttomanDecorations';
 
 interface PodiumScreenProps {
   packageName: string;
+  gradeLevel?: GradeLevel;
   totalQuestions: number;
   teams: TeamGameState[];
   onPlayAgain: () => void;
@@ -13,6 +14,7 @@ interface PodiumScreenProps {
 
 export const PodiumScreen: React.FC<PodiumScreenProps> = ({
   packageName,
+  gradeLevel,
   totalQuestions,
   teams,
   onPlayAgain,
@@ -106,6 +108,12 @@ export const PodiumScreen: React.FC<PodiumScreenProps> = ({
             <span>HASIL AKHIR PERMAINAN</span>
             <span aria-hidden="true">·</span>
             <span>{packageName}</span>
+            {gradeLevel && (
+              <>
+                <span aria-hidden="true">·</span>
+                <span className="text-white/80 font-semibold">Kelas {gradeLevel} MA</span>
+              </>
+            )}
           </div>
 
           <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-wide text-[#FFFDF7]">
