@@ -9,7 +9,7 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #0F1B3D;
+    background-color: #0A122C;
     color: #FFFDF7;
     overflow-x: hidden;
   }
@@ -21,6 +21,42 @@
   .font-mono-tabular {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Islamic Arabesque Geometric Background Canvas */
+  .bg-islamic-pattern {
+    background-color: #0A122C;
+    background-image: 
+      radial-gradient(circle at 50% -10%, rgba(242, 183, 5, 0.22) 0%, transparent 60%),
+      radial-gradient(circle at 95% 40%, rgba(16, 185, 129, 0.14) 0%, transparent 50%),
+      radial-gradient(circle at 5% 75%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 50% 110%, rgba(217, 119, 6, 0.16) 0%, transparent 65%),
+      url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23F2B705' fill-opacity='0.055' fill-rule='evenodd'%3E%3Cpath d='M40 0l10 15 15-5-5 15 15 10-15 10 5 15-15-5-10 15-10-15-15 5 5-15-15-10 15-10-5-15 15 5zM0 40l10 15 15-5-5 15 15 10-15 10 5 15-15-5-10 15-10-15-15 5 5-15-15-10 15-10-5-15 15 5zM80 40l10 15 15-5-5 15 15 10-15 10 5 15-15-5-10 15-10-15-15 5 5-15-15-10 15-10-5-15 15 5z'/%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+  }
+
+  .gold-glow {
+    box-shadow: 0 0 25px -4px rgba(242, 183, 5, 0.32), 0 0 10px -2px rgba(242, 183, 5, 0.20);
+  }
+
+  .gold-glow-lg {
+    box-shadow: 0 0 45px -5px rgba(242, 183, 5, 0.45), 0 0 20px -3px rgba(242, 183, 5, 0.28);
+  }
+
+  .emerald-glow {
+    box-shadow: 0 0 30px -4px rgba(16, 185, 129, 0.35), 0 0 12px -2px rgba(16, 185, 129, 0.22);
+  }
+
+  .gold-gradient-text {
+    background: linear-gradient(135deg, #FFFDF7 0%, #FDE68A 45%, #F2B705 85%, #D97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .emerald-gradient-text {
+    background: linear-gradient(135deg, #ECFDF5 0%, #6EE7B7 50%, #10B981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 

@@ -7,9 +7,10 @@ import {
   Play,
   Home as HomeIcon,
   BookOpen,
-  Users,
   Lock,
+  Shield,
 } from 'lucide-react';
+import { GoldenMedallionEmblem, OttomanStarIcon } from './components/OttomanDecorations';
 import {
   AnswerLetter,
   DEFAULT_SETTINGS,
@@ -48,30 +49,11 @@ export default function App() {
     try {
       const raw =
         localStorage.getItem(STORAGE_KEYS.PACKAGES) ||
-        localStorage.getItem('ski_quiz_packages_v5');
+        localStorage.getItem('ski_quiz_packages_v7');
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const hasAll16Chapters = INITIAL_PACKAGES.every((init) =>
-            parsed.some((p: QuestionPackage) => p.id === init.id)
-          );
-
-          if (hasAll16Chapters) {
-            return parsed.map((p: QuestionPackage) => ({
-              ...p,
-              gradeLevel: p.gradeLevel || 'XI',
-            }));
-          }
-
-          // Auto-upgrade: combine all 16 official curriculum packages with any custom teacher packages
-          const updatedDefaults = INITIAL_PACKAGES.map((initPkg) => {
-            const existing = parsed.find((p: QuestionPackage) => p.id === initPkg.id);
-            if (existing && existing.questions.length >= 10) {
-              return { ...existing, gradeLevel: existing.gradeLevel || initPkg.gradeLevel };
-            }
-            return initPkg;
-          });
-
+          // Preserve any custom packages created by the teacher
           const customTeacherPackages = parsed
             .filter((p: QuestionPackage) => !INITIAL_PACKAGES.some((init) => init.id === p.id))
             .map((p: QuestionPackage) => ({
@@ -79,7 +61,7 @@ export default function App() {
               gradeLevel: p.gradeLevel || 'XI',
             }));
 
-          return [...updatedDefaults, ...customTeacherPackages];
+          return [...INITIAL_PACKAGES, ...customTeacherPackages];
         }
       }
     } catch {
@@ -721,31 +703,54 @@ export default function App() {
     screen !== 'quiz_play' && screen !== 'podium' && screen !== 'solo_result';
 
   return (
-    <div className="min-h-screen bg-[#0F1B3D] text-[#FFFDF7]">
-      {/* TOP NAVIGATION BAR */}
+    <div className="min-h-screen bg-islamic-pattern text-[#FFFDF7]">
+      {/* TOP NAVIGATION BAR - IMPERIAL ISLAMIC ARCHITECTURE */}
       {isNonGameScreen && (
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/15 bg-[#0B142E]/95 px-3 py-2.5 sm:px-6 sm:py-3.5 lg:px-10 backdrop-blur-md">
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[#F2B705]/25 bg-gradient-to-r from-[#0B142E]/98 via-[#0D1836]/95 to-[#0B142E]/98 px-3 py-2 sm:px-6 sm:py-2.5 lg:px-8 backdrop-blur-md shadow-lg shadow-black/40">
           {/* Zone 1: Brand Title & Quiz Status */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
             <button
               type="button"
               onClick={() => setScreen('home')}
-              className="font-display text-base sm:text-lg font-extrabold tracking-wide text-[#F2B705] hover:text-[#FFFDF7] transition-colors whitespace-nowrap text-left flex items-center gap-2"
+              className="flex items-center gap-2.5 group text-left transition-all"
             >
-              <span>Quiz Sejarah Islam</span>
+              <GoldenMedallionEmblem className="h-8 w-8 sm:h-9 sm:w-9 group-hover:rotate-12 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(242,183,5,0.4)]" />
+              <div className="min-w-0">
+                <span className="font-display text-sm sm:text-base lg:text-lg font-black tracking-wide gold-gradient-text block leading-tight">
+                  Quiz Sejarah Islam
+                </span>
+                <span className="hidden sm:block text-[10px] font-bold text-slate-300 tracking-wider uppercase">
+                  Madrasah Aliyah · Kemenag RI
+                </span>
+              </div>
             </button>
-            <span className="hidden sm:inline-block rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[11px] font-bold text-emerald-300">
-              {activePackage?.gradeLevel ? `Kelas ${activePackage.gradeLevel} MA` : 'Siap Kuis'}
-            </span>
+
+            {activePackage?.gradeLevel && (
+              <span className="hidden md:inline-flex items-center gap-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 px-2.5 py-0.5 text-[11px] font-extrabold text-emerald-300 shadow-xs">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Kelas {activePackage.gradeLevel} MA</span>
+              </span>
+            )}
           </div>
 
-          {/* Zone 2: Quick Action Buttons & Play */}
+          {/* Zone 2: Quick Action Buttons, Teacher Portal & Play */}
           <div className="flex items-center gap-1.5 sm:gap-2.5">
+            {/* Quick Guru Access Button in Navbar */}
+            <button
+              type="button"
+              onClick={() => requestTeacherAccess('question_manager', 'Portal Pengelolaan Guru')}
+              title="Akses Ruang Guru & Soal"
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 hover:border-[#F2B705]/40 px-2.5 py-1.5 text-xs font-bold text-slate-200 transition-all shadow-xs"
+            >
+              <Shield className="h-3.5 w-3.5 text-[#F2B705]" />
+              <span>Ruang Guru</span>
+            </button>
+
             <button
               type="button"
               onClick={toggleSound}
               title={settings.soundEnabled ? 'Suara Aktif' : 'Suara Dimatikan'}
-              className="rounded-lg sm:rounded-xl border border-white/15 bg-white/5 p-1.5 sm:p-2 text-slate-200 hover:bg-white/15 transition-colors"
+              className="rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 p-2 text-slate-200 hover:text-white transition-colors"
               aria-label="Pengaturan Suara"
             >
               {settings.soundEnabled ? (
@@ -759,7 +764,7 @@ export default function App() {
               type="button"
               onClick={toggleFullscreen}
               title="Layar Penuh Proyektor"
-              className="rounded-lg sm:rounded-xl border border-white/15 bg-white/5 p-1.5 sm:p-2 text-slate-200 hover:bg-white/15 transition-colors hidden sm:block"
+              className="rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 p-2 text-slate-200 hover:text-white transition-colors hidden sm:block"
               aria-label="Layar Penuh"
             >
               {isFullscreen ? (
@@ -769,15 +774,17 @@ export default function App() {
               )}
             </button>
 
-            <button
-              type="button"
-              onClick={startQuiz}
-              disabled={(activePackage?.questions.length || 0) === 0}
-              className="flex items-center gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl bg-[#F2B705] px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-extrabold text-[#0F1B3D] shadow hover:bg-[#facc15] disabled:opacity-40 transition-colors whitespace-nowrap"
-            >
-              <Play className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" />
-              <span>Mulai Kuis</span>
-            </button>
+            {screen !== 'home' && (
+              <button
+                type="button"
+                onClick={startQuiz}
+                disabled={(activePackage?.questions.length || 0) === 0}
+                className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#F2B705] via-[#F59E0B] to-[#D97706] px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-black text-[#0A122C] shadow-[0_4px_15px_rgba(242,183,5,0.35)] hover:brightness-110 active:scale-95 disabled:opacity-40 transition-all whitespace-nowrap ring-1 ring-amber-200/50"
+              >
+                <Play className="h-3.5 w-3.5 fill-current" />
+                <span>Mulai Kuis</span>
+              </button>
+            )}
           </div>
         </header>
       )}

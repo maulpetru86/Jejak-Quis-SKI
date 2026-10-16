@@ -96,3 +96,39 @@ export const ArabesqueCorner: React.FC<{ className?: string }> = ({ className = 
     <circle cx="10" cy="10" r="2.5" fill="currentColor" />
   </svg>
 );
+
+export const ArabesqueBorderDivider: React.FC<{ className?: string }> = ({ className = 'w-full' }) => (
+  <div className={`flex items-center justify-center gap-3 select-none pointer-events-none ${className}`} aria-hidden="true">
+    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#F2B705]/40 to-[#F2B705]" />
+    <div className="flex items-center gap-1.5 text-[#F2B705] shrink-0">
+      <span className="h-1 w-1 rounded-full bg-[#F2B705]/70" />
+      <OttomanStarIcon className="h-4 w-4" />
+      <span className="h-1 w-1 rounded-full bg-[#F2B705]/70" />
+    </div>
+    <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[#F2B705]/40 to-[#F2B705]" />
+  </div>
+);
+
+export const GoldenMedallionEmblem: React.FC<{ className?: string }> = ({ className = 'w-10 h-10' }) => (
+  <svg
+    viewBox="0 0 48 48"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={`shrink-0 select-none ${className}`}
+    aria-hidden="true"
+  >
+    <circle cx="24" cy="24" r="22" fill="url(#goldGrad)" stroke="#F2B705" strokeWidth="1.5" />
+    <circle cx="24" cy="24" r="18.5" stroke="#FFFDF7" strokeOpacity="0.4" strokeWidth="1" strokeDasharray="3 3" />
+    <rect x="14" y="14" width="20" height="20" stroke="#0F1B3D" strokeWidth="1.8" rx="2" />
+    <rect x="14" y="14" width="20" height="20" transform="rotate(45 24 24)" stroke="#0F1B3D" strokeWidth="1.8" rx="2" />
+    <circle cx="24" cy="24" r="4.5" fill="#0F1B3D" />
+    <circle cx="24" cy="24" r="2" fill="#F2B705" />
+    <defs>
+      <linearGradient id="goldGrad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FDE68A" />
+        <stop offset="0.5" stopColor="#F2B705" />
+        <stop offset="1" stopColor="#B45309" />
+      </linearGradient>
+    </defs>
+  </svg>
+);

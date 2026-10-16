@@ -12,6 +12,8 @@ import {
   Maximize2,
   Minimize2,
   Eye,
+  EyeOff,
+  Lock,
   ArrowRight,
   Trophy,
   BookOpen,
@@ -34,7 +36,7 @@ import {
 } from '../config/quizConfig';
 import { CircularTimer } from './CircularTimer';
 import { ScoreboardDock } from './ScoreboardDock';
-import { OttomanStarIcon } from './OttomanDecorations';
+import { ArabesqueCorner, OttomanStarIcon } from './OttomanDecorations';
 
 interface QuestionScreenProps {
   packageName: string;
@@ -97,9 +99,14 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   onToggleFullscreen,
   onRequestExitHome,
 }) => {
-  const [showTouchPanel, setShowTouchPanel] = useState(false);
   const [imageLoadFailed, setImageLoadFailed] = useState(false);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
+  // Conceal group answers: secret by default, optional peek for host/team
+  const [revealedSecrets, setRevealedSecrets] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    setRevealedSecrets({});
+  }, [questionIndex]);
 
   const isSolo = settings.gameMode === 'solo';
   const isTrueFalse = question.type === 'true_false';
@@ -179,7 +186,7 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const hasImage = Boolean(question.imageUrl && !imageLoadFailed);
 
   return (
-    <div className="w-full min-h-screen bg-[#0F1B3D] flex flex-col justify-between py-2 sm:py-3 lg:py-4 pb-20 sm:pb-24">
+    <div className="w-full min-h-screen bg-islamic-pattern text-[#FFFDF7] flex flex-col justify-between py-2 sm:py-3 lg:py-4 pb-20 sm:pb-24">
       {/* Central Container */}
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 max-w-7xl w-full flex-1 flex flex-col justify-start gap-3 sm:gap-4">
         {/* ========================================================= */}
@@ -372,8 +379,10 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
         {/* MAIN STAGE: Question Card + Options + Explanation         */}
         {/* ========================================================= */}
         <main className="w-full flex-1 flex flex-col justify-start gap-3 sm:gap-4">
-          {/* Question Card */}
-          <div className="relative w-full rounded-xl sm:rounded-2xl lg:rounded-3xl border border-[#F2B705]/45 sm:border-2 bg-gradient-to-b from-[#162654] to-[#111E45] p-3.5 sm:p-5 lg:p-6 shadow-2xl space-y-2.5">
+          {/* Question Card - Illuminated Royal Codex */}
+          <div className="relative w-full rounded-xl sm:rounded-2xl lg:rounded-3xl border-2 border-[#F2B705]/60 bg-gradient-to-br from-[#162758]/98 via-[#111F45]/98 to-[#0B142E]/98 p-3.5 sm:p-5 lg:p-7 shadow-[0_0_35px_rgba(242,183,5,0.2)] space-y-3">
+            <ArabesqueCorner className="absolute left-1.5 top-1.5 h-6 w-6 sm:h-10 sm:w-10 text-[#F2B705]/40 pointer-events-none" />
+            <ArabesqueCorner className="absolute right-1.5 top-1.5 h-6 w-6 sm:h-10 sm:w-10 -scale-x-100 text-[#F2B705]/40 pointer-events-none" />
             <div className="flex items-start justify-between gap-3 min-w-0">
               <div className="flex-1 space-y-1 sm:space-y-1.5 min-w-0">
                 {/* Meta Indicator */}
@@ -648,153 +657,246 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
             </section>
           )}
 
-          {/* Group Mode: Interactive Touch / Click panel for teams if physical keyboards aren't available */}
+          {/* Group Mode: Interactive Direct Team Answer Selection (Selalu Terbuka & Mudah Dijangkau) */}
           {!isRevealed && !isSolo && (
-            <div className="w-full rounded-xl border border-white/15 bg-[#132047]/90 px-3 py-2">
-              <button
-                type="button"
-                onClick={() => setShowTouchPanel((prev) => !prev)}
-                className="flex w-full items-center justify-between text-xs font-bold text-[#F2B705]"
-              >
-                <div className="flex items-center gap-1.5 min-w-0">
-                  <Hand className="h-3.5 w-3.5 shrink-0" />
-                  <span className="truncate">Sentuh / Klik Jawaban Tim di Layar (Jika Tanpa Keyboard)</span>
+            <section
+              aria-label="Panel Pemilihan Jawaban Tim"
+              className="w-full rounded-xl sm:rounded-2xl border border-white/20 bg-gradient-to-r from-[#0F1B3D]/95 via-[#162654]/95 to-[#0F1B3D]/95 p-3 sm:p-4 shadow-xl space-y-2.5"
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-lg bg-[#F2B705]/20 text-[#F2B705] shrink-0">
+                    <Hand className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-sm font-extrabold text-[#FFFDF7] truncate">
+                      Pilih Jawaban Tiap Kelompok
+                    </h3>
+                    <p className="text-[10px] sm:text-xs text-slate-300 truncate">
+                      Sentuh opsi A–{hasOptionE ? 'E' : 'D'} (jawaban otomatis dirahasiakan setelah dipilih)
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 shrink-0 text-slate-300">
-                  <span className="text-[10px] sm:text-xs">
-                    {showTouchPanel ? 'Sembunyikan' : 'Buka Panel'}
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-[10px] sm:text-xs font-bold text-[#F2B705] bg-[#F2B705]/15 border border-[#F2B705]/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <Lock className="h-2.5 w-2.5" />
+                    {lockedCount} / {teams.length} Terkunci
                   </span>
-                  {showTouchPanel ? (
-                    <ChevronUp className="h-3.5 w-3.5" />
-                  ) : (
-                    <ChevronDown className="h-3.5 w-3.5" />
+                  {lockedCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={onResetAllAnswers}
+                      className="text-[10px] sm:text-xs font-semibold text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 px-2 py-0.5 rounded-lg transition-colors"
+                      title="Reset semua jawaban tim untuk soal ini"
+                    >
+                      Reset Semua
+                    </button>
                   )}
                 </div>
-              </button>
+              </div>
 
-              {showTouchPanel && (
-                <div className="mt-2 grid grid-cols-1 min-[420px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-                  {teams.map((team) => {
-                    const isLocked = team.selectedAnswer !== null;
-                    return (
+              {/* Grid of Team Cards with Direct Option Buttons */}
+              <div
+                className={`grid gap-2 ${
+                  teams.length === 2
+                    ? 'grid-cols-1 sm:grid-cols-2'
+                    : teams.length === 3
+                      ? 'grid-cols-1 sm:grid-cols-3'
+                      : 'grid-cols-1 min-[440px]:grid-cols-2 lg:grid-cols-4'
+                }`}
+              >
+                {teams.map((team) => {
+                  const isLocked = team.selectedAnswer !== null;
+                  return (
+                    <div
+                      key={team.id}
+                      className={`relative flex items-center justify-between gap-2 rounded-xl border p-2 sm:p-2.5 transition-all ${
+                        isLocked
+                          ? 'border-[#F2B705] bg-[#162654] shadow-md ring-1 ring-[#F2B705]/40'
+                          : 'border-white/15 bg-[#0B142E]/80 hover:border-white/30'
+                      }`}
+                    >
+                      {/* Colored bar on left */}
                       <div
-                        key={team.id}
-                        className="flex items-center justify-between gap-1.5 rounded-lg border border-white/10 bg-[#0F1B3D]/90 p-2 min-w-0"
-                      >
-                        <div className="flex items-center gap-1 min-w-0 flex-1">
-                          <span className="text-base shrink-0">{team.emoji}</span>
-                          <span className="truncate text-xs font-bold text-[#FFFDF7]">
-                            {team.name}
-                          </span>
-                        </div>
+                        className="absolute inset-y-0 left-0 w-1 rounded-l-xl"
+                        style={{ backgroundColor: team.color }}
+                      />
 
-                        {isLocked ? (
-                          <div className="flex items-center gap-1 shrink-0">
-                            <span className="text-[10px] font-extrabold text-[#F2B705]">
-                              {team.selectedAnswer} ✓
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => onResetSingleTeamAnswer(team.id)}
-                              className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-slate-200 hover:bg-white/20 active:scale-95"
-                            >
-                              Ulang
-                            </button>
+                      {/* Team Name & Status */}
+                      <div className="flex items-center gap-1.5 pl-1.5 min-w-0 flex-1">
+                        <span className="text-base sm:text-lg shrink-0 leading-none" aria-hidden="true">
+                          {team.emoji}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate text-xs sm:text-sm font-bold text-[#FFFDF7]">
+                            {team.name}
                           </div>
-                        ) : (
-                          <div className="flex items-center gap-1 shrink-0">
-                            {activeLetters.map((letter) => (
-                              <button
-                                key={letter}
-                                type="button"
-                                onClick={() => onSelectTeamAnswer(team.id, letter)}
-                                className={`h-7 w-7 rounded-lg font-mono-tabular text-xs font-extrabold text-white shadow active:scale-95 ${OPTION_STYLES[letter].bg} hover:brightness-110`}
-                                title={`Pilih ${letter} untuk ${team.name}`}
-                              >
-                                {letter}
-                              </button>
-                            ))}
+                          <div className="text-[10px] text-slate-400 font-mono-tabular">
+                            {isLocked ? (
+                              <span className="text-[#34D399] font-bold flex items-center gap-1">
+                                <Lock className="h-2.5 w-2.5 text-[#F2B705]" />
+                                Terkunci (Rahasia)
+                              </span>
+                            ) : (
+                              <span>Pilih jawaban:</span>
+                            )}
                           </div>
-                        )}
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
+
+                      {/* Option Buttons A/B/C/D/(E) or Concealed Secret Answer */}
+                      {isLocked ? (
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {/* Secret Masked Answer Badge (letter hidden by default) */}
+                          <div
+                            className="flex h-8 items-center gap-1.5 rounded-lg bg-[#0F1B3D] border border-[#F2B705]/60 px-2 sm:px-2.5 shadow text-xs"
+                            title={
+                              revealedSecrets[team.id]
+                                ? `Jawaban dipilih: ${team.selectedAnswer}`
+                                : 'Jawaban tersimpan dan disembunyikan agar regu lain tidak menyontek'
+                            }
+                          >
+                            <Lock className="h-3 w-3 text-[#F2B705] shrink-0" />
+                            <span className="font-mono-tabular font-black tracking-wider text-[#F2B705]">
+                              {revealedSecrets[team.id] ? team.selectedAnswer : '••••'}
+                            </span>
+                          </div>
+
+                          {/* Tombol Intip Rahasia (Opsional untuk Guru / Tim) */}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setRevealedSecrets((prev) => ({
+                                ...prev,
+                                [team.id]: !prev[team.id],
+                              }))
+                            }
+                            className="h-8 w-8 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-all active:scale-95"
+                            title={
+                              revealedSecrets[team.id]
+                                ? 'Sembunyikan kembali jawaban'
+                                : 'Intip pilihan jawaban tim'
+                            }
+                            aria-label="Intip pilihan jawaban"
+                          >
+                            {revealedSecrets[team.id] ? (
+                              <EyeOff className="h-3.5 w-3.5 text-[#F2B705]" />
+                            ) : (
+                              <Eye className="h-3.5 w-3.5 text-slate-300" />
+                            )}
+                          </button>
+
+                          {/* Tombol Ganti Pilihan */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setRevealedSecrets((prev) => ({ ...prev, [team.id]: false }));
+                              onResetSingleTeamAnswer(team.id);
+                            }}
+                            className="h-8 rounded-lg bg-white/10 hover:bg-white/20 px-2.5 text-[11px] font-bold text-slate-200 hover:text-white transition-all active:scale-95"
+                            title="Ganti pilihan jawaban tim ini"
+                          >
+                            Ganti
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1 shrink-0">
+                          {activeLetters.map((letter) => (
+                            <button
+                              key={letter}
+                              type="button"
+                              onClick={() => onSelectTeamAnswer(team.id, letter)}
+                              className={`h-8 w-8 rounded-lg font-mono-tabular text-xs font-black text-white shadow transition-all active:scale-90 hover:brightness-125 ${OPTION_STYLES[letter].bg} ring-1 ring-white/20`}
+                              title={`Pilih ${letter} untuk ${team.name}`}
+                            >
+                              {letter}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
           )}
         </main>
       </div>
 
       {/* ========================================================= */}
-      {/* ERGONOMIC DOCKED BOTTOM ACTION BAR (TOMBOL LANJUT DI BAWAH)*/}
+      {/* ERGONOMIC COMPACT DOCKED BOTTOM ACTION BAR (SLEEK & BALANCED) */}
       {/* ========================================================= */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/20 bg-[#0B142E]/95 px-3 py-2.5 sm:px-6 sm:py-3.5 backdrop-blur-md shadow-2xl">
-        <div className="container mx-auto max-w-7xl flex flex-col min-[480px]:flex-row items-center justify-between gap-2.5 sm:gap-4">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/20 bg-[#0B142E]/95 px-3 py-2 sm:px-6 sm:py-2.5 backdrop-blur-md shadow-2xl">
+        <div className="container mx-auto max-w-7xl flex flex-row items-center justify-between gap-2 sm:gap-4">
           {/* Left Context / Status */}
-          <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-200 min-w-0 w-full min-[480px]:w-auto">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-slate-200 min-w-0 flex-1 truncate">
             {!isRevealed ? (
               isSolo ? (
                 soloSelectedAnswer ? (
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#10B981] animate-pulse" />
-                    <span>
+                  <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+                    <span className="h-2 w-2 rounded-full bg-[#10B981] animate-pulse shrink-0" />
+                    <span className="truncate">
                       Pilihan Anda:{' '}
-                      <strong className="text-[#F2B705] font-black text-base">
+                      <strong className="text-[#F2B705] font-black text-sm sm:text-base">
                         {soloSelectedAnswer}
                       </strong>
-                      . Klik tombol untuk membuka jawaban.
                     </span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 text-slate-300">
-                    <span className="h-2 w-2 rounded-full bg-[#F2B705]" />
-                    <span>Pilih salah satu jawaban (A, B, C, D, E) untuk melanjutkan.</span>
+                  <div className="flex items-center gap-1.5 text-slate-300 truncate">
+                    <span className="h-2 w-2 rounded-full bg-[#F2B705] shrink-0" />
+                    <span className="truncate">Pilih salah satu jawaban (A–{hasOptionE ? 'E' : 'D'})</span>
                   </div>
                 )
               ) : (
-                <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#F2B705] animate-pulse" />
-                  <span>
-                    <strong>{lockedCount}</strong> dari <strong>{teams.length}</strong> Tim telah mengunci jawaban.
+                <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+                  <span
+                    className={`h-2.5 w-2.5 rounded-full shrink-0 ${
+                      lockedCount === teams.length ? 'bg-[#10B981]' : 'bg-[#F2B705] animate-pulse'
+                    }`}
+                  />
+                  <span className="truncate text-xs sm:text-sm">
+                    <strong className="text-[#F2B705] font-extrabold">{lockedCount}</strong> dari{' '}
+                    <strong className="text-white font-extrabold">{teams.length}</strong> Tim mengunci jawaban
                   </span>
                 </div>
               )
             ) : (
-              <div className="flex items-center gap-2 font-bold text-sm">
-                <span className="rounded bg-[#059669] px-2 py-0.5 text-xs font-black text-white">
+              <div className="flex items-center gap-2 font-bold text-xs sm:text-sm truncate">
+                <span className="rounded bg-[#059669] px-2 py-0.5 text-xs font-black text-white shrink-0">
                   KUNCI: {question.correctAnswer}
                 </span>
-                <span className="hidden min-[600px]:inline text-slate-300 text-xs">
+                <span className="hidden min-[600px]:inline text-slate-300 text-xs truncate">
                   {isSolo
                     ? soloSelectedAnswer === question.correctAnswer
                       ? 'Jawaban Anda tepat!'
-                      : 'Simak pembahasan di atas.'
-                    : `${correctTeams.length} tim berhasil menjawab dengan benar.`}
+                      : 'Simak pembahasan materi di atas.'
+                    : `${correctTeams.length} tim berhasil menjawab benar.`}
                 </span>
               </div>
             )}
           </div>
 
-          {/* Right: The ONE AND ONLY Primary Navigation Action Button */}
-          <div className="shrink-0 w-full min-[480px]:w-auto flex items-center justify-end">
+          {/* Right: Sleek, compact action button (NEVER giant or full-width) */}
+          <div className="shrink-0 flex items-center">
             {!isRevealed ? (
-              /* State 1: Buka Jawaban Button */
+              /* State 1: Buka Jawaban Button - Compact & Proportional */
               <button
                 type="button"
                 onClick={onRevealAnswer}
                 disabled={isSolo && soloSelectedAnswer === null}
                 title="Buka Jawaban (Pintasan: Spasi)"
-                className="w-full min-[480px]:w-auto flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F2B705] to-[#D99B00] px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-extrabold text-[#0F1B3D] shadow-lg hover:brightness-105 disabled:opacity-40 active:scale-95 transition-all whitespace-nowrap min-h-[44px]"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#F2B705] to-[#D99B00] px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-extrabold text-[#0F1B3D] shadow-md hover:brightness-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all whitespace-nowrap min-h-[38px] sm:min-h-[42px]"
               >
-                <Eye className="h-4 w-4 shrink-0" />
+                <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                 <span>Buka Jawaban</span>
-                <span className="hidden sm:inline text-[11px] opacity-75 font-normal">
+                <span className="hidden md:inline text-[10px] opacity-75 font-normal">
                   (Spasi)
                 </span>
               </button>
             ) : (
-              /* State 2: Lanjut ke Soal Berikutnya / Hasil Akhir (SINGLE PRIMARY BUTTON) */
+              /* State 2: Lanjut ke Soal Berikutnya / Hasil Akhir - Compact & Ergonomic */
               <button
                 type="button"
                 onClick={onNextQuestion}
@@ -803,21 +905,21 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                     ? 'Lihat Hasil Akhir (Spasi / Enter)'
                     : 'Lanjut ke Soal Berikutnya (Spasi / Enter)'
                 }
-                className="w-full min-[480px]:w-auto flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#10B981] via-[#059669] to-[#047857] px-6 py-2.5 sm:px-8 sm:py-3 text-xs sm:text-base font-extrabold text-white shadow-xl ring-2 ring-[#6EE7B7]/50 hover:brightness-110 active:scale-95 transition-all whitespace-nowrap min-h-[44px]"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#10B981] via-[#059669] to-[#047857] px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-extrabold text-white shadow-lg ring-1 sm:ring-2 ring-[#6EE7B7]/50 hover:brightness-110 active:scale-95 transition-all whitespace-nowrap min-h-[38px] sm:min-h-[42px]"
               >
                 {isLastQuestion ? (
                   <>
-                    <Trophy className="h-4 w-4 sm:h-5 sm:w-5 fill-current text-[#F2B705]" />
-                    <span>Lihat Hasil Akhir (Podium)</span>
-                    <span className="hidden sm:inline text-xs opacity-75 font-normal">
+                    <Trophy className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current text-[#F2B705]" />
+                    <span>Lihat Hasil Akhir</span>
+                    <span className="hidden md:inline text-[10px] opacity-75 font-normal">
                       (Enter)
                     </span>
                   </>
                 ) : (
                   <>
-                    <span>Lanjut ke Soal #{questionIndex + 2}</span>
-                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                    <span className="hidden sm:inline text-xs opacity-75 font-normal">
+                    <span>Soal Berikutnya</span>
+                    <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden md:inline text-[10px] opacity-75 font-normal">
                       (Spasi)
                     </span>
                   </>

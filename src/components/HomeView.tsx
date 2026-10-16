@@ -17,6 +17,14 @@ import {
   Lock,
   Shield,
   Sliders,
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+  Check,
+  Search,
+  X,
+  Layers,
+  Trophy,
 } from 'lucide-react';
 import {
   GradeLevel,
@@ -26,6 +34,8 @@ import {
 } from '../config/quizConfig';
 import {
   ArabesqueCorner,
+  ArabesqueBorderDivider,
+  GoldenMedallionEmblem,
   HagiaSophiaSilhouette,
   OttomanStarIcon,
 } from './OttomanDecorations';
@@ -60,6 +70,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const [selectedGradeFilter, setSelectedGradeFilter] = useState<'ALL' | GradeLevel>(() => {
     return selectedPackage?.gradeLevel || 'ALL';
   });
+
+  // Custom Package Picker Modal & Search State
+  const [isPackagePickerOpen, setIsPackagePickerOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const isSolo = settings.gameMode === 'solo';
   const activeTeams = teams.slice(0, settings.teamCount);
@@ -119,528 +133,663 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const activeGradeBadge = getGradeBadgeConfig(selectedPackage?.gradeLevel);
 
   return (
-    <div className="relative min-h-[calc(100vh-64px)] w-full overflow-x-hidden flex flex-col justify-between py-3 sm:py-6 lg:py-8">
-      {/* Central Responsive Container */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl w-full flex-1 flex flex-col justify-center space-y-5 sm:space-y-8 animate-fade-slide-up pb-6">
-        {/* HERO BANNER CARD */}
-        <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#F2B705]/45 sm:border-2 bg-gradient-to-br from-[#162654] via-[#122047] to-[#0F1B3D] p-4 sm:p-7 lg:p-9 shadow-2xl">
+    <div className="relative min-h-[calc(100vh-64px)] w-full overflow-x-hidden flex flex-col justify-between py-4 sm:py-7 pb-10">
+      {/* Central Focused Container - Clear Single Column Hierarchy */}
+      <div className="container mx-auto px-3 sm:px-6 max-w-4xl w-full flex-1 flex flex-col justify-start space-y-5 sm:space-y-6 animate-fade-slide-up">
+        {/* HERO TITLE - MAJESTIK, RINGKAS & TIDAK MEMBINGUNGKAN */}
+        <header className="text-center space-y-2 pt-1 sm:pt-2">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F2B705]/20 to-[#D97706]/10 px-3.5 py-1 border border-[#F2B705]/50 shadow-[0_0_15px_rgba(242,183,5,0.2)]">
+            <OttomanStarIcon className="h-4 w-4 text-[#F2B705]" />
+            <span className="text-[#F2B705] font-black uppercase tracking-wider text-[11px] sm:text-xs">
+              KUIS CERDAS CERMAT & EVALUASI MANDIRI SKI
+            </span>
+          </div>
+
+          <h1 className="font-display text-2xl sm:text-4xl md:text-5xl font-black tracking-wide gold-gradient-text drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
+            Quiz Sejarah Peradaban Islam
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto font-medium">
+            Madrasah Aliyah · Kurikulum Resmi Kemenag RI (Kelas X, XI & XII)
+          </p>
+        </header>
+
+        {/* KARTU PENGATURAN KUIS: 3 LANGKAH MUDAH */}
+        <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-[#F2B705]/50 bg-gradient-to-b from-[#162758]/98 via-[#101D44]/95 to-[#091126]/98 p-4 sm:p-7 shadow-[0_0_40px_rgba(0,0,0,0.5)] space-y-6">
           <ArabesqueCorner className="absolute left-2 top-2 h-7 w-7 sm:h-12 sm:w-12 text-[#F2B705]/40 pointer-events-none" />
           <ArabesqueCorner className="absolute right-2 top-2 h-7 w-7 sm:h-12 sm:w-12 -scale-x-100 text-[#F2B705]/40 pointer-events-none" />
 
-          {/* Flexible Responsive Grid: 1 col on mobile, 12 cols on desktop */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center">
-            {/* Left Column (7 cols): Title, Selector & Action Buttons */}
-            <div className="space-y-4 sm:space-y-5 lg:col-span-7 min-w-0">
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-bold tracking-wider">
-                <OttomanStarIcon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-[#F2B705]" />
-                <span className="text-[#F2B705]">MEDIA PEMBELAJARAN SKI</span>
-                <span className="text-white/40" aria-hidden="true">·</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-0.5 border border-white/20">
-                  <GraduationCap className="h-3 w-3 text-[#F2B705]" />
-                  <span className="text-emerald-400 font-extrabold">KELAS X</span>
-                  <span className="text-white/40">·</span>
-                  <span className="text-[#F2B705] font-extrabold">XI</span>
-                  <span className="text-white/40">·</span>
-                  <span className="text-purple-400 font-extrabold">XII MA</span>
+          {/* ======================================================== */}
+          {/* LANGKAH 1: PILIH FORMAT KUIS                            */}
+          {/* ======================================================== */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F2B705] text-[#0A122C] font-black text-xs shadow-sm">
+                1
+              </span>
+              <h2 className="text-sm sm:text-base font-black text-[#FFFDF7] uppercase tracking-wider">
+                Pilih Format Pengerjaan:
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Opsi Cerdas Cermat Kelompok */}
+              <button
+                type="button"
+                onClick={() => onUpdateSettings({ ...settings, gameMode: 'group' })}
+                className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border-2 text-left transition-all ${
+                  !isSolo
+                    ? 'border-[#F2B705] bg-gradient-to-r from-[#F2B705] via-[#F59E0B] to-[#D97706] text-[#0A122C] shadow-lg ring-2 ring-amber-200/60 scale-[1.01]'
+                    : 'border-white/10 bg-[#0B142E]/70 text-slate-300 hover:border-white/20 hover:bg-white/5'
+                }`}
+              >
+                <div
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
+                    !isSolo ? 'bg-[#0A122C]/20 text-[#0A122C]' : 'bg-white/10 text-[#F2B705]'
+                  }`}
+                >
+                  <Trophy className="h-6 w-6 fill-current" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className={`text-sm sm:text-base font-black truncate leading-tight ${!isSolo ? 'text-[#0A122C]' : 'text-white'}`}>
+                    Cerdas Cermat Kelompok
+                  </div>
+                  <div className={`text-xs mt-0.5 truncate ${!isSolo ? 'text-[#0A122C]/85 font-black' : 'text-slate-400'}`}>
+                    {activeTeams.length} Regu Siap · Layar Proyektor & Kelas
+                  </div>
+                </div>
+              </button>
+
+              {/* Opsi Latihan Mandiri */}
+              <button
+                type="button"
+                onClick={() => onUpdateSettings({ ...settings, gameMode: 'solo' })}
+                className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border-2 text-left transition-all ${
+                  isSolo
+                    ? 'border-[#34D399] bg-gradient-to-r from-[#10B981] via-[#059669] to-[#047857] text-white shadow-lg ring-2 ring-emerald-300/60 scale-[1.01]'
+                    : 'border-white/10 bg-[#0B142E]/70 text-slate-300 hover:border-white/20 hover:bg-white/5'
+                }`}
+              >
+                <div
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
+                    isSolo ? 'bg-white/20 text-white' : 'bg-white/10 text-emerald-400'
+                  }`}
+                >
+                  <User className="h-6 w-6" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm sm:text-base font-black truncate leading-tight text-white">
+                    Latihan Mandiri Siswa
+                  </div>
+                  <div className={`text-xs mt-0.5 truncate ${isSolo ? 'text-emerald-100 font-bold' : 'text-slate-400'}`}>
+                    1 Siswa · Skor Nilai 0–100 & Rapor Evaluasi
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            {/* Jika mode mandiri: input nama peserta yang jelas */}
+            {isSolo && (
+              <div className="rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-3 sm:p-3.5 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                <label htmlFor="input-nama-siswa" className="text-xs font-black text-emerald-300 shrink-0">
+                  Nama Peserta Latihan:
+                </label>
+                <input
+                  id="input-nama-siswa"
+                  type="text"
+                  value={settings.studentName || ''}
+                  onChange={(e) => onUpdateSettings({ ...settings, studentName: e.target.value })}
+                  placeholder="Ketik nama Anda (misal: Muhammad Al-Fatih / Siti Aisyah)"
+                  className="flex-1 rounded-lg border border-emerald-500/30 bg-[#0D1E3A] px-3 py-1.5 text-xs sm:text-sm font-bold text-white placeholder-slate-400 focus:border-emerald-400 focus:outline-none"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* ======================================================== */}
+          {/* LANGKAH 2: PILIH MATERI & TINGKAT KELAS                  */}
+          {/* ======================================================== */}
+          <div className="space-y-3 pt-3 border-t border-white/10">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F2B705] text-[#0A122C] font-black text-xs shadow-sm">
+                  2
                 </span>
+                <h2 className="text-sm sm:text-base font-black text-[#FFFDF7] uppercase tracking-wider">
+                  Pilih Materi Soal SKI:
+                </h2>
               </div>
 
-              <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-wide text-[#FFFDF7] break-words">
-                Quiz Sejarah Peradaban Islam
-              </h1>
+              <button
+                type="button"
+                onClick={() => setIsPackagePickerOpen(true)}
+                className="inline-flex items-center gap-1.5 text-xs font-black text-[#F2B705] hover:text-white bg-[#F2B705]/15 hover:bg-[#F2B705]/25 border border-[#F2B705]/40 px-3 py-1 rounded-lg transition-all"
+              >
+                <span>Daftar Semua ({packages.length} Paket)</span>
+                <ChevronDown className="h-3.5 w-3.5" />
+              </button>
+            </div>
 
-              <p className="max-w-2xl text-xs sm:text-base leading-relaxed text-slate-200 break-words">
-                Aplikasi kuis interaktif SKI terlengkap mencakup kurikulum Madrasah Aliyah <strong className="text-emerald-400">Kelas X</strong>, <strong className="text-[#F2B705]">Kelas XI</strong>, dan <strong className="text-purple-400">Kelas XII</strong> (Kemenag RI), mendukung <strong className="text-[#F2B705]">Cerdas Cermat Kelompok</strong> dan <strong className="text-[#6EE7B7]">Latihan Mandiri Siswa</strong> perorangan.
-              </p>
+            {/* Filter Cepat Tingkat Kelas (Chips) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button
+                type="button"
+                onClick={() => handleGradeFilterChange('ALL')}
+                className={`py-2 px-3 rounded-xl border text-xs font-black transition-all flex items-center justify-between ${
+                  selectedGradeFilter === 'ALL'
+                    ? 'border-blue-400 bg-blue-600/30 text-white shadow-sm ring-1 ring-blue-400'
+                    : 'border-white/10 bg-[#0B142E]/70 text-slate-300 hover:bg-white/5'
+                }`}
+              >
+                <span>Semua Tingkat</span>
+                <span className="text-[10px] bg-white/10 px-1.5 py-0.2 rounded-full">{packages.length}</span>
+              </button>
 
-              {/* GAME MODE SWITCHER: Kelompok vs Individu */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] sm:text-xs font-bold uppercase tracking-wider">
-                  <span className="text-slate-300">Pilih Format Pengerjaan:</span>
-                  <span className={isSolo ? 'text-[#34D399] font-extrabold' : 'text-[#F2B705] font-extrabold'}>
-                    {isSolo ? 'Mode Mandiri (1 Siswa)' : `Mode Kelas (${activeTeams.length} Tim)`}
-                  </span>
-                </div>
-                <div className="flex rounded-xl sm:rounded-2xl border border-white/20 bg-[#0B142E] p-1 shadow-inner gap-1">
-                  <button
-                    type="button"
-                    onClick={() => onUpdateSettings({ ...settings, gameMode: 'group' })}
-                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg sm:rounded-xl py-2 sm:py-2.5 px-2 text-xs sm:text-sm font-extrabold transition-all text-center min-w-0 ${
-                      !isSolo
-                        ? 'bg-[#F2B705] text-[#0F1B3D] shadow-md'
-                        : 'text-slate-300 hover:text-white'
-                    }`}
-                  >
-                    <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
-                    <span className="truncate">Mode Kelompok ({activeTeams.length} Tim)</span>
-                  </button>
+              <button
+                type="button"
+                onClick={() => handleGradeFilterChange('X')}
+                className={`py-2 px-3 rounded-xl border text-xs font-black transition-all flex items-center justify-between ${
+                  selectedGradeFilter === 'X'
+                    ? 'border-emerald-400 bg-emerald-600/30 text-white shadow-sm ring-1 ring-emerald-400'
+                    : 'border-white/10 bg-[#0B142E]/70 text-emerald-300 hover:bg-white/5'
+                }`}
+              >
+                <span>Kelas X MA</span>
+                <span className="text-[10px] bg-emerald-500/20 px-1.5 py-0.2 rounded-full">{countX}</span>
+              </button>
 
-                  <button
-                    type="button"
-                    onClick={() => onUpdateSettings({ ...settings, gameMode: 'solo' })}
-                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg sm:rounded-xl py-2 sm:py-2.5 px-2 text-xs sm:text-sm font-extrabold transition-all text-center min-w-0 ${
-                      isSolo
-                        ? 'bg-[#10B981] text-[#0F1B3D] shadow-md'
-                        : 'text-slate-300 hover:text-white'
-                    }`}
-                  >
-                    <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
-                    <span className="truncate">Mode Mandiri (1 Siswa)</span>
-                  </button>
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={() => handleGradeFilterChange('XI')}
+                className={`py-2 px-3 rounded-xl border text-xs font-black transition-all flex items-center justify-between ${
+                  selectedGradeFilter === 'XI'
+                    ? 'border-amber-400 bg-amber-600/30 text-white shadow-sm ring-1 ring-amber-400'
+                    : 'border-white/10 bg-[#0B142E]/70 text-amber-300 hover:bg-white/5'
+                }`}
+              >
+                <span>Kelas XI MA</span>
+                <span className="text-[10px] bg-amber-500/20 px-1.5 py-0.2 rounded-full">{countXI}</span>
+              </button>
 
-              {/* If Solo Mode: Name Input */}
-              {isSolo && (
-                <div className="rounded-xl sm:rounded-2xl border border-[#34D399]/40 bg-[#0F1B3D]/95 p-3 sm:p-4 shadow-inner space-y-1.5">
-                  <label htmlFor="input-nama-siswa" className="block text-xs font-bold text-[#6EE7B7]">
-                    Nama Siswa / Peserta Latihan:
-                  </label>
-                  <input
-                    id="input-nama-siswa"
-                    type="text"
-                    value={settings.studentName || ''}
-                    onChange={(e) => onUpdateSettings({ ...settings, studentName: e.target.value })}
-                    placeholder="Ketik nama Anda (misal: Muhammad Al-Fatih / Siti Aisyah)"
-                    className="w-full rounded-xl border border-[#34D399]/40 bg-[#162654] px-3.5 py-2.5 text-sm font-bold text-white placeholder-slate-400 focus:border-[#34D399] focus:outline-none"
-                  />
-                </div>
-              )}
+              <button
+                type="button"
+                onClick={() => handleGradeFilterChange('XII')}
+                className={`py-2 px-3 rounded-xl border text-xs font-black transition-all flex items-center justify-between ${
+                  selectedGradeFilter === 'XII'
+                    ? 'border-purple-400 bg-purple-600/30 text-white shadow-sm ring-1 ring-purple-400'
+                    : 'border-white/10 bg-[#0B142E]/70 text-purple-300 hover:bg-white/5'
+                }`}
+              >
+                <span>Kelas XII MA</span>
+                <span className="text-[10px] bg-purple-500/20 px-1.5 py-0.2 rounded-full">{countXII}</span>
+              </button>
+            </div>
 
-              {/* TINGKAT KELAS FILTER TABS + PACKAGE SELECTOR */}
-              <div className="rounded-xl sm:rounded-2xl border border-white/15 bg-[#0F1B3D]/90 p-3 sm:p-4 lg:p-5 shadow-inner space-y-3 sm:space-y-3.5">
-                {/* Tingkat Kelas Tab Selector */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px] sm:text-xs font-bold uppercase tracking-wider">
-                    <span className="flex items-center gap-1.5 text-slate-300">
-                      <GraduationCap className="h-3.5 w-3.5 text-[#F2B705]" />
-                      <span>Filter Tingkat Kelas:</span>
-                    </span>
-                    <span className="text-xs font-extrabold text-[#F2B705]">
-                      {selectedGradeFilter === 'ALL'
-                        ? 'Semua Tingkat'
-                        : `Kelas ${selectedGradeFilter} MA`}
-                    </span>
+            {/* Kartu Materi Terpilih (Sangat jelas & bisa diklik untuk ganti) */}
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => setIsPackagePickerOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setIsPackagePickerOpen(true);
+                }
+              }}
+              className="group relative cursor-pointer w-full rounded-2xl border-2 border-[#F2B705] bg-gradient-to-r from-[#1A2E63] via-[#14244E] to-[#0F1B3D] p-4 sm:p-5 shadow-[0_4px_20px_rgba(242,183,5,0.2)] hover:shadow-[0_6px_30px_rgba(242,183,5,0.3)] transition-all"
+            >
+              <div className="flex items-center justify-between gap-3 sm:gap-4">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                  <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F2B705] to-[#B45309] text-[#0A122C] shadow-lg group-hover:scale-105 transition-transform">
+                    <BookOpen className="h-6 w-6 sm:h-7 sm:w-7 stroke-[2.2]" />
                   </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-[#0B142E] p-1 rounded-xl border border-white/10">
-                    <button
-                      type="button"
-                      onClick={() => handleGradeFilterChange('ALL')}
-                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
-                        selectedGradeFilter === 'ALL'
-                          ? 'bg-[#1E3A8A] text-white shadow ring-1 ring-[#60A5FA]'
-                          : 'text-slate-300 hover:text-white hover:bg-white/5'
-                      }`}
-                    >
-                      <span>Semua Kelas</span>
-                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/15">
-                        {packages.length}
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleGradeFilterChange('X')}
-                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
-                        selectedGradeFilter === 'X'
-                          ? 'bg-emerald-600 text-white shadow ring-1 ring-emerald-400'
-                          : 'text-emerald-300/80 hover:text-emerald-200 hover:bg-white/5'
-                      }`}
-                    >
-                      <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                      <span>Kelas X</span>
-                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-950/60 text-emerald-300">
-                        {countX}
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleGradeFilterChange('XI')}
-                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
-                        selectedGradeFilter === 'XI'
-                          ? 'bg-[#F2B705] text-[#0F1B3D] shadow ring-1 ring-amber-300'
-                          : 'text-amber-300/90 hover:text-amber-200 hover:bg-white/5'
-                      }`}
-                    >
-                      <span className="h-2 w-2 rounded-full bg-[#F2B705]" />
-                      <span>Kelas XI</span>
-                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-amber-950/40 text-amber-200">
-                        {countXI}
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleGradeFilterChange('XII')}
-                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
-                        selectedGradeFilter === 'XII'
-                          ? 'bg-purple-600 text-white shadow ring-1 ring-purple-400'
-                          : 'text-purple-300/80 hover:text-purple-200 hover:bg-white/5'
-                      }`}
-                    >
-                      <span className="h-2 w-2 rounded-full bg-purple-400" />
-                      <span>Kelas XII</span>
-                      <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-purple-950/60 text-purple-300">
-                        {countXII}
-                      </span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Dropdown Paket Soal */}
-                <div className="min-w-0">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label
-                      htmlFor="select-paket-soal"
-                      className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#F2B705]"
-                    >
-                      Pilih Paket Materi Soal:
-                    </label>
-                    {selectedPackage && (
-                      <span
-                        className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold border ${activeGradeBadge.bg}`}
-                      >
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] sm:text-[11px] font-black border uppercase ${activeGradeBadge.bg}`}>
                         <span className={`h-1.5 w-1.5 rounded-full ${activeGradeBadge.dot}`} />
                         <span>{activeGradeBadge.label}</span>
                       </span>
-                    )}
-                  </div>
-
-                  <select
-                    id="select-paket-soal"
-                    value={selectedPackage?.id || ''}
-                    onChange={(e) => onSelectPackage(e.target.value)}
-                    className="w-full max-w-full rounded-xl border sm:border-2 border-[#F2B705]/60 bg-[#162654] px-3 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-base lg:text-lg font-extrabold text-[#FFFDF7] shadow focus:border-[#F2B705] focus:outline-none truncate"
-                  >
-                    {selectedGradeFilter === 'ALL' ? (
-                      <>
-                        <optgroup label="── KELAS X MA (Peradaban Islam Klasik) ──" className="bg-[#0B142E] text-emerald-400 font-bold">
-                          {packages
-                            .filter((p) => (p.gradeLevel || 'XI') === 'X')
-                            .map((pkg) => (
-                              <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
-                                [Kelas X] {pkg.name} ({pkg.questions.length} Soal)
-                              </option>
-                            ))}
-                        </optgroup>
-
-                        <optgroup label="── KELAS XI MA (Tiga Kerajaan Besar & Pembaruan) ──" className="bg-[#0B142E] text-amber-300 font-bold">
-                          {packages
-                            .filter((p) => (p.gradeLevel || 'XI') === 'XI')
-                            .map((pkg) => (
-                              <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
-                                [Kelas XI] {pkg.name} ({pkg.questions.length} Soal)
-                              </option>
-                            ))}
-                        </optgroup>
-
-                        <optgroup label="── KELAS XII MA (Islam Nusantara & Walisongo) ──" className="bg-[#0B142E] text-purple-300 font-bold">
-                          {packages
-                            .filter((p) => (p.gradeLevel || 'XI') === 'XII')
-                            .map((pkg) => (
-                              <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
-                                [Kelas XII] {pkg.name} ({pkg.questions.length} Soal)
-                              </option>
-                            ))}
-                        </optgroup>
-                      </>
-                    ) : (
-                      filteredPackages.map((pkg) => (
-                        <option key={pkg.id} value={pkg.id} className="bg-[#0F1B3D] text-white">
-                          [Kelas {pkg.gradeLevel || 'XI'}] {pkg.name} ({pkg.questions.length} Soal)
-                        </option>
-                      ))
-                    )}
-                  </select>
-
-                  {selectedPackage && (
-                    <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs text-slate-300">
-                      <span className="truncate max-w-[200px] sm:max-w-none">{selectedPackage.subtitle}</span>
-                      <span aria-hidden="true">·</span>
-                      <span className="font-semibold text-[#34D399] whitespace-nowrap">
-                        {selectedPackage.questions.length} Butir Soal
+                      <span className="text-xs text-[#34D399] font-black">
+                        {questionCount} Butir Soal
                       </span>
                       {imageQuestionsCount > 0 && (
-                        <>
-                          <span aria-hidden="true">·</span>
-                          <span className="inline-flex items-center gap-1 font-bold text-[#F2B705] whitespace-nowrap">
-                            <ImageIcon className="h-3 w-3" />
-                            <span>{imageQuestionsCount} Bergambar</span>
-                          </span>
-                        </>
+                        <span className="inline-flex items-center gap-1 text-[11px] font-extrabold text-[#F2B705] bg-[#F2B705]/15 px-2 py-0.5 rounded border border-[#F2B705]/30">
+                          <ImageIcon className="h-3 w-3" />
+                          <span>{imageQuestionsCount} Foto Sejarah</span>
+                        </span>
                       )}
                     </div>
-                  )}
+                    <h3 className="text-base sm:text-xl font-black text-[#FFFDF7] group-hover:text-[#FDE68A] transition-colors leading-snug truncate">
+                      {selectedPackage?.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-300 truncate">
+                      {selectedPackage?.subtitle}
+                    </p>
+                  </div>
                 </div>
 
-                {/* Quick Game Mode Switches: clean 2-col on mobile, 4-col on tablet/desktop */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-t border-white/10 pt-2.5 sm:pt-3">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onUpdateSettings({ ...settings, timerEnabled: !settings.timerEnabled })
-                    }
-                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs font-bold transition-colors min-w-0 ${
-                      settings.timerEnabled
-                        ? 'border-[#F2B705]/60 bg-[#F2B705]/15 text-[#F2B705]'
-                        : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
-                    }`}
-                  >
-                    <Clock className="h-3.5 w-3.5 shrink-0" />
-                    <span className="truncate">Timer: {settings.timerEnabled ? `${settings.timerSeconds}d` : 'Mati'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onUpdateSettings({
-                        ...settings,
-                        speedBonusEnabled: !settings.speedBonusEnabled,
-                      })
-                    }
-                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs font-bold transition-colors min-w-0 ${
-                      settings.speedBonusEnabled
-                        ? 'border-[#10B981]/60 bg-[#10B981]/15 text-[#6EE7B7]'
-                        : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
-                    }`}
-                  >
-                    <Zap className="h-3.5 w-3.5 shrink-0" />
-                    <span className="truncate">Bonus Cepat: {settings.speedBonusEnabled ? 'Aktif' : 'Mati'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onUpdateSettings({
-                        ...settings,
-                        shuffleQuestionsOnStart: !settings.shuffleQuestionsOnStart,
-                      })
-                    }
-                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs font-bold transition-colors min-w-0 ${
-                      settings.shuffleQuestionsOnStart
-                        ? 'border-[#60A5FA]/60 bg-[#60A5FA]/15 text-[#93C5FD]'
-                        : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
-                    }`}
-                  >
-                    <Shuffle className="h-3.5 w-3.5 shrink-0" />
-                    <span className="truncate">Acak Soal: {settings.shuffleQuestionsOnStart ? 'Aktif' : 'Urut'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onUpdateSettings({
-                        ...settings,
-                        shuffleOptionsOnStart: !settings.shuffleOptionsOnStart,
-                      })
-                    }
-                    className={`flex items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs font-bold transition-colors min-w-0 ${
-                      settings.shuffleOptionsOnStart
-                        ? 'border-[#A78BFA]/60 bg-[#A78BFA]/15 text-[#DDD6FE]'
-                        : 'border-white/10 bg-white/5 text-slate-300 hover:bg-white/10'
-                    }`}
-                  >
-                    <ListOrdered className="h-3.5 w-3.5 shrink-0" />
-                    <span className="truncate">Acak Opsi: {settings.shuffleOptionsOnStart ? 'Aktif' : 'Mati'}</span>
-                  </button>
+                <div className="flex items-center gap-1.5 shrink-0 rounded-xl bg-[#F2B705] hover:bg-[#F59E0B] px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs sm:text-sm font-black text-[#0A122C] shadow-md group-hover:scale-105 transition-all">
+                  <span className="hidden min-[420px]:inline">Ganti Materi</span>
+                  <span className="min-[420px]:hidden">Ganti</span>
+                  <ChevronDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                 </div>
-              </div>
-
-              {!canStartQuiz && (
-                <div className="flex items-center gap-2 rounded-xl border border-[#F59E0B] bg-[#78350F]/40 p-2.5 sm:p-3 text-xs sm:text-sm text-[#FDE68A]">
-                  <AlertCircle className="h-4 w-4 shrink-0 text-[#F2B705]" />
-                  <span>
-                    {questionCount === 0
-                      ? 'Paket soal ini masih kosong. Silakan tambah soal terlebih dahulu.'
-                      : 'Minimal harus ada 2 tim untuk memulai mode kelompok.'}
-                  </span>
-                </div>
-              )}
-
-              {/* PRIMARY START ACTION BUTTON (Full width, bold, focus on quiz ready) */}
-              <div className="w-full pt-1">
-                {isSolo ? (
-                  <button
-                    type="button"
-                    disabled={!canStartQuiz}
-                    onClick={onStartQuiz}
-                    className="w-full flex items-center justify-center gap-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#10B981] via-[#059669] to-[#047857] py-4 px-6 text-base sm:text-lg lg:text-xl font-extrabold text-[#FFFDF7] shadow-xl ring-2 ring-[#6EE7B7]/50 hover:brightness-105 active:scale-95 transition-all whitespace-nowrap min-h-[52px]"
-                  >
-                    <Play className="h-5 w-5 fill-current shrink-0 text-[#FFFDF7]" />
-                    <span>Mulai Latihan Mandiri Siswa</span>
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    disabled={!canStartQuiz}
-                    onClick={onStartQuiz}
-                    className="w-full flex items-center justify-center gap-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#F2B705] via-[#F59E0B] to-[#D97706] py-4 px-6 text-base sm:text-lg lg:text-xl font-extrabold text-[#0F1B3D] shadow-xl ring-2 ring-[#FFFDF7]/50 hover:brightness-105 disabled:opacity-40 transition-all active:scale-95 whitespace-nowrap min-h-[52px]"
-                  >
-                    <Play className="h-5 w-5 fill-current shrink-0" />
-                    <span>Mulai Kuis Cerdas Cermat Kelompok</span>
-                  </button>
-                )}
               </div>
             </div>
+          </div>
 
-            {/* Right Column (5 cols): Active Teams Preview OR Solo Guide */}
-            <div className="space-y-3 sm:space-y-4 lg:col-span-5 min-w-0">
-              {isSolo ? (
-                /* SOLO MODE GUIDE CARD */
-                <div className="rounded-xl sm:rounded-2xl border border-[#34D399]/40 bg-[#0F1B3D]/95 p-4 sm:p-5 shadow-xl space-y-3.5">
-                  <div className="flex items-center gap-2 border-b border-white/10 pb-2.5">
-                    <User className="h-5 w-5 text-[#34D399]" />
-                    <div>
-                      <h2 className="text-xs sm:text-sm lg:text-base font-extrabold text-[#FFFDF7]">
-                        Panduan Latihan Mandiri Siswa
-                      </h2>
-                      <p className="text-[10px] sm:text-xs text-[#6EE7B7]">
-                        Pengerjaan mandiri di laptop, tablet, atau HP
-                      </p>
-                    </div>
-                  </div>
+          {/* ======================================================== */}
+          {/* LANGKAH 3: PENGATURAN KUIS & KESIAPAN REGUs             */}
+          {/* ======================================================== */}
+          <div className="space-y-3 pt-3 border-t border-white/10">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F2B705] text-[#0A122C] font-black text-xs shadow-sm">
+                  3
+                </span>
+                <h2 className="text-sm sm:text-base font-black text-[#FFFDF7] uppercase tracking-wider">
+                  {isSolo ? 'Pengaturan Tambahan Kuis:' : `Kesiapan Regu (${activeTeams.length} Tim) & Pengaturan:`}
+                </h2>
+              </div>
 
-                  <ul className="space-y-2 text-xs text-slate-200">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-[#34D399] shrink-0 mt-0.5" />
-                      <span>
-                        <strong>Klik Langsung:</strong> Pilih jawaban A, B, C, D, atau E dengan mengklik kartu jawaban di layar atau menekan tombol A/B/C/D/E (atau angka 1–5) di keyboard.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-[#34D399] shrink-0 mt-0.5" />
-                      <span>
-                        <strong>Umpan Balik Instan:</strong> Mengetahui secara langsung apakah jawaban Anda benar beserta penjelasan materi dan rujukan halaman buku.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-[#34D399] shrink-0 mt-0.5" />
-                      <span>
-                        <strong>Rapor Evaluasi Lengkap:</strong> Di akhir kuis akan ditampilkan nilai akhir (0–100), predikat (*Mumtaz* / *Jayyid*), serta rekap butir soal.
-                      </span>
-                    </li>
-                  </ul>
+              {!isSolo && (
+                <button
+                  type="button"
+                  onClick={onOpenTeamSettings}
+                  className="inline-flex items-center gap-1 text-xs font-black text-[#F2B705] hover:text-white bg-[#F2B705]/15 hover:bg-[#F2B705]/25 border border-[#F2B705]/40 px-3 py-1 rounded-lg transition-all"
+                >
+                  <Sliders className="h-3 w-3" />
+                  <span>Ubah Nama Regu / Tombol</span>
+                </button>
+              )}
+            </div>
 
-                  <div className="rounded-xl border border-[#34D399]/30 bg-[#064E3B]/30 p-2.5 text-xs text-[#A7F3D0] flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 shrink-0 text-[#F2B705]" />
-                    <span>Bagus untuk belajar mandiri, tugas pekerjaan rumah, maupun remedial kuis SKI.</span>
-                  </div>
-                </div>
-              ) : (
-                /* GROUP MODE TEAMS PREVIEW CARD */
-                <div className="rounded-xl sm:rounded-2xl border border-white/15 bg-[#0F1B3D]/90 p-3.5 sm:p-4 lg:p-5 shadow-xl space-y-3">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                    <div className="min-w-0">
-                      <h2 className="text-xs sm:text-sm lg:text-base font-extrabold text-[#FFFDF7] truncate">
-                        Tim Siap Bertanding ({activeTeams.length} Tim)
-                      </h2>
-                      <p className="text-[10px] sm:text-xs text-slate-300 truncate">
-                        Menjawab via keyboard atau panel guru
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={onOpenTeamSettings}
-                      className="text-xs font-bold text-[#F2B705] hover:underline whitespace-nowrap shrink-0 ml-2"
-                    >
-                      Ubah →
-                    </button>
-                  </div>
-
-                  {/* Team cards flexible grid (1 col on narrow mobile, 2 col on >420px) */}
-                  <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-2">
-                    {activeTeams.map((team) => (
-                      <div
-                        key={team.id}
-                        className="relative flex items-center justify-between rounded-lg sm:rounded-xl border border-white/10 bg-[#162654] p-2 sm:p-2.5 min-w-0"
-                      >
-                        <div
-                          className="absolute inset-y-0 left-0 w-1 rounded-l-lg"
-                          style={{ backgroundColor: team.color }}
-                        />
-                        <div className="flex items-center gap-1.5 pl-1.5 min-w-0 flex-1">
-                          <span className="text-lg sm:text-xl leading-none shrink-0">{team.emoji}</span>
-                          <div className="min-w-0 flex-1">
-                            <div className="truncate text-xs sm:text-sm font-bold text-[#FFFDF7]">
-                              {team.name}
-                            </div>
-                            <div className="flex items-center gap-1 text-[10px] text-slate-300">
-                              <Keyboard className="h-2.5 w-2.5 text-[#F2B705] shrink-0" />
-                              <span className="font-mono-tabular font-bold text-[#F2B705] truncate">
-                                {team.keys.A}·{team.keys.B}·{team.keys.C}·{team.keys.D}{team.keys.E ? `·${team.keys.E}` : ''}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+            {/* Preview Regu Jika Mode Kelompok (Bersih, Horizontal, Rapi) */}
+            {!isSolo && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {activeTeams.map((team) => (
+                  <div
+                    key={team.id}
+                    className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-[#0B142E]/70 p-2.5 min-w-0"
+                  >
+                    <span className="text-xl shrink-0 leading-none">{team.emoji}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs font-black text-white truncate">{team.name}</div>
+                      <div className="text-[10px] text-slate-400 font-mono-tabular truncate">
+                        Tombol: {team.keys.A}·{team.keys.B}·{team.keys.C}·{team.keys.D}
                       </div>
-                    ))}
-                  </div>
-
-                  <div className="rounded-xl border border-white/10 bg-[#162654]/60 p-2.5 sm:p-3 space-y-1 text-slate-200">
-                    <div className="flex items-center gap-1.5 font-bold text-[#F2B705] text-[11px] sm:text-xs">
-                      <Sparkles className="h-3.5 w-3.5 shrink-0" />
-                      <span>Panduan Kelas & Proyektor:</span>
                     </div>
-                    <ul className="space-y-1 text-slate-300 text-[10px] sm:text-xs">
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="h-3 w-3 shrink-0 text-[#34D399] mt-0.5" />
-                        <span className="break-words">
-                          <strong>Layar Responsif:</strong> Otomatis menyesuaikan proyektor 16:9 atau HP guru tanpa teks terpotong.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="h-3 w-3 shrink-0 text-[#34D399] mt-0.5" />
-                        <span className="break-words">
-                          <strong>Kunci Otomatis:</strong> Jawaban pertama kelompok langsung terkunci untuk mencegah saling tiru.
-                        </span>
-                      </li>
-                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* 4 Sakelar Opsi Cepat */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => onUpdateSettings({ ...settings, timerEnabled: !settings.timerEnabled })}
+                className={`flex items-center justify-between p-2.5 rounded-xl border text-xs font-black transition-all ${
+                  settings.timerEnabled
+                    ? 'border-[#F2B705] bg-[#F2B705]/20 text-[#F2B705] ring-1 ring-[#F2B705]/40'
+                    : 'border-white/10 bg-[#080E22]/80 text-slate-400 hover:bg-white/5'
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span>Timer</span>
+                </div>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded ${settings.timerEnabled ? 'bg-[#F2B705] text-[#0A122C]' : 'bg-white/10 text-slate-400'}`}>
+                  {settings.timerEnabled ? `${settings.timerSeconds}d` : 'OFF'}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onUpdateSettings({ ...settings, speedBonusEnabled: !settings.speedBonusEnabled })}
+                className={`flex items-center justify-between p-2.5 rounded-xl border text-xs font-black transition-all ${
+                  settings.speedBonusEnabled
+                    ? 'border-[#10B981] bg-[#10B981]/20 text-[#6EE7B7] ring-1 ring-[#10B981]/40'
+                    : 'border-white/10 bg-[#080E22]/80 text-slate-400 hover:bg-white/5'
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  <Zap className="h-3.5 w-3.5" />
+                  <span>Bonus Kilat</span>
+                </div>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded ${settings.speedBonusEnabled ? 'bg-[#10B981] text-[#0A122C]' : 'bg-white/10 text-slate-400'}`}>
+                  {settings.speedBonusEnabled ? 'ON' : 'OFF'}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onUpdateSettings({ ...settings, shuffleQuestionsOnStart: !settings.shuffleQuestionsOnStart })}
+                className={`flex items-center justify-between p-2.5 rounded-xl border text-xs font-black transition-all ${
+                  settings.shuffleQuestionsOnStart
+                    ? 'border-[#60A5FA] bg-[#3B82F6]/20 text-[#93C5FD] ring-1 ring-[#60A5FA]/40'
+                    : 'border-white/10 bg-[#080E22]/80 text-slate-400 hover:bg-white/5'
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  <Shuffle className="h-3.5 w-3.5" />
+                  <span>Acak Soal</span>
+                </div>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded ${settings.shuffleQuestionsOnStart ? 'bg-[#3B82F6] text-white' : 'bg-white/10 text-slate-400'}`}>
+                  {settings.shuffleQuestionsOnStart ? 'ACAK' : 'URUT'}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onUpdateSettings({ ...settings, shuffleOptionsOnStart: !settings.shuffleOptionsOnStart })}
+                className={`flex items-center justify-between p-2.5 rounded-xl border text-xs font-black transition-all ${
+                  settings.shuffleOptionsOnStart
+                    ? 'border-[#C084FC] bg-[#A855F7]/20 text-[#E9D5FF] ring-1 ring-[#C084FC]/40'
+                    : 'border-white/10 bg-[#080E22]/80 text-slate-400 hover:bg-white/5'
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  <ListOrdered className="h-3.5 w-3.5" />
+                  <span>Acak Opsi</span>
+                </div>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded ${settings.shuffleOptionsOnStart ? 'bg-[#A855F7] text-white' : 'bg-white/10 text-slate-400'}`}>
+                  {settings.shuffleOptionsOnStart ? 'ACAK' : 'ASLI'}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {!canStartQuiz && (
+            <div className="flex items-center gap-2 rounded-xl border border-[#F59E0B] bg-[#78350F]/40 p-3 text-xs sm:text-sm text-[#FDE68A]">
+              <AlertCircle className="h-4 w-4 shrink-0 text-[#F2B705]" />
+              <span>
+                {questionCount === 0
+                  ? 'Paket soal ini masih kosong. Silakan tambah soal di Ruang Guru.'
+                  : 'Minimal harus ada 2 tim untuk memulai mode cerdas cermat.'}
+              </span>
+            </div>
+          )}
+
+          {/* ======================================================== */}
+          {/* SATU-SATUNYA TOMBOL UTAMA: MULAI KUIS SEKARANG           */}
+          {/* ======================================================== */}
+          <div className="pt-2">
+            {isSolo ? (
+              <button
+                type="button"
+                disabled={!canStartQuiz}
+                onClick={onStartQuiz}
+                className="group relative w-full flex items-center justify-between gap-3 sm:gap-4 rounded-2xl bg-gradient-to-r from-[#059669] via-[#10B981] to-[#047857] p-3.5 sm:p-5 text-white shadow-[0_12px_35px_-5px_rgba(16,185,129,0.5)] ring-2 ring-[#6EE7B7] hover:brightness-110 active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed transition-all text-left"
+              >
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                  <span className="flex h-11 w-11 sm:h-13 sm:w-13 items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 shadow-inner shrink-0 group-hover:scale-105 transition-transform ring-1 ring-white/40">
+                    <Play className="h-6 w-6 sm:h-7 sm:w-7 fill-current text-white ml-0.5" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-base sm:text-2xl font-black tracking-tight text-white leading-tight truncate">
+                      Mulai Latihan Mandiri
+                    </div>
+                    <div className="text-xs sm:text-sm text-emerald-100 font-semibold truncate mt-0.5">
+                      Materi: {selectedPackage?.name} · {questionCount} Butir Soal
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 text-white group-hover:bg-white/30 group-hover:translate-x-1 transition-all shadow-sm ring-1 ring-white/30">
+                  <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled={!canStartQuiz}
+                onClick={onStartQuiz}
+                className="group relative w-full flex items-center justify-between gap-3 sm:gap-4 rounded-2xl bg-gradient-to-r from-[#F2B705] via-[#F59E0B] to-[#D97706] p-3.5 sm:p-5 text-[#0A122C] shadow-[0_12px_40px_-5px_rgba(242,183,5,0.55)] ring-2 ring-amber-200 hover:brightness-110 active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed transition-all text-left"
+              >
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                  <span className="flex h-11 w-11 sm:h-13 sm:w-13 items-center justify-center rounded-xl sm:rounded-2xl bg-[#0A122C]/15 shadow-inner shrink-0 group-hover:scale-105 transition-transform ring-1 ring-[#0A122C]/20">
+                    <Trophy className="h-6 w-6 sm:h-7 sm:w-7 fill-current text-[#0A122C]" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-base sm:text-2xl font-black tracking-tight text-[#0A122C] leading-tight truncate">
+                      Mulai Kuis Cerdas Cermat
+                    </div>
+                    <div className="text-xs sm:text-sm text-[#0A122C]/85 font-black truncate mt-0.5">
+                      {activeTeams.length} Regu Siap · Materi: {selectedPackage?.name} ({questionCount} Soal)
+                    </div>
+                  </div>
+                </div>
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-[#0A122C] text-[#F2B705] group-hover:bg-[#0A122C]/90 group-hover:translate-x-1 transition-all shadow-md">
+                  <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6 stroke-[2.5]" />
+                </div>
+              </button>
+            )}
           </div>
         </section>
 
-        {/* PORTAL KHUSUS GURU (Terpisah di bagian bawah, tenang & terproteksi sandi) */}
-        <div className="pt-2 sm:pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-400">
-          <div className="flex items-center gap-2 text-xs">
+        {/* PORTAL KHUSUS GURU (Bawah, Simpel & Tenang) */}
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-400 text-xs">
+          <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-[#F2B705]" />
-            <span className="font-semibold text-slate-300">Ruang Pengelolaan Guru</span>
-            <span className="text-slate-500">·</span>
-            <span className="text-[11px] text-slate-400">Akses dibatasi kode rahasia</span>
+            <span className="font-semibold text-slate-300">Portal Pengelolaan Guru:</span>
+            <span className="text-slate-500">Khusus Tenaga Pengajar SKI</span>
           </div>
-
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={onOpenQuestionManager}
-              className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/15 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-[#FFFDF7] transition-colors"
-              title="Kelola butir soal, gambar, dan paket kurikulum (Sandi Guru)"
+              className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/15 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-white transition-colors"
             >
               <Lock className="h-3 w-3 text-[#F2B705]" />
-              <span>Kelola Soal & Bank Materi</span>
+              <span>Kelola Bank Soal & Paket</span>
             </button>
-
             <button
               type="button"
               onClick={onOpenTeamSettings}
-              className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/15 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-[#FFFDF7] transition-colors"
-              title="Atur tim, nama regu, dan tombol keyboard (Sandi Guru)"
+              className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/15 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-white transition-colors"
             >
               <Sliders className="h-3 w-3 text-[#F2B705]" />
-              <span>Pengaturan Tim</span>
+              <span>Pengaturan Regu & Keyboard</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Decorative architectural silhouette */}
-      <div className="pointer-events-none inset-x-0 bottom-0 mt-3 text-[#F2B705] hidden sm:block">
-        <HagiaSophiaSilhouette className="w-full h-auto max-h-20 sm:max-h-28" />
+      <div className="pointer-events-none inset-x-0 bottom-0 mt-4 text-[#F2B705] hidden sm:block">
+        <HagiaSophiaSilhouette className="w-full h-auto max-h-16 sm:max-h-20" />
       </div>
+
+      {/* CUSTOM PACKAGE PICKER MODAL (ELITE UI/UX, NO SYSTEM SELECT) */}
+      {isPackagePickerOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-5 backdrop-blur-sm animate-fade-slide-up"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="package-modal-title"
+        >
+          <div className="relative w-full max-w-2xl max-h-[88vh] flex flex-col rounded-2xl sm:rounded-3xl border border-[#F2B705]/50 bg-gradient-to-b from-[#162654] via-[#111E45] to-[#0F1B3D] shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-white/15 px-4 sm:px-6 py-3.5 sm:py-4 shrink-0 bg-[#0B142E]/70">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#F2B705]/20 text-[#F2B705] border border-[#F2B705]/40 shrink-0">
+                  <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
+                </div>
+                <div className="min-w-0">
+                  <h2 id="package-modal-title" className="text-sm sm:text-lg font-black text-[#FFFDF7] truncate">
+                    Pilih Paket Materi SKI
+                  </h2>
+                  <p className="text-[11px] sm:text-xs text-slate-300 truncate">
+                    Kurikulum Madrasah Aliyah Kelas X, XI & XII Kemenag RI
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsPackagePickerOpen(false)}
+                className="rounded-lg p-2 text-slate-300 hover:bg-white/10 hover:text-white transition-colors"
+                aria-label="Tutup pemilih paket"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Filter Tabs & Search Bar */}
+            <div className="p-3 sm:p-4 border-b border-white/10 bg-[#0F1B3D]/95 space-y-2.5 shrink-0">
+              {/* Search Bar */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Cari materi soal (misal: Abbasiyah, Utsmani, Walisongo)..."
+                  className="w-full rounded-xl border border-white/20 bg-[#162654] pl-9 pr-8 py-2 text-xs sm:text-sm text-white placeholder-slate-400 focus:border-[#F2B705] focus:outline-none"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Grade Filter Pills in Modal */}
+              <div className="flex flex-wrap items-center gap-1.5 text-xs font-bold">
+                <button
+                  type="button"
+                  onClick={() => handleGradeFilterChange('ALL')}
+                  className={`px-3 py-1.5 rounded-lg transition-all ${
+                    selectedGradeFilter === 'ALL'
+                      ? 'bg-[#1E3A8A] text-white ring-1 ring-[#60A5FA]'
+                      : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                  }`}
+                >
+                  Semua ({packages.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleGradeFilterChange('X')}
+                  className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                    selectedGradeFilter === 'X'
+                      ? 'bg-emerald-600 text-white ring-1 ring-emerald-400'
+                      : 'bg-white/5 text-emerald-300 hover:bg-white/10'
+                  }`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                  Kelas X ({countX})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleGradeFilterChange('XI')}
+                  className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                    selectedGradeFilter === 'XI'
+                      ? 'bg-[#F2B705] text-[#0F1B3D] ring-1 ring-amber-300'
+                      : 'bg-white/5 text-amber-300 hover:bg-white/10'
+                  }`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-[#F2B705]" />
+                  Kelas XI ({countXI})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleGradeFilterChange('XII')}
+                  className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                    selectedGradeFilter === 'XII'
+                      ? 'bg-purple-600 text-white ring-1 ring-purple-400'
+                      : 'bg-white/5 text-purple-300 hover:bg-white/10'
+                  }`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-purple-400" />
+                  Kelas XII ({countXII})
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Package List */}
+            <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-2.5">
+              {filteredPackages
+                .filter((pkg) => {
+                  if (!searchQuery.trim()) return true;
+                  const q = searchQuery.toLowerCase();
+                  return (
+                    pkg.name.toLowerCase().includes(q) ||
+                    pkg.subtitle.toLowerCase().includes(q) ||
+                    `kelas ${pkg.gradeLevel || 'xi'}`.toLowerCase().includes(q)
+                  );
+                })
+                .map((pkg) => {
+                  const isCurrent = pkg.id === selectedPackage?.id;
+                  const badge = getGradeBadgeConfig(pkg.gradeLevel);
+                  const pkgImgCount = pkg.questions.filter((q) => Boolean(q.imageUrl)).length;
+
+                  return (
+                    <div
+                      key={pkg.id}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => {
+                        onSelectPackage(pkg.id);
+                        setIsPackagePickerOpen(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          onSelectPackage(pkg.id);
+                          setIsPackagePickerOpen(false);
+                        }
+                      }}
+                      className={`relative flex items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer ${
+                        isCurrent
+                          ? 'border-[#F2B705] bg-[#1E3A8A]/50 ring-2 ring-[#F2B705]/60 shadow-lg'
+                          : 'border-white/10 bg-[#162654]/70 hover:border-[#F2B705]/50 hover:bg-[#162654]'
+                      }`}
+                    >
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span
+                            className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold border ${badge.bg}`}
+                          >
+                            <span className={`h-1.5 w-1.5 rounded-full ${badge.dot}`} />
+                            <span>{badge.label}</span>
+                          </span>
+                          <span className="text-[11px] font-bold text-[#34D399]">
+                            {pkg.questions.length} Butir Soal
+                          </span>
+                          {pkgImgCount > 0 && (
+                            <span className="inline-flex items-center gap-1 text-[11px] text-[#F2B705] font-semibold">
+                              <ImageIcon className="h-3 w-3" />
+                              <span>{pkgImgCount} Foto</span>
+                            </span>
+                          )}
+                        </div>
+
+                        <h4 className="text-sm sm:text-base font-extrabold text-[#FFFDF7] leading-snug">
+                          {pkg.name}
+                        </h4>
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                          {pkg.subtitle}
+                        </p>
+                      </div>
+
+                      <div className="shrink-0 flex items-center pl-2">
+                        {isCurrent ? (
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F2B705] text-[#0F1B3D] shadow-md">
+                            <Check className="h-5 w-5 stroke-[3]" />
+                          </div>
+                        ) : (
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 text-slate-400 group-hover:border-[#F2B705] group-hover:text-[#F2B705]">
+                            <ArrowRight className="h-4 w-4" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
