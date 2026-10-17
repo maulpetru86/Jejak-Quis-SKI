@@ -17,7 +17,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Suku Kayi di bawah pimpinan Ertoghrul bermigrasi ke wilayah barat Anatolia menghindari serbuan bangsa Mongol, lalu diberi tanah Sogut oleh Sultan Alauddin Kaikobad dari Saljuk Rum sebelum memerdekakan diri di bawah Usman I.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 4)",
+    pageReference: "Bab I (hlm. 4)",
   },
   {
     id: "xi-bab1-2",
@@ -32,7 +32,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Janissary (Yeniceri / Pasukan Baru) dibentuk oleh Sultan Orkhan bin Usman. Mereka dilatih disiplin ketat, seni bela diri tinggi, setia mutlak kepada Sultan, dan menjadi kunci ekspansi militer Usmani ke Eropa Tenggara.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 8)",
+    pageReference: "Bab I (hlm. 8)",
   },
   {
     id: "xi-bab1-3",
@@ -47,7 +47,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Sultan Muhammad Al-Fatih (Mehmed II) yang berusia 21 tahun berhasil menembus tembok Theodosius menggunakan meriam raksasa Basilica karya insinyur Urban dan memindahkan 70 kapal melintasi bukit Galata dalam satu malam.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 14)",
+    pageReference: "Bab I (hlm. 14)",
   },
   {
     id: "xi-bab1-4",
@@ -62,7 +62,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Al-Fatih membeli area gereja dengan hartanya sendiri, melindungi simbol-simbol mozaik, dan mengalihfungsikannya sebagai masjid agung kesultanan serta menjamin hak ibadah kaum Kristiani melalui Dekrit Fatihah.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 16)",
+    pageReference: "Bab I (hlm. 16)",
   },
   {
     id: "xi-bab1-5",
@@ -77,7 +77,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Sultan Salim I (Salim the Grim) menaklukkan Suriah, Palestina, dan Kairo pada Pertempuran Marj Dabiq dan Ridaniyah, lalu menerima penyerahan kunci kota suci Makkah dan Madinah (Khadim al-Haramain).",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 20)",
+    pageReference: "Bab I (hlm. 20)",
   },
   {
     id: "xi-bab1-6",
@@ -92,7 +92,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Sultan Sulaiman Al-Qanuni (1520–1566 M) mengkodifikasikan undang-undang sipil dan militer kekaisaran (Kanunname), memperluas wilayah hingga Wina (Austria) dan Baghdad, serta memajukan sains dan seni arsitektur.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 22)",
+    pageReference: "Bab I (hlm. 22)",
   },
   {
     id: "xi-bab1-7",
@@ -107,7 +107,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Mimar Sinan adalah insinyur jenius yang memadukan keanggunan kubah raksasa dengan teknik tahan gempa bumi, menara ramping pensil khas Usmani, dan akustik ruang yang sempurna.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 26)",
+    pageReference: "Bab I (hlm. 26)",
   },
   {
     id: "xi-bab1-8",
@@ -122,7 +122,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Masjid Sultan Ahmed (Blue Mosque) selesai dibangun pada 1616 M oleh Sedefkar Mehmed Agha, dihiasi lebih dari 20.000 ubin keramik berglasir bermotif tulip dan teratai biru khas kota Iznik.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 28)",
+    pageReference: "Bab I (hlm. 28)",
   },
   {
     id: "xi-bab1-9",
@@ -137,7 +137,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Istana Topkapi dibangun oleh Sultan Muhammad Al-Fatih pada tahun 1459 M, berfungsi sebagai kediaman resmi keluarga sultan, balai divan kenegaraan, dan tempat penyimpanan relik suci Nabi Muhammad Saw.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 30)",
+    pageReference: "Bab I (hlm. 30)",
   },
   {
     id: "xi-bab1-10",
@@ -152,7 +152,7 @@ export const KELAS_XI_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Pembubaran kekhalifahan pada 1924 M mengakhiri lebih dari 600 tahun mata rantai kekuasaan Dinasti Usmani dan menghapuskan institusi kekhalifahan universal dalam percaturan geopolitik Islam modern.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab I (hlm. 34)",
+    pageReference: "Bab I (hlm. 34)",
   },
 ];
 
@@ -173,7 +173,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Tarekat Safawiyah didirikan oleh Syaikh Safiuddin (1252–1334 M). Awalnya murni gerakan kerohanian tasawuf, namun bertransformasi menjadi kekuatan politik dan militer pada masa cucu-cucunya (Junayd dan Haydar).",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 38)",
+    pageReference: "Bab II (hlm. 38)",
   },
   {
     id: "xi-bab2-2",
@@ -188,7 +188,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Qizilbash (bahasa Turki: Kepala Merah) adalah laskar fanatik suku-suku Turkoman pengikut setia Syaikh Haydar yang menjadi kekuatan pendobrak berdirinya kekuasaan Daulah Safawi.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 40)",
+    pageReference: "Bab II (hlm. 40)",
   },
   {
     id: "xi-bab2-3",
@@ -203,7 +203,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Isma'il I naik takhta pada usia muda (14 tahun), menaklukkan seluruh daratan Iran dan Irak, serta memaksa konversi mazhab resmi negara menjadi Syiah Dua Belas Imam.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 42)",
+    pageReference: "Bab II (hlm. 42)",
   },
   {
     id: "xi-bab2-4",
@@ -218,7 +218,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Pada Pertempuran Chaldiran di Azerbaijan (1514 M), artileri meriam dan senapan Janissary Usmani mengalahkan kavaleri berkuda berani mati Qizilbash Safawi, memaksa Isma'il melarikan diri.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 44)",
+    pageReference: "Bab II (hlm. 44)",
   },
   {
     id: "xi-bab2-5",
@@ -233,7 +233,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Syah Abbas I mereformasi tentara dengan membentuk korps Ghulam (budak Kaukasus bersenjata api), mematahkan dominasi Qizilbash, merebut kembali Baghdad dari Usmani, dan membangun ibu kota Isfahan.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 46)",
+    pageReference: "Bab II (hlm. 46)",
   },
   {
     id: "xi-bab2-6",
@@ -248,7 +248,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Isfahan dihiasi lapangan raksasa Naqsh-e Jahan, jembatan Khaju, taman bunga, bazar megah, dan istana Ali Qapu, menarik para duta besar dan saudagar dari Inggris, Belanda, dan Prancis.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 48)",
+    pageReference: "Bab II (hlm. 48)",
   },
   {
     id: "xi-bab2-7",
@@ -263,7 +263,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Mulla Sadra (1571–1640 M) menulis karya filsafat monumental Al-Asfar Al-Arba'ah (Empat Pengembaraan Intelektual), menjadi puncak pencapaian pemikiran filsafat Islam di belahan Timur pasca-Ibnu Sina.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 50)",
+    pageReference: "Bab II (hlm. 50)",
   },
   {
     id: "xi-bab2-8",
@@ -278,7 +278,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Sentra bengkel karpet kerajaan di Isfahan dan Kashan memproduksi karpet sutra halus dengan pewarna alami delima dan nila, serta seni lukis miniatur Persia di bawah bimbingan maestro Reza Abbasi.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 52)",
+    pageReference: "Bab II (hlm. 52)",
   },
   {
     id: "xi-bab2-9",
@@ -293,7 +293,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Pemberontakan Mahmud Hotaki dari suku Ghilzai Afghanistan mengepung Isfahan selama berbulan-bulan, memaksa Syah Sultan Husain menyerahkan mahkota takhtanya, menandai runtuhnya kekuasaan efektif Safawi.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 56)",
+    pageReference: "Bab II (hlm. 56)",
   },
   {
     id: "xi-bab2-10",
@@ -308,7 +308,7 @@ export const KELAS_XI_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Daulah Safawi berhasil menyatukan entitas geopolitik Persia di bawah identitas agama dan budaya yang kokoh, melepaskan ketergantungan dari hegemoni Arab dan Turki Utsmani.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab II (hlm. 58)",
+    pageReference: "Bab II (hlm. 58)",
   },
 ];
 
@@ -329,7 +329,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Babur adalah pangeran keturunan dinasti Timurid dan Chagatai Mongol. Pada Pertempuran Panipat 1526 M, taktik artileri Babur berhasil menumbangkan Sultan Ibrahim Lodi dari Kesultanan Delhi.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 64)",
+    pageReference: "Bab III (hlm. 64)",
   },
   {
     id: "xi-bab3-2",
@@ -344,7 +344,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Humayun mengungsi ke istana Daulah Safawi di Persia selama 15 tahun. Berkat bantuan tentara Syah Tahmasp I, Humayun berhasil merebut kembali Delhi dan Lahore pada tahun 1555 M.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 66)",
+    pageReference: "Bab III (hlm. 66)",
   },
   {
     id: "xi-bab3-3",
@@ -359,7 +359,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Akbar (1556–1605 M) menghapus pajak jizyah bagi warga Hindu, menikahi putri Rajput Hindu, mengangkat pejabat non-muslim, dan membuka forum dialog keagamaan antar-iman di balai Ibadat Khana.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 70)",
+    pageReference: "Bab III (hlm. 70)",
   },
   {
     id: "xi-bab3-4",
@@ -374,7 +374,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Kata \"Urdu\" berasal dari bahasa Turki ordu yang berarti perkemahan/tentara. Bahasa Urdu mengadopsi abjad Arab-Persia dan menjadi salah satu bahasa sastra dan resmi utama di Asia Selatan.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 74)",
+    pageReference: "Bab III (hlm. 74)",
   },
   {
     id: "xi-bab3-5",
@@ -389,7 +389,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Taj Mahal dibangun selama lebih dari 20 tahun (1632–1653 M) oleh ribuan seniman di bawah arsitek Ustad Ahmad Lahori, memadukan seni arsitektur Islam, Persia, dan India sebagai Situs Warisan Dunia UNESCO.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 76)",
+    pageReference: "Bab III (hlm. 76)",
   },
   {
     id: "xi-bab3-6",
@@ -404,7 +404,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Masjid Jama di Delhi diresmikan pada 1656 M dengan pelataran berkapasitas lebih dari 25.000 jamaah, dibangun berdampingan dengan Benteng Merah (Lal Qila).",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 78)",
+    pageReference: "Bab III (hlm. 78)",
   },
   {
     id: "xi-bab3-7",
@@ -419,7 +419,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Aurangzeb (1658–1707 M) memperluas wilayah kekuasaan hingga mencakup hampir seluruh anak benua India bagian selatan (Deccan), melarang musik dan minuman keras di istana, serta memberlakukan kembali jizyah.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 82)",
+    pageReference: "Bab III (hlm. 82)",
   },
   {
     id: "xi-bab3-8",
@@ -434,7 +434,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Fatawa-i Alamgiri (Fatawa Al-Hindiyyah) memuat kompilasi fatwa komprehensif mengenai ibadah, transaksi ekonomi, pidana, dan administrasi peradilan syariat bagi para qadhi di seluruh wilayah Mughal.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 84)",
+    pageReference: "Bab III (hlm. 84)",
   },
   {
     id: "xi-bab3-9",
@@ -449,7 +449,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "British East India Company (EIC) mengeksploitasi kelemahan internal dinasti melalui politik devide et impera, menguasai wilayah Bengal pasca Pertempuran Plassey (1757), dan mengendalikan India secara de facto.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 88)",
+    pageReference: "Bab III (hlm. 88)",
   },
   {
     id: "xi-bab3-10",
@@ -464,7 +464,7 @@ export const KELAS_XI_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Pengasingan Bahadur Syah Zafar yang seorang sastrawan sufi menandai runtuhnya eksistensi Daulah Mughal secara formal dan dimulainya penjajahan penuh Kemaharajaan Britania (British Raj) di India.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab III (hlm. 90)",
+    pageReference: "Bab III (hlm. 90)",
   },
 ];
 
@@ -485,7 +485,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Teori Gujarat/India didasarkan pada kesamaan corak ukiran marmer batu nisan Sultan Malik As-Saleh di Samudera Pasai dan nisan Maulana Malik Ibrahim di Gresik dengan nisan makam di Gujarat.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 96)",
+    pageReference: "Bab IV (hlm. 96)",
   },
   {
     id: "xi-bab4-2",
@@ -500,7 +500,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Buya Hamka menegaskan mayoritas muslim Nusantara bermazhab Syafi'i sama seperti di Makkah dan Mesir (bukan Hanafi seperti di Gujarat), serta catatan kronik China mencatat kapal-kapal Arab Ta-shih singgah di Barus sejak 674 M.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 98)",
+    pageReference: "Bab IV (hlm. 98)",
   },
   {
     id: "xi-bab4-3",
@@ -515,7 +515,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Hoesein Djajadiningrat menunjuk bukti adanya istilah ejaan harakat fonetik bahasa Persia (jabar/kasar), peringatan Asyura 10 Muharram melalui arak-arakan Tabuik, serta ajaran sufi manunggaling kawula gusti Syekh Siti Jenar yang mirip Al-Hallaj.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 100)",
+    pageReference: "Bab IV (hlm. 100)",
   },
   {
     id: "xi-bab4-4",
@@ -530,7 +530,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Laksamana Cheng Ho (Zheng He) yang beragama Islam memimpin ekspedisi damai armada Ming pada abad ke-15 M, di mana sekretarisnya Ma Huan mencatat telah banyak warga muslim Tionghoa menetap di pelabuhan Tuban, Gresik, dan Surabaya.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 102)",
+    pageReference: "Bab IV (hlm. 102)",
   },
   {
     id: "xi-bab4-5",
@@ -545,7 +545,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Letak geografis Nusantara di jalur sutra pelayaran antara India, Timur Tengah, dan China menjadikan pelabuhan pesisir titik temu para pedagang muslim yang berakhlak mulia, jujur, dan bergaul akrab dengan masyarakat lokal.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 104)",
+    pageReference: "Bab IV (hlm. 104)",
   },
   {
     id: "xi-bab4-6",
@@ -560,7 +560,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Perkawinan antara saudagar muslim atau ulama dengan putri raja (misalnya Maulana Ishak dengan putri Adipati Blambangan) mempermudah dakwah Islam masuk ke lingkaran inti kekuasaan politik istana.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 106)",
+    pageReference: "Bab IV (hlm. 106)",
   },
   {
     id: "xi-bab4-7",
@@ -575,7 +575,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Pesantren (dari kata cantrik / santri) menyediakan asrama pondok bagi santri yang mengaji kepada kiai/syekh, menghasilkan kader dai yang kembali ke kampung halamannya untuk menyebarkan Islam.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 108)",
+    pageReference: "Bab IV (hlm. 108)",
   },
   {
     id: "xi-bab4-8",
@@ -590,7 +590,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Atap tumpang bersusun tiga melambangkan trilogi ajaran Islam: Iman, Islam, dan Ihsan. Kearifan lokal ini memudahkan penerimaan dakwah tanpa benturan budaya yang merusak.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 110)",
+    pageReference: "Bab IV (hlm. 110)",
   },
   {
     id: "xi-bab4-9",
@@ -605,7 +605,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Para sufi yang berdakwah memiliki toleransi tinggi, keahlian magis-spiritual, pengobatan cuma-cuma, serta akhlak santun yang menyentuh hati rakyat jelata sehingga mereka berbondong-bondong memeluk Islam.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 112)",
+    pageReference: "Bab IV (hlm. 112)",
   },
   {
     id: "xi-bab4-10",
@@ -620,7 +620,7 @@ export const KELAS_XI_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Inskripsi makam Fatimah binti Maimun membuktikan bahwa komunitas muslim pedagang asing telah eksis dan bermukim di pesisir utara Jawa Timur sejak akhir abad ke-11 M jauh sebelum era Kerajaan Majapahit runtuh.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab IV (hlm. 114)",
+    pageReference: "Bab IV (hlm. 114)",
   },
 ];
 
@@ -641,7 +641,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Maulana Malik Ibrahim (wafat 1419 M di Gapura Sukolilo, Gresik) berdakwah dengan penuh kesabaran, merangkul kasta Sudra dan Paria yang tertindas, serta menunjukkan keunggulan etos kerja Islam tanpa kekerasan.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 120)",
+    pageReference: "Bab V (hlm. 120)",
   },
   {
     id: "xi-bab5-2",
@@ -656,7 +656,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Moh Limo menjadi terapi moral efektif di tengah krisis dekadensi akhlak masyarakat Majapahit akhir, melatih santri memiliki integritas pribadi sebelum diterjunkan berdakwah ke seluruh penjuru Nusantara.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 122)",
+    pageReference: "Bab V (hlm. 122)",
   },
   {
     id: "xi-bab5-3",
@@ -671,7 +671,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Sunan Bonang (putra Sunan Ampel) menguasai sastra dan musik Jawa. Bunyi bonang ciptaannya yang khas memikat warga untuk berkumpul di masjid dan melantunkan tembang puji-pujian yang sarat nilai dzikir tauhid.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 126)",
+    pageReference: "Bab V (hlm. 126)",
   },
   {
     id: "xi-bab5-4",
@@ -686,7 +686,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Ajaran Sunan Drajat berakar pada firman QS. Al-Ma'un, menekankan pentingnya memberi petunjuk orang buta, memberi makan orang lapar, dan memayungi orang kehujanan sebagai manifestasi kedermawanan Islam.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 128)",
+    pageReference: "Bab V (hlm. 128)",
   },
   {
     id: "xi-bab5-5",
@@ -701,7 +701,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Karena sapi disucikan dalam keyakinan Hindu, Sunan Kudus menggantinya dengan kerbau. Beliau juga mendirikan Menara Kudus berbentuk menyerupai candi Jawa-Hindu sebagai simbol jembatan kerukunan antarumat beragama.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 130)",
+    pageReference: "Bab V (hlm. 130)",
   },
   {
     id: "xi-bab5-6",
@@ -716,7 +716,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Giri Kedaton diakui sebagai pusat pendidikan dan legitimasi spiritual bagi raja-raja Islam di kawasan Indonesia timur (raja Hitu Ambon, Ternate, dan Tidore berguru langsung ke Giri). Beliau juga pencipta tembang permainan Jelungan dan Cublak-Cublak Suweng.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 132)",
+    pageReference: "Bab V (hlm. 132)",
   },
   {
     id: "xi-bab5-7",
@@ -731,7 +731,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Sunan Kalijaga mengubah lakon pewayangan agar sarat muatan tauhid (misalnya Jimat Kalimasada / Kalimat Syahadat), memasukkan tokoh Punakawan (Semar, Gareng, Petruk, Bagong), dan tidak memungut biaya tiket selain mengucap syahadat.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 136)",
+    pageReference: "Bab V (hlm. 136)",
   },
   {
     id: "xi-bab5-8",
@@ -746,7 +746,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Sunan Muria bergaul akrab dengan masyarakat bawah di lereng bukit Colo, mengajarkan cara bercocok tanam, menangkap ikan, serta menciptakan tembang tembang macapat Sinom dan Kinanthi yang menyejukkan hati.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 138)",
+    pageReference: "Bab V (hlm. 138)",
   },
   {
     id: "xi-bab5-9",
@@ -761,7 +761,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Syarif Hidayatullah berdakwah di tatar Pasundan, mengembangkan pelabuhan Muara Jati Cirebon, menghentikan upeti kepada Pajajaran, dan bersama panglima Fatahillah membebaskan Sunda Kelapa dari ancaman Portugis.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 140)",
+    pageReference: "Bab V (hlm. 140)",
   },
   {
     id: "xi-bab5-10",
@@ -776,7 +776,7 @@ export const KELAS_XI_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Masjid Agung Demak yang dibangun bersama oleh para Wali Sanga pada tahun 1479 M (candra sengkala \"Lawang Trus Gunaning Janma\") memiliki empat tiang utama (soko guru), salah satunya soko tatal buatan tangan Sunan Kalijaga.",
-    pageReference: "Buku SKI Kelas XI Kemenag — Bab V (hlm. 142)",
+    pageReference: "Bab V (hlm. 142)",
   },
 ];
 
@@ -787,7 +787,7 @@ export const KELAS_XI_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xi-bab-1-usmani",
     name: "Bab I: Peradaban & Sains Daulah Usmani",
-    subtitle: "Buku Siswa Kemenag RI — Usman I, Al-Fatih 1453 M, Sulaiman Al-Qanuni, Arsitek Sinan (10 Soal A–E)",
+    subtitle: "Usman I, Al-Fatih 1453 M, Sulaiman Al-Qanuni, Arsitek Sinan",
     gradeLevel: "XI",
     updatedAt: '2025-01-20',
     questions: KELAS_XI_BAB_1_QUESTIONS,
@@ -795,7 +795,7 @@ export const KELAS_XI_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xi-bab-2-safawi",
     name: "Bab II: Peradaban & Sains Daulah Safawi",
-    subtitle: "Buku Siswa Kemenag RI — Tarekat Ardabil, Syah Abbas I, Isfahan, Mulla Sadra & Karpet Sutra (10 Soal A–E)",
+    subtitle: "Tarekat Ardabil, Syah Abbas I, Isfahan, Mulla Sadra & Karpet Sutra",
     gradeLevel: "XI",
     updatedAt: '2025-01-20',
     questions: KELAS_XI_BAB_2_QUESTIONS,
@@ -803,7 +803,7 @@ export const KELAS_XI_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xi-bab-3-mughal",
     name: "Bab III: Peradaban & Sains Daulah Mughal",
-    subtitle: "Buku Siswa Kemenag RI — Babur, Akbar, Taj Mahal Syah Jahan, Aurangzeb & Fatawa Hindiyyah (10 Soal A–E)",
+    subtitle: "Babur, Akbar, Taj Mahal Syah Jahan, Aurangzeb & Fatawa Hindiyyah",
     gradeLevel: "XI",
     updatedAt: '2025-01-20',
     questions: KELAS_XI_BAB_3_QUESTIONS,
@@ -811,7 +811,7 @@ export const KELAS_XI_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xi-bab-4-masuknya-islam-indonesia",
     name: "Bab IV: Sejarah Masuknya Islam ke Indonesia",
-    subtitle: "Buku Siswa Kemenag RI — Teori Gujarat, Makkah, Persia, China & Saluran Perdagangan (10 Soal A–E)",
+    subtitle: "Teori Gujarat, Makkah, Persia, China & Saluran Perdagangan",
     gradeLevel: "XI",
     updatedAt: '2025-01-20',
     questions: KELAS_XI_BAB_4_QUESTIONS,
@@ -819,7 +819,7 @@ export const KELAS_XI_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xi-bab-5-wali-sanga",
     name: "Bab V: Peran Wali Sanga di Indonesia",
-    subtitle: "Buku Siswa Kemenag RI — Sunan Gresik, Ampel Moh Limo, Bonang, Kalijaga, Kudus, Gunung Jati (10 Soal A–E)",
+    subtitle: "Sunan Gresik, Ampel Moh Limo, Bonang, Kalijaga, Kudus, Gunung Jati",
     gradeLevel: "XI",
     updatedAt: '2025-01-20',
     questions: KELAS_XI_BAB_5_QUESTIONS,

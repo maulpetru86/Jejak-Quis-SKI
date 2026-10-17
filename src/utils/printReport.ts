@@ -335,10 +335,10 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
   <div class="page-container">
     <!-- KOP -->
     <div class="kop-header">
-      <div class="kop-instansi">KEMENTERIAN AGAMA REPUBLIK INDONESIA</div>
+      <div class="kop-instansi">MADRASAH ALIYAH</div>
       <div class="kop-madrasah">LEMBAR HASIL EVALUASI PEMBELAJARAN MANDIRI</div>
       <div class="kop-judul">MATA PELAJARAN SEJARAH KEBUDAYAAN ISLAM (SKI)</div>
-      <div class="kop-sub">Sesuai Kurikulum Madrasah Aliyah Kemenag RI · Sistem Pembelajaran Interaktif</div>
+      <div class="kop-sub">Evaluasi Pembelajaran Mandiri Siswa</div>
     </div>
 
     <!-- IDENTITAS -->
@@ -528,26 +528,136 @@ export function printReportWithIframe(htmlContent: string): Promise<boolean> {
 }
 
 /**
+ * Sanitizes any CSS containing modern 'oklch' color functions
+ * in cloned documents before html2canvas parses CSS declarations.
+ */
+function sanitizeOklchInDoc(doc: Document): void {
+  // 1. Replace oklch in style tags with valid hex
+  try {
+    const styleElements = doc.querySelectorAll('style');
+    styleElements.forEach((styleTag) => {
+      if (styleTag.textContent && styleTag.textContent.includes('oklch')) {
+        styleTag.textContent = styleTag.textContent.replace(/oklch\([^)]+\)/g, '#334155');
+      }
+    });
+  } catch {
+    // ignore
+  }
+
+  // 2. Sanitize computed & inline color styles using canvas 2D context converter
+  try {
+    const canvas = doc.createElement('canvas');
+    canvas.width = 1;
+    canvas.height = 1;
+    const ctx = canvas.getContext('2d');
+
+    const convertColor = (val: string): string => {
+      if (!val || !val.includes('oklch')) return val;
+      if (!ctx) return '#334155';
+      return val.replace(/oklch\([^)]+\)/g, (match) => {
+        try {
+          ctx.fillStyle = '#000000';
+          ctx.fillStyle = match;
+          return ctx.fillStyle;
+        } catch {
+          return '#334155';
+        }
+      });
+    };
+
+    const all = doc.querySelectorAll('*');
+    all.forEach((node) => {
+      const el = node as HTMLElement;
+      if (!el.style) return;
+
+      const style = el.style;
+      if (style.color && style.color.includes('oklch')) {
+        style.color = convertColor(style.color);
+      }
+      if (style.backgroundColor && style.backgroundColor.includes('oklch')) {
+        style.backgroundColor = convertColor(style.backgroundColor);
+      }
+      if (style.borderColor && style.borderColor.includes('oklch')) {
+        style.borderColor = convertColor(style.borderColor);
+      }
+      if (style.borderTopColor && style.borderTopColor.includes('oklch')) {
+        style.borderTopColor = convertColor(style.borderTopColor);
+      }
+      if (style.borderRightColor && style.borderRightColor.includes('oklch')) {
+        style.borderRightColor = convertColor(style.borderRightColor);
+      }
+      if (style.borderBottomColor && style.borderBottomColor.includes('oklch')) {
+        style.borderBottomColor = convertColor(style.borderBottomColor);
+      }
+      if (style.borderLeftColor && style.borderLeftColor.includes('oklch')) {
+        style.borderLeftColor = convertColor(style.borderLeftColor);
+      }
+      if (style.boxShadow && style.boxShadow.includes('oklch')) {
+        style.boxShadow = convertColor(style.boxShadow);
+      }
+    });
+  } catch {
+    // ignore
+  }
+}
+
+/**
  * Directly generates and downloads a real, crisp PDF file (.pdf)
- * using jsPDF and html2canvas from a DOM element or rendered report.
+ * using jsPDF and html2canvas from either an HTML string or a DOM element.
+ * Immune to Tailwind CSS v4 'oklch' color parsing errors.
  */
 export async function exportReportToPdf(
-  element: HTMLElement,
+  source: HTMLElement | string,
   filename: string
 ): Promise<boolean> {
+  let tempIframe: HTMLIFrameElement | null = null;
   try {
     const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
       import('jspdf'),
       import('html2canvas'),
     ]);
 
-    // Render DOM node to high-res canvas (scale 2 for retina / print clarity)
-    const canvas = await html2canvas(element, {
+    let targetElement: HTMLElement;
+
+    if (typeof source === 'string') {
+      // Create isolated iframe with self-contained HTML (pure CSS, no Tailwind v4 oklch variables)
+      tempIframe = document.createElement('iframe');
+      tempIframe.style.position = 'fixed';
+      tempIframe.style.left = '-9999px';
+      tempIframe.style.top = '0';
+      tempIframe.style.width = '820px';
+      tempIframe.style.height = '1200px';
+      tempIframe.style.border = 'none';
+      tempIframe.style.opacity = '0';
+      tempIframe.style.pointerEvents = 'none';
+      document.body.appendChild(tempIframe);
+
+      const iframeDoc = tempIframe.contentWindow?.document || tempIframe.contentDocument;
+      if (!iframeDoc) throw new Error('Cannot access iframe document for PDF export');
+
+      iframeDoc.open();
+      iframeDoc.write(source);
+      iframeDoc.close();
+
+      // Allow fonts and styles to initialize
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      targetElement =
+        (iframeDoc.querySelector('.page-container') as HTMLElement) || iframeDoc.body;
+    } else {
+      targetElement = source;
+    }
+
+    // Render to high-res canvas (scale 2 for crisp print clarity)
+    const canvas = await html2canvas(targetElement, {
       scale: 2,
       useCORS: true,
       logging: false,
       backgroundColor: '#ffffff',
-      windowWidth: 1024,
+      windowWidth: 850,
+      onclone: (clonedDoc) => {
+        sanitizeOklchInDoc(clonedDoc);
+      },
     });
 
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
@@ -563,14 +673,14 @@ export async function exportReportToPdf(
 
     // First page
     pdf.addImage(imgData, 'JPEG', 8, position, imgWidth, imgHeight, undefined, 'FAST');
-    heightLeft -= (pdfHeight - 16);
+    heightLeft -= pdfHeight - 16;
 
     // Additional pages if report spans multiple pages
     while (heightLeft > 0) {
       position = heightLeft - imgHeight + 8;
       pdf.addPage();
       pdf.addImage(imgData, 'JPEG', 8, position, imgWidth, imgHeight, undefined, 'FAST');
-      heightLeft -= (pdfHeight - 16);
+      heightLeft -= pdfHeight - 16;
     }
 
     pdf.save(filename);
@@ -578,6 +688,14 @@ export async function exportReportToPdf(
   } catch (err) {
     console.error('Failed to generate PDF via jsPDF/html2canvas:', err);
     return false;
+  } finally {
+    if (tempIframe) {
+      try {
+        tempIframe.remove();
+      } catch {
+        // ignore
+      }
+    }
   }
 }
 

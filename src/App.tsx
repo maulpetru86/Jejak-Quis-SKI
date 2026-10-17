@@ -720,7 +720,7 @@ export default function App() {
                   Quiz Sejarah Islam
                 </span>
                 <span className="hidden sm:block text-[10px] font-bold text-slate-300 tracking-wider uppercase">
-                  Madrasah Aliyah · Kemenag RI
+                  Madrasah Aliyah
                 </span>
               </div>
             </button>

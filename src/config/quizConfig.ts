@@ -98,8 +98,8 @@ export interface QuizSettings {
 }
 
 export const STORAGE_KEYS = {
-  PACKAGES: 'ski_quiz_packages_v8',
-  SELECTED_PACKAGE_ID: 'ski_quiz_selected_package_v8',
+  PACKAGES: 'ski_quiz_packages_v9',
+  SELECTED_PACKAGE_ID: 'ski_quiz_selected_package_v9',
   TEAMS: 'ski_quiz_teams_v5',
   SETTINGS: 'ski_quiz_settings_v6',
   TEACHER_PIN: 'ski_quiz_teacher_pin_v1',

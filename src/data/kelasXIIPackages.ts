@@ -17,7 +17,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Samudera Pasai berdiri sekitar tahun 1267 M. Sultan Malik As-Saleh memeluk Islam melalui bimbingan Syekh Ismail dari Makkah. Makam batu nisannya bercorak kaligrafi indah bertarikh 1297 M (696 H).",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 4)",
+    pageReference: "Bab I (hlm. 4)",
   },
   {
     id: "xii-bab1-2",
@@ -32,7 +32,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Parameswara memeluk Islam dan bergelar Sultan Iskandar Syah (1402 M). Malaka berkembang menjadi pelabuhan emporium tersibuk dunia yang menghubungkan jalur perdagangan timur-barat sebelum ditaklukkan Alfonso de Albuquerque Portugis pada 1511 M.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 8)",
+    pageReference: "Bab I (hlm. 8)",
   },
   {
     id: "xii-bab1-3",
@@ -47,7 +47,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Sultan Iskandar Muda memperkuat armada laut dengan kapal induk raksasa Espelho do Mundo (Cermin Dunia), laskar gajah perang, memblokade Portugis di Malaka, dan merumuskan undang-undang kesultanan \"Adat Meukuta Alam\".",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 12)",
+    pageReference: "Bab I (hlm. 12)",
   },
   {
     id: "xii-bab1-4",
@@ -62,7 +62,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Demak didirikan pada akhir abad ke-15 M (1478/1500 M) berpusat di Glagahwangi. Demak menjadi pusat dakwah Islam, meruntuhkan hegemoni sisa-sisa Majapahit, dan mendirikan Masjid Agung Demak sebagai lambang kedaulatan umat.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 16)",
+    pageReference: "Bab I (hlm. 16)",
   },
   {
     id: "xii-bab1-5",
@@ -77,7 +77,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Meskipun armadanya dihujani meriam Portugis dan mengalami kerugian besar, keberanian Pati Unus menyerang benteng A Famosa di Malaka membakar semangat juang bangsa Nusantara melawan kolonialisme Barat.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 18)",
+    pageReference: "Bab I (hlm. 18)",
   },
   {
     id: "xii-bab1-6",
@@ -92,7 +92,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Sultan Agung (1613–1645 M) adalah raja visioner yang menyatukan hampir seluruh pulau Jawa, menggubah kitab sastra \"Sastra Gendhing\", menciptakan penanggalan Tahun Jawa (Tahun Alip/Hijriyah-Saka), dan pantang kompromi terhadap VOC.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 22)",
+    pageReference: "Bab I (hlm. 22)",
   },
   {
     id: "xii-bab1-7",
@@ -107,7 +107,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Sultan Ageng Tirtayasa (1651–1683 M) membangun kapal-kapal dagang berbendera Banten yang berlayar hingga Filipina dan Timur Tengah, menolak monopoli dagang Belanda hingga dikhianati oleh putranya sendiri Sultan Haji.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 26)",
+    pageReference: "Bab I (hlm. 26)",
   },
   {
     id: "xii-bab1-8",
@@ -122,7 +122,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Sultan Hasanuddin menolak klaim monopoli perdagangan rempah VOC di perairan Indonesia Timur. Beliau mempertahankan benteng Somba Opu sampai titik darah penghabisan sebelum terpaksa menandatangani Perjanjian Bongaya (1667 M).",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 30)",
+    pageReference: "Bab I (hlm. 30)",
   },
   {
     id: "xii-bab1-9",
@@ -137,7 +137,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Pasca pembunuhan licik atas ayahnya Sultan Khairun oleh kapten Portugis Lopez de Mesquita, Sultan Baabullah memimpin perang semesta mengusir Portugis dan dijuluki \"Penguasa 72 Pulau\" (Lord of 72 Islands).",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 34)",
+    pageReference: "Bab I (hlm. 34)",
   },
   {
     id: "xii-bab1-10",
@@ -152,7 +152,7 @@ export const KELAS_XII_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Di seluruh Nusantara (Aceh, Minangkabau \"Adat basandi syarak, syarak basandi Kitabullah\", Jawa, Banjar, Bugis), Islam tidak menghancurkan adat tetapi menyempurnakannya dalam payung keadilan tauhid.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab I (hlm. 38)",
+    pageReference: "Bab I (hlm. 38)",
   },
 ];
 
@@ -173,7 +173,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Hamzah Fansuri adalah perintis sastra Melayu klasik bercorak tasawuf wujudiyah (wahdatul wujud). Karya puisinya penuh tamsil perahu dan burung, mengukuhkan bahasa Melayu sebagai lingua franca ilmu keislaman Nusantara.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 44)",
+    pageReference: "Bab II (hlm. 44)",
   },
   {
     id: "xii-bab2-2",
@@ -188,7 +188,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Syaikh Nuruddin Ar-Raniri diangkat menjadi mufti oleh Sultan Iskandar Thani. Kitabnya Bustan al-Salatin memuat tujuh jilid risalah penciptaan alam, sejarah para nabi, khalifah Islam, hingga raja-raja Melayu.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 48)",
+    pageReference: "Bab II (hlm. 48)",
   },
   {
     id: "xii-bab2-3",
@@ -203,7 +203,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Syaikh Abdurrauf bin Ali Al-Jawi Al-Fansuri As-Singkili (Teungku Syiah Kuala) belajar di Makkah dan Madinah selama 19 tahun kepada Ahmad Al-Qusyasyi dan Ibrahim Al-Kurani, lalu menjadi Qadhi Malikul Adil di era Sultanah Safiatuddin.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 52)",
+    pageReference: "Bab II (hlm. 52)",
   },
   {
     id: "xii-bab2-4",
@@ -218,7 +218,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Syaikh Yusuf Al-Makassari (1626–1699 M) diasingkan Belanda pertama kali ke Srilanka lalu ke Tanjung Harapan (Cape Town). Di sana beliau menyebarkan Islam dan diakui sebagai pahlawan nasional oleh Nelson Mandela.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 56)",
+    pageReference: "Bab II (hlm. 56)",
   },
   {
     id: "xii-bab2-5",
@@ -233,7 +233,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Syaikh Muhammad Arsyad Al-Banjari menulis Sabilal Muhtadin lit-Tafaqquh fi Amrid-Din atas permintaan Sultan Tahmidullah II. Kitab ini menjadi rujukan hukum Islam di Nusantara, Malaysia, Brunei, dan Thailand Selatan hingga kini.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 60)",
+    pageReference: "Bab II (hlm. 60)",
   },
   {
     id: "xii-bab2-6",
@@ -248,7 +248,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Syaikh Nawawi Al-Bantani (1813–1897 M) mendidik hampir seluruh tokoh pendiri organisasi Islam Indonesia di Makkah (KH Hasyim Asy'ari, KH Ahmad Dahlan, KH Kholil Bangkalan). Karya tafsir dan fikihnya dicetak di Kairo, Beirut, dan Makkah.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 64)",
+    pageReference: "Bab II (hlm. 64)",
   },
   {
     id: "xii-bab2-7",
@@ -263,7 +263,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Syaikh Ahmad Khatib Al-Minangkabawi adalah ulama non-Arab pertama yang dipercaya memegang posisi kehormatan mufti mazhab Syafi'i di Masjidil Haram, melahirkan murid-murid hebat yang menginisiasi kebangkitan umat di tanah air.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 68)",
+    pageReference: "Bab II (hlm. 68)",
   },
   {
     id: "xii-bab2-8",
@@ -278,7 +278,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Syaikh Kholil Bangkalan (1820–1925 M) adalah simpul utama jaringan ulama Jawa-Madura. Beliau mengutus santrinya Kiai As'ad Syamsul Arifin mengantarkan tongkat dan tasbih bersanad QS. Thaha kepada KH Hasyim Asy'ari sebagai isyarah restu berdirinya NU.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 72)",
+    pageReference: "Bab II (hlm. 72)",
   },
   {
     id: "xii-bab2-9",
@@ -293,7 +293,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Kiai Sholeh Darat menerjemahkan Al-Qur'an ke dalam bahasa Jawa huruf Arab Pegon. RA Kartini sangat terinspirasi oleh pengajian beliau hingga mencetuskan surat legendarisnya \"Door Duisternis tot Licht\" (Dari Gelap Terbitlah Terang / Minaz Zhulumati Ilan Nur).",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 74)",
+    pageReference: "Bab II (hlm. 74)",
   },
   {
     id: "xii-bab2-10",
@@ -308,7 +308,7 @@ export const KELAS_XII_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Kitab-kitab tentang keutamaan jihad karya Syaikh Abdul Samad Al-Palimbani (seperti Nasihat al-Muslimin) dan fatwa para ulama di Makkah diselundupkan ke Nusantara untuk membakar semangat Perang Diponegoro, Perang Padri, dan Perang Aceh.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab II (hlm. 76)",
+    pageReference: "Bab II (hlm. 76)",
   },
 ];
 
@@ -329,7 +329,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Sarekat Dagang Islam (SDI) lahir untuk membela martabat dan ekonomi pedagang batik lokal Solo, yang kemudian bertransformasi menjadi Sarekat Islam (SI) di bawah kepemimpinan H.O.S. Tjokroaminoto.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 82)",
+    pageReference: "Bab III (hlm. 82)",
   },
   {
     id: "xii-bab3-2",
@@ -344,7 +344,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "H.O.S. Tjokroaminoto adalah orator ulung yang menuntut pemerintahan sendiri (Zelfbestuur) dan membina tokoh-tokoh besar bangsa seperti Sukarno, Semaoen, dan Kartosoewirjo di rumah kosnya di Surabaya.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 84)",
+    pageReference: "Bab III (hlm. 84)",
   },
   {
     id: "xii-bab3-3",
@@ -359,7 +359,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "K.H. Ahmad Dahlan mendirikan Muhammadiyah untuk memurnikan aqidah dari TBC (takhayul, bid'ah, khurafat) serta memelopori pendirian sekolah modern, rumah sakit (PKU), dan panti asuhan yatim piatu berlandaskan QS. Al-Ma'un.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 88)",
+    pageReference: "Bab III (hlm. 88)",
   },
   {
     id: "xii-bab3-4",
@@ -374,7 +374,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Syaikh Ahmad Surkati mendirikan Al-Irsyad dengan menitikberatkan pada pendidikan sekolah modern yang egaliter, memajukan kaum dhuafa tanpa memandang status garis keturunan darah atau kasta sosial.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 92)",
+    pageReference: "Bab III (hlm. 92)",
   },
   {
     id: "xii-bab3-5",
@@ -389,7 +389,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Persis aktif menyebarkan dakwah purifikasi syariat melalui penerbitan majalah Al-Lisaan dan debat publik. Tokoh utamanya A. Hassan (Hassan Bandung) menjadi teman korespondensi Bung Karno saat diasingkan di Ende Flores.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 96)",
+    pageReference: "Bab III (hlm. 96)",
   },
   {
     id: "xii-bab3-6",
@@ -404,7 +404,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Nahdlatul Ulama (Kebangkitan Ulama) diprakarsai K.H. Wahab Chasbullah dan Hadratussyaikh K.H. Hasyim Asy'ari untuk menjaga transmisi keilmuan tradisi Aswaja (Asy'ariyah, Maturidiyah, fiqih empat mazhab, tasawuf Ghazali/Junaid) serta membentengi NKRI.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 100)",
+    pageReference: "Bab III (hlm. 100)",
   },
   {
     id: "xii-bab3-7",
@@ -419,7 +419,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Komite Hijaz yang dipimpin K.H. Wahab Chasbullah mengutus delegasi resmi menghadap Raja Ibnu Saud. Suksesnya misi diplomasi ini menjadi momentum bersejarah yang melahirkan peresmian Jam'iyyah Nahdlatul Ulama.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 102)",
+    pageReference: "Bab III (hlm. 102)",
   },
   {
     id: "xii-bab3-8",
@@ -434,7 +434,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Perti didirikan oleh para ulama Kaum Tua di Minangkabau untuk mengonsolidasikan dan memodernisasi pengelolaan madrasah-madrasah tarbiyah Islamiyah tradisional bermazhab Syafi'i.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 106)",
+    pageReference: "Bab III (hlm. 106)",
   },
   {
     id: "xii-bab3-9",
@@ -449,7 +449,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "MIAI menjadi forum persatuan umat Islam terbesar menjelang akhir era Hindia Belanda, berhasil menyatukan perbedaan furu'iyyah demi memperjuangkan aspirasi umat dan kemerdekaan bangsa Indonesia.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 110)",
+    pageReference: "Bab III (hlm. 110)",
   },
   {
     id: "xii-bab3-10",
@@ -464,7 +464,7 @@ export const KELAS_XII_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Aisyiyah dan Muslimat NU mempelopori pendirian taman kanak-kanak (Bustanul Athfal), rumah bersalin ibu dan anak, serta kursus buta huruf bagi perempuan desa jauh sebelum maraknya gerakan feminisme modern.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab III (hlm. 114)",
+    pageReference: "Bab III (hlm. 114)",
   },
 ];
 
@@ -485,7 +485,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Keempat tokoh Islam tersebut berjuang bersama Soekarno, Hatta, Maramis, Yamin, dan Soebardjo merumuskan konsensus dasar negara Pancasila yang tertuang dalam Mukaddimah / Piagam Jakarta.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 120)",
+    pageReference: "Bab IV (hlm. 120)",
   },
   {
     id: "xii-bab4-2",
@@ -500,7 +500,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Demi merangkul saudara sebangsa dari Indonesia Timur yang keberatan atas kalimat \"dengan kewajiban menjalankan syariat Islam bagi pemeluk-pemeluknya\", para tokoh Islam dengan tulus menggantinya menjadi \"Ketuhanan Yang Maha Esa\" sebagai manifestasi tauhid tertinggi.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 122)",
+    pageReference: "Bab IV (hlm. 122)",
   },
   {
     id: "xii-bab4-3",
@@ -515,7 +515,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Resolusi Jihad memfatwakan fardhu 'ain bagi muslim dalam radius 94 km untuk melawan tentara Sekutu dan NICA. Fatwa ini menggerakkan puluhan ribu santri dan rakyat dalam pertempuran heroik 10 November 1945 (Hari Pahlawan) di Surabaya.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 126)",
+    pageReference: "Bab IV (hlm. 126)",
   },
   {
     id: "xii-bab4-4",
@@ -530,7 +530,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Laskar Hizbullah (Tentara Allah) dan Laskar Sabilillah bermarkas di pesantren-pesantren, bersinergi bersama BKR/TKR mempertahankan jengkal demi jengkal tanah air dari agresi militer Belanda.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 128)",
+    pageReference: "Bab IV (hlm. 128)",
   },
   {
     id: "xii-bab4-5",
@@ -545,7 +545,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Kemenag dibentuk untuk mengawal kehidupan beragama dan mengayomi seluruh pemeluk agama di Indonesia. Prof. HM Rasjidi adalah lulusan Universitas Sorbonne Paris dan tokoh cendekiawan muslim yang disegani.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 132)",
+    pageReference: "Bab IV (hlm. 132)",
   },
   {
     id: "xii-bab4-6",
@@ -560,7 +560,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Mosi Integral Natsir secara cerdas dan damai membubarkan Republik Indonesia Serikat (RIS) bentukan Belanda dan memulihkan kembali keutuhan Negara Kesatuan Republik Indonesia (NKRI) pada 17 Agustus 1950.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 136)",
+    pageReference: "Bab IV (hlm. 136)",
   },
   {
     id: "xii-bab4-7",
@@ -575,7 +575,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "NU kembali ke Khittah 1926 dan menjadi ormas pertama yang menerima Pancasila sebagai asas tunggal, menegaskan bahwa sila Ketuhanan Yang Maha Esa mencerminkan tauhid Islam dan NKRI adalah mitsaq wathani (konsensus kebangsaan).",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 140)",
+    pageReference: "Bab IV (hlm. 140)",
   },
   {
     id: "xii-bab4-8",
@@ -590,7 +590,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "MUI didirikan pada pertemuan para ulama se-Indonesia di Jakarta, dengan ketua umum pertamanya Prof. Dr. Buya Hamka, berfungsi sebagai pelayan umat (khadimul ummah) dan pemberi fatwa keagamaan.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 144)",
+    pageReference: "Bab IV (hlm. 144)",
   },
   {
     id: "xii-bab4-9",
@@ -605,7 +605,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Hari Santri Nasional menjadi pengakuan resmi negara atas jasa pengorbanan darah dan air mata kaum santri, kiai, dan pondok pesantren dalam memerdekakan dan menjaga keutuhan NKRI.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 148)",
+    pageReference: "Bab IV (hlm. 148)",
   },
   {
     id: "xii-bab4-10",
@@ -620,7 +620,7 @@ export const KELAS_XII_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Hukum Islam di Indonesia (seperti hukum waris, perkawinan, wakaf, perbankan syariah, dan rekognisi pesantren) hidup berdampingan secara harmonis dalam kerangka konstitusi hukum nasional.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab IV (hlm. 150)",
+    pageReference: "Bab IV (hlm. 150)",
   },
 ];
 
@@ -641,7 +641,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Buya Hamka (1908–1981 M) adalah tokoh multitalenta pengarang novel \"Tenggelamnya Kapal Van Der Wijck\" dan \"Di Bawah Lindungan Ka'bah\". Tafsir Al-Azhar yang ditulisnya di penjara Sukabumi menjadi rujukan tafsir paling populer di Asia Tenggara.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 156)",
+    pageReference: "Bab V (hlm. 156)",
   },
   {
     id: "xii-bab5-2",
@@ -656,7 +656,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Gus Dur (1940–2009 M) gigih membela hak kelompok minoritas, mencabut Inpres pembatasan perayaan Imlek, mengedepankan nilai kesetaraan dan toleransi, dengan prinsip: \"Yang lebih penting dari politik adalah kemanusiaan.\"",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 160)",
+    pageReference: "Bab V (hlm. 160)",
   },
   {
     id: "xii-bab5-3",
@@ -671,7 +671,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Mohammad Natsir (1908–1993 M) memimpin dakwah di pelosok Indonesia melalui pembangunan masjid dan rumah sakit via DDII, serta aktif di organisasi internasional World Muslim Congress dan Rabithah Alam Islami.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 164)",
+    pageReference: "Bab V (hlm. 164)",
   },
   {
     id: "xii-bab5-4",
@@ -686,7 +686,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "K.H. Achmad Siddiq (Jember) menyusun risalah legendaris tentang hubungan Islam dan Pancasila, mengajarkan bahwa persaudaraan sesama muslim, persaudaraan sebangsa, dan persaudaraan sesama umat manusia saling melengkapi.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 168)",
+    pageReference: "Bab V (hlm. 168)",
   },
   {
     id: "xii-bab5-5",
@@ -701,7 +701,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "B.J. Habibie memimpin berdirinya ICMI pada Desember 1990 di Malang. Beliau membuktikan bahwa kemajuan sains modern dan ketaatan ibadah Islam adalah dua pilar yang saling menguatkan bagi kemajuan bangsa.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 172)",
+    pageReference: "Bab V (hlm. 172)",
   },
   {
     id: "xii-bab5-6",
@@ -716,7 +716,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Cak Nur (1939–2005 M) adalah ketua umum PB HMI dua periode yang mengedepankan substansi nilai-nilai Islam (keadilan, kejujuran, egaliter) di atas sekadar simbol politik formalistik.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 176)",
+    pageReference: "Bab V (hlm. 176)",
   },
   {
     id: "xii-bab5-7",
@@ -731,7 +731,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Prof. Azyumardi Azra (1955–2022 M) adalah sejarawan Islam bereputasi global yang membongkar transmisi sanad keilmuan ulama Nusantara di Haramain, serta mempromosikan \"Islam Wasathiyah\" (Islam Moderat Indonesia) ke seluruh dunia.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 180)",
+    pageReference: "Bab V (hlm. 180)",
   },
   {
     id: "xii-bab5-8",
@@ -746,7 +746,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Kiai Sahal Mahfudh (1937–2014 M) mentransformasikan fiqih dari teks kaku menjadi panduan praksis emansipatoris melalui program BPR syariah, bank sampah, dan rumah sakit Islam di pedesaan.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 184)",
+    pageReference: "Bab V (hlm. 184)",
   },
   {
     id: "xii-bab5-9",
@@ -761,7 +761,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Prof. Quraish Shihab menghadirkan pesan-pesan Al-Qur'an yang santun, membumi, dan kontekstual, mengajak umat memahami Al-Qur'an dengan kacamata keindahan bahasa dan kelembutan akhlak.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 186)",
+    pageReference: "Bab V (hlm. 186)",
   },
   {
     id: "xii-bab5-10",
@@ -776,7 +776,7 @@ export const KELAS_XII_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Sejarah membuktikan bahwa umat Islam Indonesia selalu menempatkan rasa cinta tanah air sebagai bagian integral dari iman (hubbul wathan minal iman), menjadikan Indonesia laboratorium kerukunan Islam dan demokrasi terbaik di dunia.",
-    pageReference: "Buku SKI Kelas XII Kemenag — Bab V (hlm. 188)",
+    pageReference: "Bab V (hlm. 188)",
   },
 ];
 
@@ -787,7 +787,7 @@ export const KELAS_XII_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xii-bab-1-kerajaan-nusantara",
     name: "Bab I: Kerajaan Islam Nusantara",
-    subtitle: "Buku Siswa Kemenag RI — Samudera Pasai, Malaka, Aceh, Demak, Mataram, Banten, Gowa, Ternate (10 Soal A–E)",
+    subtitle: "Samudera Pasai, Malaka, Aceh, Demak, Mataram, Banten, Gowa, Ternate",
     gradeLevel: "XII",
     updatedAt: '2025-01-20',
     questions: KELAS_XII_BAB_1_QUESTIONS,
@@ -795,7 +795,7 @@ export const KELAS_XII_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xii-bab-2-ulama-awal",
     name: "Bab II: Peran Ulama Awal Prakemerdekaan",
-    subtitle: "Buku Siswa Kemenag RI — Hamzah Fansuri, Ar-Raniri, Singkili, Arsyad Al-Banjari, Nawawi Al-Bantani (10 Soal A–E)",
+    subtitle: "Hamzah Fansuri, Ar-Raniri, Singkili, Arsyad Al-Banjari, Nawawi Al-Bantani",
     gradeLevel: "XII",
     updatedAt: '2025-01-20',
     questions: KELAS_XII_BAB_2_QUESTIONS,
@@ -803,7 +803,7 @@ export const KELAS_XII_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xii-bab-3-organisasi-islam",
     name: "Bab III: Organisasi Islam Prakemerdekaan",
-    subtitle: "Buku Siswa Kemenag RI — Sarekat Islam, Muhammadiyah, NU, Persis, Al-Irsyad, Perti & MIAI (10 Soal A–E)",
+    subtitle: "Sarekat Islam, Muhammadiyah, NU, Persis, Al-Irsyad, Perti & MIAI",
     gradeLevel: "XII",
     updatedAt: '2025-01-20',
     questions: KELAS_XII_BAB_3_QUESTIONS,
@@ -811,7 +811,7 @@ export const KELAS_XII_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xii-bab-4-kemerdekaan",
     name: "Bab IV: Umat Islam Masa Kemerdekaan",
-    subtitle: "Buku Siswa Kemenag RI — Piagam Jakarta, Resolusi Jihad 22 Okt, Laskar Hizbullah, Kemenag & Mosi Integral (10 Soal A–E)",
+    subtitle: "Piagam Jakarta, Resolusi Jihad 22 Okt, Laskar Hizbullah, Kemenag & Mosi Integral",
     gradeLevel: "XII",
     updatedAt: '2025-01-20',
     questions: KELAS_XII_BAB_4_QUESTIONS,
@@ -819,7 +819,7 @@ export const KELAS_XII_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-xii-bab-5-tokoh-berpengaruh",
     name: "Bab V: Tokoh Islam Pascakemerdekaan RI",
-    subtitle: "Buku Siswa Kemenag RI — Buya Hamka, Gus Dur, Natsir, Achmad Siddiq, B.J. Habibie, Cak Nur & Azra (10 Soal A–E)",
+    subtitle: "Buya Hamka, Gus Dur, Natsir, Achmad Siddiq, B.J. Habibie, Cak Nur & Azra",
     gradeLevel: "XII",
     updatedAt: '2025-01-20',
     questions: KELAS_XII_BAB_5_QUESTIONS,

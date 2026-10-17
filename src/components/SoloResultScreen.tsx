@@ -120,13 +120,13 @@ export const SoloResultScreen: React.FC<SoloResultScreenProps> = ({
   };
 
   const handleDownloadPdf = async () => {
-    if (!printablePaperRef.current) return;
     setIsGeneratingPdf(true);
     const student = (soloState.studentName || 'Siswa').trim().replace(/[^a-zA-Z0-9_-]/g, '_');
     const bab = packageName.replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 25);
     const filename = `Rapor_SKI_${student}_${bab}.pdf`;
 
-    const ok = await exportReportToPdf(printablePaperRef.current, filename);
+    const html = generateOfficialReportHtml(reportData);
+    const ok = await exportReportToPdf(html, filename);
     setIsGeneratingPdf(false);
     if (!ok) {
       // Fallback to HTML download if PDF generation encounters browser restriction
@@ -209,7 +209,7 @@ export const SoloResultScreen: React.FC<SoloResultScreenProps> = ({
 
             {/* PREDIKAT BADGE */}
             <div className={`mt-4 rounded-xl border p-3 text-center max-w-md w-full shadow-lg ${predikatColor}`}>
-              <div className="font-display text-lg sm:text-xl font-extrabold tracking-wide">
+              <div className="font-arabic text-xl sm:text-2xl font-bold tracking-wide">
                 {predikatArab}
               </div>
               <p className="text-xs sm:text-sm font-medium mt-0.5">
@@ -411,7 +411,7 @@ export const SoloResultScreen: React.FC<SoloResultScreenProps> = ({
                     Cetak & Unduh Rapor Kuis Siswa
                   </h3>
                   <p className="text-xs text-slate-300">
-                    Format Resmi Evaluasi SKI Madrasah Aliyah · Kemenag RI
+                    Format Evaluasi SKI Madrasah Aliyah
                   </p>
                 </div>
               </div>
@@ -508,7 +508,7 @@ export const SoloResultScreen: React.FC<SoloResultScreenProps> = ({
                 {/* KOP RESMI */}
                 <div className="text-center border-b-2 border-slate-900 pb-3 mb-4">
                   <div className="text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-700">
-                    KEMENTERIAN AGAMA REPUBLIK INDONESIA
+                    MADRASAH ALIYAH
                   </div>
                   <div className="text-base sm:text-xl font-black uppercase text-slate-900 mt-0.5">
                     LEMBAR HASIL EVALUASI PEMBELAJARAN MANDIRI
@@ -517,7 +517,7 @@ export const SoloResultScreen: React.FC<SoloResultScreenProps> = ({
                     MATA PELAJARAN SEJARAH KEBUDAYAAN ISLAM (SKI)
                   </div>
                   <div className="text-[11px] text-slate-500 mt-1">
-                    Sesuai Standar Kurikulum Madrasah Aliyah Kemenag RI · Jejak SKI
+                    Evaluasi Pembelajaran Mandiri Siswa
                   </div>
                 </div>
 

@@ -17,7 +17,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Zaman Jahiliyah bukan berarti bodoh secara intelektual atau sastra, melainkan kebodohan moral dan spiritual: menyembah berhala, membunuh bayi perempuan karena takut aib, fanatisme suku (asabiyah), dan ketiadaan pedoman wahyu.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 4-6)",
+    pageReference: "Bab I (hlm. 4-6)",
   },
   {
     id: "x-bab1-2",
@@ -32,7 +32,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Malaikat Jibril menyampaikan wahyu pertama \"Iqra' bismi rabbikalladzi khalaq\" (QS. Al-Alaq: 1-5) di Gua Hira, yang memerintahkan manusia untuk membaca dan belajar dengan nama Allah Yang Maha Pencipta.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 8)",
+    pageReference: "Bab I (hlm. 8)",
   },
   {
     id: "x-bab1-3",
@@ -47,7 +47,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Darul Arqam (rumah sahabat Arqam bin Abi Arqam Al-Makhzumi) menjadi markas rahasia dakwah Islam pertama untuk membina aqidah Assabiqunal Awwalun sebelum dakwah dilakukan secara terang-terangan.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 10)",
+    pageReference: "Bab I (hlm. 10)",
   },
   {
     id: "x-bab1-4",
@@ -62,7 +62,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "QS. Al-Hijr ayat 94 berbunyi: \"Fashda' bima tu'mar wa a'ridh 'anil musyrikin\" (Maka sampaikanlah secara terang-terangan apa yang diperintahkan kepadamu dan berpalinglah dari orang-orang musyrik).",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 12)",
+    pageReference: "Bab I (hlm. 12)",
   },
   {
     id: "x-bab1-5",
@@ -77,7 +77,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Ja'far bin Abi Thalib memimpin hijrah kedua ke Habasyah dan dengan fasih membacakan Surah Maryam di hadapan Raja Najasyi (Ashamah) yang adil dan beragama Nasrani, sehingga kaum muslimin dilindungi penuh.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 15)",
+    pageReference: "Bab I (hlm. 15)",
   },
   {
     id: "x-bab1-6",
@@ -92,7 +92,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Piagam pemboikotan yang digantung di dinding Ka'bah melarang keras segala bentuk transaksi ekonomi, pernikahan, dan pergaulan sosial dengan Bani Hasyim hingga mereka menyerahkan Nabi Muhammad Saw. Pemboikotan ini berakhir saat piagam itu dimakan rayap.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 17)",
+    pageReference: "Bab I (hlm. 17)",
   },
   {
     id: "x-bab1-7",
@@ -107,7 +107,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Wafatnya paman beliau Abu Thalib (benteng politik) dan istri tercinta Ummul Mukminin Khadijah ra. (penopang jiwa dan harta) dalam rentang waktu berdekatan menjadi ujian berat yang mengawali anugerah Isra Mikraj.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 19)",
+    pageReference: "Bab I (hlm. 19)",
   },
   {
     id: "x-bab1-8",
@@ -122,7 +122,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Isra Mikraj terjadi pada 27 Rajab tahun ke-10 kenabian (621 M), menghibur duka Rasulullah Saw. dan mengukuhkan keimanan umat Islam melalui pensyariatan shalat lima waktu.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 20)",
+    pageReference: "Bab I (hlm. 20)",
   },
   {
     id: "x-bab1-9",
@@ -137,7 +137,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Mus'ab bin Umair ra. diutus ke Yatsrib dan berhasil mengislamkan banyak tokoh berpengaruh seperti Sa'ad bin Mu'adz dan Usaid bin Hudhair sehingga hampir seluruh rumah penduduk Yatsrib mengenal Islam.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 22)",
+    pageReference: "Bab I (hlm. 22)",
   },
   {
     id: "x-bab1-10",
@@ -152,7 +152,7 @@ export const KELAS_X_BAB_1_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Strategi hijrah Nabi penuh perhitungan matang: Ali menggantikan posisi tidur Nabi untuk mengelabui kepungan Quraisy, dan Nabi bersama Abu Bakar bersembunyi di Gua Tsur dibantu Abdullah bin Abi Bakar (pencari kabar) dan Asma binti Abi Bakar (pembawa bekal).",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab I (hlm. 25)",
+    pageReference: "Bab I (hlm. 25)",
   },
 ];
 
@@ -173,7 +173,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Masjid Nabawi didirikan di atas tanah anak yatim Sahl dan Suhail. Masjid tidak hanya menjadi tempat shalat, tetapi juga pusat pendidikan (Suffah), balai diplomasi, dan markas komando kenegaraan.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 30)",
+    pageReference: "Bab II (hlm. 30)",
   },
   {
     id: "x-bab2-2",
@@ -188,7 +188,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Rasulullah mempersaudarakan sahabat Muhajirin (seperti Abdurrahman bin Auf dengan Sa'ad bin Ar-Rabi') demi melenyapkan fanatisme asabiyah jahiliyah dan menanamkan solidaritas ukhuwah Islamiyah yang kokoh.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 32)",
+    pageReference: "Bab II (hlm. 32)",
   },
   {
     id: "x-bab2-3",
@@ -203,7 +203,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Piagam Madinah (Konstitusi Madinah) menjamin kebebasan beragama bagi kaum Yahudi, menegaskan persamaan hak warga negara di muka hukum, serta mewajibkan seluruh elemen mempertahankan Madinah dari serangan musuh luar.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 34)",
+    pageReference: "Bab II (hlm. 34)",
   },
   {
     id: "x-bab2-4",
@@ -218,7 +218,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Perang Badar terjadi dengan perbandingan 313 pejuang muslim menghadapi 1.000 pasukan Quraisy bersenjata lengkap. Pertolongan Allah membawa kemenangan gemilang bagi kaum muslimin dan menewaskan tokoh Quraisy Abu Jahal.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 38)",
+    pageReference: "Bab II (hlm. 38)",
   },
   {
     id: "x-bab2-5",
@@ -233,7 +233,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Nabi menempatkan 50 pemanah di Bukit Rumat di bawah pimpinan Abdullah bin Jubair dengan perintah mutlak tidak boleh turun apapun yang terjadi. Sebagian besar pemanah turun mengambil ghanimah, memberi ruang bagi Khalid bin Walid melancarkan serangan balik dari belakang.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 40)",
+    pageReference: "Bab II (hlm. 40)",
   },
   {
     id: "x-bab2-6",
@@ -248,7 +248,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Salman Al-Farisi mengusulkan teknik pembuatan khandaq (parit lebar dan dalam) yang lazim digunakan di Persia, sehingga koalisi pasukan Ahzab (10.000 orang) tidak mampu menembus kota Madinah.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 42)",
+    pageReference: "Bab II (hlm. 42)",
   },
   {
     id: "x-bab2-7",
@@ -263,7 +263,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Perjanjian Hudaibiyah menetapkan gencatan senjata selama 10 tahun. Meskipun awalnya terlihat merugikan muslimin secara redaksional, perjanjian ini memberi kesempatan emas bagi penyebaran dakwah Islam secara damai ke berbagai penjuru dunia.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 46)",
+    pageReference: "Bab II (hlm. 46)",
   },
   {
     id: "x-bab2-8",
@@ -278,7 +278,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Bani Bakar dibantu Quraisy membantai kabilah Bani Khuza'ah di Watir. Tindakan ini membatalkan klausul gencatan senjata Hudaibiyah, mendorong Nabi memimpin 10.000 pasukan membebaskan Makkah dan memberikan amnesti umum.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 48)",
+    pageReference: "Bab II (hlm. 48)",
   },
   {
     id: "x-bab2-9",
@@ -293,7 +293,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Haji Wada' (Haji Perpisahan) dihadiri lebih dari 100.000 sahabat di Padang Arafah. Di sini turun wahyu QS. Al-Maidah ayat 3 yang menegaskan kesempurnaan syariat agama Islam.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 50)",
+    pageReference: "Bab II (hlm. 50)",
   },
   {
     id: "x-bab2-10",
@@ -308,7 +308,7 @@ export const KELAS_X_BAB_2_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Ketabahan dan ketegasan Abu Bakar Ash-Shiddiq menyadarkan sahabat, termasuk Umar bin Khattab yang sempat terpukul dan syok, sehingga kepemimpinan umat segera dapat diselamatkan dan dimusyawarahkan.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab II (hlm. 52)",
+    pageReference: "Bab II (hlm. 52)",
   },
 ];
 
@@ -329,7 +329,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Di Saqifah Bani Sa'idah, kaum Anshar dan Muhajirin bermusyawarah secara demokratis. Umar membaiat Abu Bakar karena integritas moral, senioritas, dan telah ditunjuk langsung oleh Nabi mengimami shalat semasa beliau sakit.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 58)",
+    pageReference: "Bab III (hlm. 58)",
   },
   {
     id: "x-bab3-2",
@@ -344,7 +344,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Abu Bakar bertindak tegas membentuk 11 divisi pasukan untuk menumpas pembangkang zakat, kelompok murtad, serta nabi palsu (Musailamah Al-Kadzab, Tulaihah, Aswad Al-Ansi), menyelamatkan keutuhan tauhid dan negara.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 60)",
+    pageReference: "Bab III (hlm. 60)",
   },
   {
     id: "x-bab3-3",
@@ -359,7 +359,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Sekitar 70 penghafal Al-Qur'an gugur di Yamamah. Umar khawatir Al-Qur'an hilang jika para huffadz terus berkurang, sehingga Abu Bakar menugaskan Zaid bin Tsabit mengumpulkan lembaran-lembaran Al-Qur'an menjadi satu mushaf induk.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 62)",
+    pageReference: "Bab III (hlm. 62)",
   },
   {
     id: "x-bab3-4",
@@ -374,7 +374,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Umar menetapkan peristiwa Hijrah Nabi ke Madinah sebagai tahun 1 Hijriyah, membentuk Diwanul Jund (pembayaran gaji militer), Baitul Mal, serta jabatan qadhi (hakim independen).",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 66)",
+    pageReference: "Bab III (hlm. 66)",
   },
   {
     id: "x-bab3-5",
@@ -389,7 +389,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Umar datang sendiri dengan pakaian sederhana menerima kunci kota dari Patriark Sophronius dan memberikan Perjanjian Keamanan (Iliya / Al-Uhda Al-Umariyyah) yang menjamin perlindungan gereja, salib, dan harta umat Nasrani.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 68)",
+    pageReference: "Bab III (hlm. 68)",
   },
   {
     id: "x-bab3-6",
@@ -404,7 +404,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Melihat perselisihan bacaan Al-Qur'an di medan perang Armenia-Azerbaijan yang dilaporkan Hudzaifah bin Al-Yaman, Utsman menugaskan Zaid bin Tsabit menyalin mushaf ke dalam dialek Quraisy dan menggandakannya ke berbagai penjuru (Mushaf Al-Imam / Rasm Utsmani).",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 72)",
+    pageReference: "Bab III (hlm. 72)",
   },
   {
     id: "x-bab3-7",
@@ -419,7 +419,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Khalifah Utsman menyetujui usulan gubernur Syam Muawiyah bin Abu Sufyan untuk mendirikan armada laut Islam pertama, yang berhasil menaklukkan pulau Siprus dan memenangkan pertempuran laut Dzat Ash-Shawari (655 M) melawan Bizantium.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 74)",
+    pageReference: "Bab III (hlm. 74)",
   },
   {
     id: "x-bab3-8",
@@ -434,7 +434,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Ali bin Abi Thalib menegakkan integritas dengan mengganti para gubernur yang nepotis dan menarik kembali tanah-tanah hibah milik negara ke Baitul Mal untuk dibagikan secara adil kepada rakyat miskin.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 78)",
+    pageReference: "Bab III (hlm. 78)",
   },
   {
     id: "x-bab3-9",
@@ -449,7 +449,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Peristiwa Tahkim melahirkan faksi Khawarij (keluar dari kubu Ali karena menganggap hukum selain Allah adalah kafir/La Hukma Illa Lillah) dan faksi Syiah (pendukung setia keturunan Ali), yang mewarnai dinamika politik sejarah Islam selanjutnya.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 82)",
+    pageReference: "Bab III (hlm. 82)",
   },
   {
     id: "x-bab3-10",
@@ -464,7 +464,7 @@ export const KELAS_X_BAB_3_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Wafatnya Khalifah Ali pada 17 Ramadhan 40 H mengakhiri era Khulafaurasyidin yang berlandaskan musyawarah dan integritas kenabian, yang kemudian dilanjutkan oleh kekuasaan monarki dinasti Daulah Umayyah.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab III (hlm. 84)",
+    pageReference: "Bab III (hlm. 84)",
   },
 ];
 
@@ -485,7 +485,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Amul Jama'ah (Tahun Persatuan) adalah momentum mulia ketika Hasan bin Ali melepaskan tampuk kekhalifahan demi mencegah pertumpahan darah sesama muslim, menyatukan kembali kepemimpinan umat di bawah Muawiyah.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 92)",
+    pageReference: "Bab IV (hlm. 92)",
   },
   {
     id: "x-bab4-2",
@@ -500,7 +500,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Muawiyah mengangkat putranya Yazid bin Muawiyah sebagai putra mahkota, meresmikan peralihan kepemimpinan Islam dari pemilihan musyawarah menjadi monarki dinasti dinasti turun-temurun.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 94)",
+    pageReference: "Bab IV (hlm. 94)",
   },
   {
     id: "x-bab4-3",
@@ -515,7 +515,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Diwanul Barid adalah departemen pos cepat dengan pos-pos kuda berganti di sepanjang rute strategis, memangkas waktu pengiriman perintah khalifah dan laporan intelijen militer.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 96)",
+    pageReference: "Bab IV (hlm. 96)",
   },
   {
     id: "x-bab4-4",
@@ -530,7 +530,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Abdul Malik menetapkan bahasa Arab sebagai bahasa resmi tata usaha negara dan mencetak koin dinar emas serta dirham perak berukir kaligrafi kalimat tauhid menggantikan koin Romawi dan Persia.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 98)",
+    pageReference: "Bab IV (hlm. 98)",
   },
   {
     id: "x-bab4-5",
@@ -545,7 +545,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Qubbah As-Sakhrah (selesai 691 M) di kompleks Al-Aqsha Yerusalem adalah monumen arsitektur monumental oktagonal berhias mosaik marmer dan kaligrafi tertua dalam seni bina Islam.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 100)",
+    pageReference: "Bab IV (hlm. 100)",
   },
   {
     id: "x-bab4-6",
@@ -560,7 +560,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Di bawah Walid bin Abdul Malik, Thariq bin Ziyad membebaskan Andalusia (Spanyol), Qutaibah bin Muslim menaklukkan Transoxiana (Asia Tengah), dan Muhammad bin Qasim menaklukkan wilayah Sindh di anak benua India.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 102)",
+    pageReference: "Bab IV (hlm. 102)",
   },
   {
     id: "x-bab4-7",
@@ -575,7 +575,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Khalifah Umar bin Abdul Aziz (memerintah 717–720 M) mereformasi korupsi pejabat, mengembalikan tanah rampasan ke kas negara, menghentikan caci maki atas Ali di mimbar, serta menjunjung keadilan sosial hingga sulit ditemukan penerima zakat.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 104)",
+    pageReference: "Bab IV (hlm. 104)",
   },
   {
     id: "x-bab4-8",
@@ -590,7 +590,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Atas arahan Ziyad bin Abih dan Khalifah Abdul Malik bin Marwan, Abu Al-Aswad Ad-Du'ali merintis pemberian tanda titik warna, yang kemudian disempurnakan oleh muridnya Nashr bin Ashim dan Yahya bin Ya'mar demi memudahkan kaum non-Arab membaca Al-Qur'an.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 106)",
+    pageReference: "Bab IV (hlm. 106)",
   },
   {
     id: "x-bab4-9",
@@ -605,7 +605,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Sentimen arabisme yang meminggirkan muslim non-Arab (Mawali seperti bangsa Persia) memicu ketidakpuasan luas yang dimanfaatkan kelompok Abbasiyah, berujung kekalahan khalifah terakhir Marwan II di Pertempuran Zab.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 110)",
+    pageReference: "Bab IV (hlm. 110)",
   },
   {
     id: "x-bab4-10",
@@ -620,7 +620,7 @@ export const KELAS_X_BAB_4_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Masjid Damaskus selesai dibangun pada 715 M dengan menara indah, marmer mewah, dan mosaik pohon surga berlapis emas, menjadi salah satu warisan arsitektur teragung peradaban Islam awal.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab IV (hlm. 108)",
+    pageReference: "Bab IV (hlm. 108)",
   },
 ];
 
@@ -641,7 +641,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Thariq bin Ziyad bersama 7.000 pasukan Berber mendarat di selat yang memisahkan Afrika dan Eropa, membakar kapal perangnya untuk menggelorakan semangat juang, dan mengalahkan pasukan Raja Visigoth Roderick.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 116)",
+    pageReference: "Bab V (hlm. 116)",
   },
   {
     id: "x-bab5-2",
@@ -656,7 +656,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Abdurrahman Ad-Dakhil (Sang Pendatang) mengarungi padang pasir Afrika Utara sendirian hingga tiba di Spanyol, menyatukan faksi-faksi yang bertikai, dan meletakkan dasar kekuasaan Dinasti Umayyah di Cordoba.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 118)",
+    pageReference: "Bab V (hlm. 118)",
   },
   {
     id: "x-bab5-3",
@@ -671,7 +671,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Masjid Cordoba memiliki lebih dari 850 tiang marmer berhias lengkungan ganda berwarna merah-putih (horseshoe arches) dan mihrab megah berbalut kaligrafi emas kiriman Kaisar Bizantium.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 120)",
+    pageReference: "Bab V (hlm. 120)",
   },
   {
     id: "x-bab5-4",
@@ -686,7 +686,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Abdurrahman III mendeklarasikan gelar Khalifah demi menandingi Daulah Abbasiyah di Baghdad dan Daulah Fathimiyah di Kairo, mengantarkan Cordoba ke puncak kemakmuran militer dan intelektual.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 122)",
+    pageReference: "Bab V (hlm. 122)",
   },
   {
     id: "x-bab5-5",
@@ -701,7 +701,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Madinatuz Zahra terletak di kaki bukit Sierra Morena, dibangun selama 40 tahun dengan aula bertabur emas dan kristal, menjadi simbol kemewahan dan puncak cita rasa seni Andalusia.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 124)",
+    pageReference: "Bab V (hlm. 124)",
   },
   {
     id: "x-bab5-6",
@@ -716,7 +716,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Ibnu Rusyd (lahir di Cordoba 1126 M) adalah seorang faqih bermazhab Maliki, qadhi besar, dokter, dan filsuf rasionalis yang karya komentarnya memicu era Renaisans di Eropa Barat.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 128)",
+    pageReference: "Bab V (hlm. 128)",
   },
   {
     id: "x-bab5-7",
@@ -731,7 +731,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Az-Zahrawi merancang lebih dari 200 alat bedah inovatif dan menulis ensiklopedia bedah At-Tashrif liman 'Ajiza 'an At-Ta'lif yang menjadi buku rujukan wajib fakultas kedokteran Eropa selama lebih dari lima abad.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 130)",
+    pageReference: "Bab V (hlm. 130)",
   },
   {
     id: "x-bab5-8",
@@ -746,7 +746,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Ibnu Thufail (wafat 1185 M) menulis roman filosofis Hayy bin Yaqzhan yang diterjemahkan ke dalam bahasa Latin dan Inggris, serta mengilhami penulisan karya sastra dunia seperti Robinson Crusoe.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 132)",
+    pageReference: "Bab V (hlm. 132)",
   },
   {
     id: "x-bab5-9",
@@ -761,7 +761,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Era Muluk At-Thawaif (1031–1086 M) membagi Andalusia menjadi sekitar 30 emirat kecil (Seville, Toledo, Granada, Saragosa) yang lemah dan saling meminta bantuan penguasa Kristen untuk saling menjatuhkan.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 136)",
+    pageReference: "Bab V (hlm. 136)",
   },
   {
     id: "x-bab5-10",
@@ -776,7 +776,7 @@ export const KELAS_X_BAB_5_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Jatuhnya Granada pada 1492 M mengakhiri hampir 8 abad (781 tahun) kejayaan peradaban Islam di bumi Andalusia, disusul pemberlakuan dekrit pemaksaan agama dan pengusiran kaum muslim Morisko.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab V (hlm. 138)",
+    pageReference: "Bab V (hlm. 138)",
   },
 ];
 
@@ -797,7 +797,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Abdullah bin Muhammad bin Ali yang bergelar Abu Abbas As-Saffah (Sang Penumpah Darah/Tegas pada musuh) memimpin revolusi gabungan Bani Hasyim dan bangsa Persia untuk menumbangkan Daulah Umayyah.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 144)",
+    pageReference: "Bab VI (hlm. 144)",
   },
   {
     id: "x-bab6-2",
@@ -812,7 +812,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Abu Ja'far Al-Manshur memilih lokasi strategis di tepi sungai Tigris, membangun Baghdad sebagai kota bundar dengan empat pintu gerbang utama yang menjadi pusat perdagangan dan kebudayaan dunia.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 146)",
+    pageReference: "Bab VI (hlm. 146)",
   },
   {
     id: "x-bab6-3",
@@ -827,7 +827,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Era Harun Ar-Rasyid (786–809 M) dan Al-Ma'mun (813–833 M) ditandai stabilitas ekonomi makmur, hubungan diplomasi dengan Charlemagne (Raja Franka), dan berkembang pesatnya gerakan ilmu pengetahuan.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 148)",
+    pageReference: "Bab VI (hlm. 148)",
   },
   {
     id: "x-bab6-4",
@@ -842,7 +842,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Baitul Hikmah menjadi pusat riset dan penerjemahan internasional terlengkap di mana para penerjemah (seperti Hunain bin Ishaq) diganjar emas seberat buku yang berhasil mereka terjemahkan.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 150)",
+    pageReference: "Bab VI (hlm. 150)",
   },
   {
     id: "x-bab6-5",
@@ -857,7 +857,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "E",
     explanation: "Al-Khawarizmi mengabdi di Baitul Hikmah Baghdad. Istilah \"Algebra\" berasal dari bukunya al-Jabr, dan namanya diabstraksikan menjadi istilah matematika modern \"Algoritma\".",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 152)",
+    pageReference: "Bab VI (hlm. 152)",
   },
   {
     id: "x-bab6-6",
@@ -872,7 +872,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Ibnu Sina (980–1037 M) mengkodifikasikan ilmu kedokteran modern, menemukan penularan penyakit lewat air dan udara, anatomi mata, serta farmakologi herbal dalam kitab monumental Al-Qanun.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 154)",
+    pageReference: "Bab VI (hlm. 154)",
   },
   {
     id: "x-bab6-7",
@@ -887,7 +887,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "B",
     explanation: "Al-Kindi (lahir di Kufah 801 M) dijuluki \"Filosof Bangsa Arab\" (Faylasuf al-Arab) karena kepeloporannya menerjemahkan dan mengomentari karya-karya Aristoteles dan Plotinus.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 156)",
+    pageReference: "Bab VI (hlm. 156)",
   },
   {
     id: "x-bab6-8",
@@ -902,7 +902,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "C",
     explanation: "Madrasah Nidhamiyah menyediakan pendidikan tinggi gratis lengkap dengan asrama, beasiswa, dan perpustakaan, menjadi model perguruan tinggi modern pertama dalam sejarah dunia Islam.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 158)",
+    pageReference: "Bab VI (hlm. 158)",
   },
   {
     id: "x-bab6-9",
@@ -917,7 +917,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "D",
     explanation: "Hulagu Khan mengepung Baghdad, membunuh Khalifah terakhir Al-Musta'shim Billah, membantai ratusan ribu warga, serta membuang jutaan naskah berharga Baitul Hikmah ke sungai Tigris hingga airnya menghitam oleh tinta.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 162)",
+    pageReference: "Bab VI (hlm. 162)",
   },
   {
     id: "x-bab6-10",
@@ -932,7 +932,7 @@ export const KELAS_X_BAB_6_QUESTIONS: QuizQuestion[] = [
     },
     correctAnswer: "A",
     explanation: "Zaman Abbasiyah adalah masa emas kodifikasi (tadwin) ilmu-ilmu keislaman: ushul fiqih, hadits kutubus sittah, tafsir bi al-ma'tsur, dan ilmu kalam yang menjadi fondasi keilmuan Islam hingga kini.",
-    pageReference: "Buku SKI Kelas X Kemenag — Bab VI (hlm. 164)",
+    pageReference: "Bab VI (hlm. 164)",
   },
 ];
 
@@ -943,7 +943,7 @@ export const KELAS_X_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-x-bab-1-makkah",
     name: "Bab I: Perkembangan Islam Periode Makkah",
-    subtitle: "Buku Siswa Kemenag RI — Masa Kerasulan, Dakwah Sirriyah & Jahriyah, Hijrah (10 Soal A–E)",
+    subtitle: "Masa Kerasulan, Dakwah Sirriyah & Jahriyah, Hijrah",
     gradeLevel: "X",
     updatedAt: '2025-01-20',
     questions: KELAS_X_BAB_1_QUESTIONS,
@@ -951,7 +951,7 @@ export const KELAS_X_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-x-bab-2-madinah",
     name: "Bab II: Perkembangan Islam Periode Madinah",
-    subtitle: "Buku Siswa Kemenag RI — Piagam Madinah, Muakhah, Peperangan Membela Diri, Fathu Makkah",
+    subtitle: "Piagam Madinah, Muakhah, Peperangan Membela Diri, Fathu Makkah",
     gradeLevel: "X",
     updatedAt: '2025-01-20',
     questions: KELAS_X_BAB_2_QUESTIONS,
@@ -959,7 +959,7 @@ export const KELAS_X_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-x-bab-3-khulafaurasyidin",
     name: "Bab III: Masa Khulafaurasyidin",
-    subtitle: "Buku Siswa Kemenag RI — Abu Bakar, Umar, Utsman, Ali: Suksesi, Kodifikasi, Kepemimpinan",
+    subtitle: "Abu Bakar, Umar, Utsman, Ali: Suksesi, Kodifikasi, Kepemimpinan",
     gradeLevel: "X",
     updatedAt: '2025-01-20',
     questions: KELAS_X_BAB_3_QUESTIONS,
@@ -967,7 +967,7 @@ export const KELAS_X_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-x-bab-4-umayyah-damaskus",
     name: "Bab IV: Daulah Umayyah di Damaskus",
-    subtitle: "Buku Siswa Kemenag RI — Muawiyah, Amul Jama'ah, Diwanul Barid, Perluasan & Kemunduran",
+    subtitle: "Muawiyah, Amul Jama'ah, Diwanul Barid, Perluasan & Kemunduran",
     gradeLevel: "X",
     updatedAt: '2025-01-20',
     questions: KELAS_X_BAB_4_QUESTIONS,
@@ -975,7 +975,7 @@ export const KELAS_X_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-x-bab-5-umayyah-andalusia",
     name: "Bab V: Daulah Umayyah di Andalusia",
-    subtitle: "Buku Siswa Kemenag RI — Thariq bin Ziyad, Cordoba, Az-Zahrawi, Ibnu Rusyd, Granada",
+    subtitle: "Thariq bin Ziyad, Cordoba, Az-Zahrawi, Ibnu Rusyd, Granada",
     gradeLevel: "X",
     updatedAt: '2025-01-20',
     questions: KELAS_X_BAB_5_QUESTIONS,
@@ -983,7 +983,7 @@ export const KELAS_X_PACKAGES: QuestionPackage[] = [
   {
     id: "pkg-x-bab-6-abbasiyah",
     name: "Bab VI: Masa Daulah Abbasiyah",
-    subtitle: "Buku Siswa Kemenag RI — Baghdad, Baitul Hikmah, Harun Ar-Rasyid, Al-Khawarizmi, Ibnu Sina",
+    subtitle: "Baghdad, Baitul Hikmah, Harun Ar-Rasyid, Al-Khawarizmi, Ibnu Sina",
     gradeLevel: "X",
     updatedAt: '2025-01-20',
     questions: KELAS_X_BAB_6_QUESTIONS,

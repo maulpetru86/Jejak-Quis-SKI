@@ -2,20 +2,31 @@
 
 @layer base {
   :root {
-    --font-display: 'Cinzel', Georgia, serif;
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-sans: 'Lexend', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: 'Plus Jakarta Sans', 'Lexend', system-ui, sans-serif;
+    --font-arabic: 'Amiri', 'Times New Roman', serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
 
   body {
     font-family: var(--font-sans);
     background-color: #0A122C;
-    color: #FFFDF7;
+    color: #F8FAFC;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.6;
+    letter-spacing: -0.011em;
   }
 
-  h1, h2, .font-display {
-    font-family: var(--font-display);
+  h1, h2, h3, h4, .font-heading, .font-display {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+
+  .font-arabic {
+    font-family: var(--font-arabic);
   }
 
   .font-mono-tabular {
