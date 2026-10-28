@@ -33,6 +33,9 @@ export function shuffleQuestionOptions(question: QuizQuestion): QuizQuestion {
 
   // Find which entry text was correct
   const correctText = question.options[question.correctAnswer];
+  if (!correctText) {
+    return { ...question };
+  }
 
   // Shuffle the texts among the available slots
   const shuffledTexts = shuffleArray(activeEntries.map((e) => e.text));

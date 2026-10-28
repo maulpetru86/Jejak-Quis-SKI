@@ -44,20 +44,123 @@ type AppScreen =
   | 'podium'
   | 'solo_result';
 
+const LEGACY_SAMPLE_IDS = new Set([
+  'pkg-daulah-umayyah',
+  'pkg-daulah-abbasiyah',
+  'pkg-daulah-usmani',
+  'pkg-daulah-safawi',
+  'pkg-daulah-mughal',
+  'pkg-pembaruan-islam',
+  'pkg-nusantara-walisongo',
+  'pkg-kerajaan-organisasi',
+  'pkg-umayyah',
+  'pkg-abbasiyah',
+  'pkg-usmani',
+  'pkg-safawi',
+  'pkg-mughal',
+  'pkg-pembaruan',
+  'pkg-nusantara',
+  'pkg-kerajaan',
+  'daulah-umayyah',
+  'daulah-abbasiyah',
+  'daulah-usmani',
+  'daulah-safawi',
+  'daulah-mughal',
+  'pembaruan-islam',
+  'nusantara-walisongo',
+  'kerajaan-organisasi',
+  'pkg-1',
+  'pkg-2',
+  'pkg-3',
+  'pkg-4',
+  'pkg-5',
+  'pkg-6',
+  'pkg-7',
+  'pkg-8',
+]);
+
+const LEGACY_SAMPLE_NAMES = new Set([
+  'Daulah Umayyah di Damaskus',
+  'Daulah Abbasiyah di Baghdad',
+  'Daulah Usmani di Turki',
+  'Daulah Safawi di Persia',
+  'Daulah Mughal di India',
+  'Pembaruan Islam di Dunia Modern',
+  'Islam di Nusantara & Peran Walisongo',
+  'Kerajaan Islam & Organisasi Pergerakan Indonesia',
+]);
+
+// Helper to determine if a stored package is a genuine custom package created by the teacher
+const isGenuineCustomPackage = (p: QuestionPackage): boolean => {
+  if (!p || typeof p !== 'object' || !p.id || !p.name) return false;
+  // If it's already one of the official 16 packages, skip (always use fresh code definition)
+  if (INITIAL_PACKAGES.some((init) => init.id === p.id)) return false;
+
+  // Reject legacy sample IDs or names
+  if (LEGACY_SAMPLE_IDS.has(p.id)) return false;
+  if (LEGACY_SAMPLE_NAMES.has(p.name)) return false;
+
+  // Reject any official bab naming patterns from older versions (e.g. Bab I:, Bab 1:, Bab VII:, etc.)
+  if (/^Bab\s+([IVX0-9]+)\s*:/i.test(p.name)) return false;
+  if (/^(Daulah|Peradaban|Kebudayaan|Sejarah|Perkembangan)\s+/i.test(p.name)) return false;
+
+  // Reject legacy system ID prefixes
+  if (
+    p.id.startsWith('pkg-x-') ||
+    p.id.startsWith('pkg-xi-') ||
+    p.id.startsWith('pkg-xii-') ||
+    p.id.startsWith('pkg-daulah-') ||
+    p.id.startsWith('daulah-') ||
+    p.id.startsWith('pkg-bab-') ||
+    p.id.startsWith('pkg-umayyah') ||
+    p.id.startsWith('pkg-abbasiyah') ||
+    p.id.startsWith('pkg-usmani') ||
+    p.id.startsWith('pkg-safawi') ||
+    p.id.startsWith('pkg-mughal') ||
+    p.id.startsWith('pkg-pembaruan') ||
+    p.id.startsWith('pkg-nusantara') ||
+    p.id.startsWith('pkg-kerajaan')
+  ) {
+    return false;
+  }
+
+  // Must have explicit custom flag or teacher-created ID pattern
+  if (p.isCustom) return true;
+  if (/^pkg-(custom-)?\d{10,}$/.test(p.id)) return true;
+
+  return false;
+};
+
 export default function App() {
   const [packages, setPackages] = useState<QuestionPackage[]>(() => {
     try {
-      const raw =
-        localStorage.getItem(STORAGE_KEYS.PACKAGES) ||
-        localStorage.getItem('ski_quiz_packages_v7');
+      // Clean up previous obsolete localStorage versions
+      const obsoleteKeys = [
+        'ski_quiz_packages_v11',
+        'ski_quiz_packages_v10',
+        'ski_quiz_packages_v9',
+        'ski_quiz_packages_v7',
+        'ski_quiz_selected_package_v11',
+        'ski_quiz_selected_package_v10',
+      ];
+      obsoleteKeys.forEach((key) => {
+        try {
+          localStorage.removeItem(key);
+        } catch {
+          // ignore
+        }
+      });
+
+      const raw = localStorage.getItem(STORAGE_KEYS.PACKAGES);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Preserve any custom packages created by the teacher
+          // Preserve only genuine custom packages created by the teacher
           const customTeacherPackages = parsed
-            .filter((p: QuestionPackage) => !INITIAL_PACKAGES.some((init) => init.id === p.id))
+            .filter(isGenuineCustomPackage)
             .map((p: QuestionPackage) => ({
               ...p,
+              isCustom: true,
               gradeLevel: p.gradeLevel || 'XI',
             }));
 
@@ -697,6 +800,12 @@ export default function App() {
   const handleRestoreSamplePackages = () => {
     setPackages(INITIAL_PACKAGES);
     setSelectedPackageId(INITIAL_PACKAGES[0].id);
+    try {
+      localStorage.setItem(STORAGE_KEYS.PACKAGES, JSON.stringify(INITIAL_PACKAGES));
+      localStorage.setItem(STORAGE_KEYS.SELECTED_PACKAGE_ID, INITIAL_PACKAGES[0].id);
+    } catch {
+      // ignore
+    }
   };
 
   const isNonGameScreen =
@@ -706,85 +815,87 @@ export default function App() {
     <div className="min-h-screen bg-islamic-pattern text-[#FFFDF7]">
       {/* TOP NAVIGATION BAR - IMPERIAL ISLAMIC ARCHITECTURE */}
       {isNonGameScreen && (
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[#F2B705]/25 bg-gradient-to-r from-[#0B142E]/98 via-[#0D1836]/95 to-[#0B142E]/98 px-3 py-2 sm:px-6 sm:py-2.5 lg:px-8 backdrop-blur-md shadow-lg shadow-black/40">
-          {/* Zone 1: Brand Title & Quiz Status */}
-          <div className="flex items-center gap-2.5 sm:gap-3.5">
-            <button
-              type="button"
-              onClick={() => setScreen('home')}
-              className="flex items-center gap-2.5 group text-left transition-all"
-            >
-              <GoldenMedallionEmblem className="h-8 w-8 sm:h-9 sm:w-9 group-hover:rotate-12 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(242,183,5,0.4)]" />
-              <div className="min-w-0">
-                <span className="font-display text-sm sm:text-base lg:text-lg font-black tracking-wide gold-gradient-text block leading-tight">
-                  Quiz Sejarah Islam
-                </span>
-                <span className="hidden sm:block text-[10px] font-bold text-slate-300 tracking-wider uppercase">
-                  Madrasah Aliyah
-                </span>
-              </div>
-            </button>
-
-            {activePackage?.gradeLevel && (
-              <span className="hidden md:inline-flex items-center gap-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 px-2.5 py-0.5 text-[11px] font-extrabold text-emerald-300 shadow-xs">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Kelas {activePackage.gradeLevel} MA</span>
-              </span>
-            )}
-          </div>
-
-          {/* Zone 2: Quick Action Buttons, Teacher Portal & Play */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5">
-            {/* Quick Guru Access Button in Navbar */}
-            <button
-              type="button"
-              onClick={() => requestTeacherAccess('question_manager', 'Portal Pengelolaan Guru')}
-              title="Akses Ruang Guru & Soal"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 hover:border-[#F2B705]/40 px-2.5 py-1.5 text-xs font-bold text-slate-200 transition-all shadow-xs"
-            >
-              <Shield className="h-3.5 w-3.5 text-[#F2B705]" />
-              <span>Ruang Guru</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={toggleSound}
-              title={settings.soundEnabled ? 'Suara Aktif' : 'Suara Dimatikan'}
-              className="rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 p-2 text-slate-200 hover:text-white transition-colors"
-              aria-label="Pengaturan Suara"
-            >
-              {settings.soundEnabled ? (
-                <Volume2 className="h-4 w-4 text-[#F2B705]" />
-              ) : (
-                <VolumeX className="h-4 w-4 text-slate-400" />
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={toggleFullscreen}
-              title="Layar Penuh Proyektor"
-              className="rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 p-2 text-slate-200 hover:text-white transition-colors hidden sm:block"
-              aria-label="Layar Penuh"
-            >
-              {isFullscreen ? (
-                <Minimize2 className="h-4 w-4 text-[#F2B705]" />
-              ) : (
-                <Maximize2 className="h-4 w-4" />
-              )}
-            </button>
-
-            {screen !== 'home' && (
+        <header className="sticky top-0 z-30 border-b border-[#F2B705]/25 bg-gradient-to-r from-[#0B142E]/98 via-[#0D1836]/95 to-[#0B142E]/98 px-3 py-2 sm:px-6 sm:py-2.5 lg:px-8 backdrop-blur-md shadow-lg shadow-black/40">
+          <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[1400px] mx-auto w-full flex items-center justify-between">
+            {/* Zone 1: Brand Title & Quiz Status */}
+            <div className="flex items-center gap-2.5 sm:gap-3.5">
               <button
                 type="button"
-                onClick={startQuiz}
-                disabled={(activePackage?.questions.length || 0) === 0}
-                className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#F2B705] via-[#F59E0B] to-[#D97706] px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-black text-[#0A122C] shadow-[0_4px_15px_rgba(242,183,5,0.35)] hover:brightness-110 active:scale-95 disabled:opacity-40 transition-all whitespace-nowrap ring-1 ring-amber-200/50"
+                onClick={() => setScreen('home')}
+                className="flex items-center gap-2.5 group text-left transition-all"
               >
-                <Play className="h-3.5 w-3.5 fill-current" />
-                <span>Mulai Kuis</span>
+                <GoldenMedallionEmblem className="h-8 w-8 sm:h-9 sm:w-9 group-hover:rotate-12 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(242,183,5,0.4)]" />
+                <div className="min-w-0">
+                  <span className="font-display text-sm sm:text-base lg:text-lg font-black tracking-wide gold-gradient-text block leading-tight">
+                    Quiz Sejarah Islam
+                  </span>
+                  <span className="hidden sm:block text-[10px] font-bold text-slate-300 tracking-wider uppercase">
+                    Madrasah Aliyah
+                  </span>
+                </div>
               </button>
-            )}
+
+              {activePackage?.gradeLevel && (
+                <span className="hidden md:inline-flex items-center gap-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 px-2.5 py-0.5 text-[11px] font-extrabold text-emerald-300 shadow-xs">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>Kelas {activePackage.gradeLevel} MA</span>
+                </span>
+              )}
+            </div>
+
+            {/* Zone 2: Quick Action Buttons, Teacher Portal & Play */}
+            <div className="flex items-center gap-1.5 sm:gap-2.5">
+              {/* Quick Guru Access Button in Navbar */}
+              <button
+                type="button"
+                onClick={() => requestTeacherAccess('question_manager', 'Portal Pengelolaan Guru')}
+                title="Akses Ruang Guru & Soal"
+                className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 hover:border-[#F2B705]/40 px-2.5 py-1.5 text-xs font-bold text-slate-200 transition-all shadow-xs"
+              >
+                <Shield className="h-3.5 w-3.5 text-[#F2B705]" />
+                <span>Ruang Guru</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={toggleSound}
+                title={settings.soundEnabled ? 'Suara Aktif' : 'Suara Dimatikan'}
+                className="rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 p-2 text-slate-200 hover:text-white transition-colors"
+                aria-label="Pengaturan Suara"
+              >
+                {settings.soundEnabled ? (
+                  <Volume2 className="h-4 w-4 text-[#F2B705]" />
+                ) : (
+                  <VolumeX className="h-4 w-4 text-slate-400" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={toggleFullscreen}
+                title="Layar Penuh Proyektor"
+                className="rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 p-2 text-slate-200 hover:text-white transition-colors hidden sm:block"
+                aria-label="Layar Penuh"
+              >
+                {isFullscreen ? (
+                  <Minimize2 className="h-4 w-4 text-[#F2B705]" />
+                ) : (
+                  <Maximize2 className="h-4 w-4" />
+                )}
+              </button>
+
+              {screen !== 'home' && (
+                <button
+                  type="button"
+                  onClick={startQuiz}
+                  disabled={(activePackage?.questions.length || 0) === 0}
+                  className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#F2B705] via-[#F59E0B] to-[#D97706] px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-black text-[#0A122C] shadow-[0_4px_15px_rgba(242,183,5,0.35)] hover:brightness-110 active:scale-95 disabled:opacity-40 transition-all whitespace-nowrap ring-1 ring-amber-200/50"
+                >
+                  <Play className="h-3.5 w-3.5 fill-current" />
+                  <span>Mulai Kuis</span>
+                </button>
+              )}
+            </div>
           </div>
         </header>
       )}
@@ -805,6 +916,7 @@ export default function App() {
           onOpenTeamSettings={() =>
             requestTeacherAccess('team_settings', 'Pengaturan Tim & Tombol')
           }
+          onRestoreOfficialPackages={handleRestoreSamplePackages}
         />
       )}
 

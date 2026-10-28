@@ -138,7 +138,7 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
 
   // --- PACKAGE CRUD ---
   const handleCreatePackage = () => {
-    const newId = `pkg-${Date.now()}`;
+    const newId = `pkg-custom-${Date.now()}`;
     const targetGrade: GradeLevel = mgrGradeFilter === 'ALL' ? 'XI' : mgrGradeFilter;
     const newPkg: QuestionPackage = {
       id: newId,
@@ -146,6 +146,7 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
       name: `Materi Baru (${packages.length + 1})`,
       subtitle: `Kelas ${targetGrade} Madrasah Aliyah — SKI`,
       updatedAt: new Date().toISOString().slice(0, 10),
+      isCustom: true,
       questions: [
         {
           id: `q-${Date.now()}`,
@@ -176,13 +177,14 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
 
   const handleDuplicatePackage = () => {
     if (!activePackage) return;
-    const newId = `pkg-${Date.now()}`;
+    const newId = `pkg-custom-${Date.now()}`;
     const duplicated: QuestionPackage = {
       ...activePackage,
       id: newId,
       gradeLevel: activePackage.gradeLevel || 'XI',
       name: `${activePackage.name} (Salinan)`,
       updatedAt: new Date().toISOString().slice(0, 10),
+      isCustom: true,
       questions: activePackage.questions.map((q, idx) => ({
         ...q,
         id: `q-${Date.now()}-${idx}`,
@@ -447,11 +449,12 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
             ? parsed.gradeLevel
             : (mgrGradeFilter !== 'ALL' ? mgrGradeFilter : 'XI');
           const importedPkg: QuestionPackage = {
-            id: `pkg-${Date.now()}`,
+            id: `pkg-custom-${Date.now()}`,
             gradeLevel: importedGrade,
             name: parsed.name || file.name.replace(/\.json$/i, ''),
             subtitle: parsed.subtitle || `Paket Soal Impor JSON (Kelas ${importedGrade} MA)`,
             updatedAt: new Date().toISOString().slice(0, 10),
+            isCustom: true,
             questions: parsed.questions.map((q: Partial<QuizQuestion>, idx: number) => ({
               id: `q-${Date.now()}-${idx}`,
               type: q.type === 'true_false' ? 'true_false' : 'multiple_choice',
@@ -649,21 +652,21 @@ export const QuestionManagerView: React.FC<QuestionManagerViewProps> = ({
             onClick={() =>
               setConfirmState({
                 isOpen: true,
-                title: 'Kembalikan Semua Soal Contoh Awal?',
+                title: 'Kembalikan ke 16 Bab Resmi Standar?',
                 message:
-                  'Paket soal contoh ("Daulah Usmani", "Daulah Safawi", "Daulah Mughal") akan dikembalikan ke kondisi awal.',
+                  'Semua 16 bab materi resmi SKI Kurikulum KMA 183 (Kelas X: 6 Bab, Kelas XI: 5 Bab, Kelas XII: 5 Bab) dengan masing-masing 15 butir soal lengkap akan dipulihkan secara bersih.',
                 onConfirm: () => {
                   onRestoreSamplePackages();
                   setConfirmState((prev) => ({ ...prev, isOpen: false }));
-                  showToast('Soal contoh awal berhasil dikembalikan!');
+                  showToast('16 Bab materi resmi SKI berhasil disinkronkan!');
                 },
               })
             }
-            className="flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/5 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/15 transition-colors whitespace-nowrap"
+            className="flex items-center gap-1.5 rounded-xl border border-[#F2B705]/40 bg-[#F2B705]/10 px-3 py-2 text-xs font-bold text-[#F2B705] hover:bg-[#F2B705]/20 transition-colors whitespace-nowrap"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Kembalikan Soal Contoh</span>
-            <span className="sm:hidden">Reset Contoh</span>
+            <span className="hidden sm:inline">Pulihkan 16 Bab Resmi</span>
+            <span className="sm:hidden">Reset 16 Bab</span>
           </button>
 
           <button

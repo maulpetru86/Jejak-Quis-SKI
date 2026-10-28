@@ -45,6 +45,7 @@ interface HomeViewProps {
   onStartQuiz: () => void;
   onOpenQuestionManager: () => void;
   onOpenTeamSettings: () => void;
+  onRestoreOfficialPackages?: () => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -57,6 +58,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onStartQuiz,
   onOpenQuestionManager,
   onOpenTeamSettings,
+  onRestoreOfficialPackages,
 }) => {
   const selectedPackage =
     packages.find((p) => p.id === selectedPackageId) || packages[0] || null;
@@ -105,7 +107,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <div className="relative min-h-[calc(100vh-64px)] w-full overflow-x-hidden flex flex-col justify-between py-5 sm:py-8 pb-14">
       {/* Central Focused Container */}
-      <div className="container mx-auto px-4 sm:px-6 max-w-4xl w-full flex-1 flex flex-col justify-start space-y-6 sm:space-y-8 animate-fade-slide-up">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl xl:max-w-7xl 2xl:max-w-[1400px] w-full flex-1 flex flex-col justify-start space-y-6 sm:space-y-8 animate-fade-slide-up">
         {/* ======================================================== */}
         {/* 1. HERO HEADER: REFINED, DIGNIFIED, INFORMATIVE          */}
         {/* ======================================================== */}
@@ -306,6 +308,25 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </div>
             </div>
 
+            {/* Anomaly banner if local cache diverged from official 6/5/5 bab */}
+            {(countX !== 6 || countXI !== 5 || countXII !== 5) && onRestoreOfficialPackages && (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-200 text-xs">
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-amber-400 shrink-0" />
+                  <span>
+                    Jumlah bab tersimpan berbeda dari kurikulum resmi (Kelas X: {countX}/6 Bab, XI: {countXI}/5 Bab, XII: {countXII}/5 Bab).
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={onRestoreOfficialPackages}
+                  className="px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-extrabold hover:bg-amber-400 transition-colors whitespace-nowrap shadow-sm"
+                >
+                  Sinkronkan 16 Bab Resmi
+                </button>
+              </div>
+            )}
+
             {/* Segmented Grade Tabs */}
             <div className="grid grid-cols-3 gap-2">
               <button
@@ -348,8 +369,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </button>
             </div>
 
-            {/* Direct Chapter Selection Cards (Crystal clear & fully visible) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[340px] overflow-y-auto pr-1">
+            {/* Direct Chapter Selection Cards (Crystal clear, expansive & fully visible without cut-off) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 max-h-[500px] lg:max-h-[620px] overflow-y-auto pr-1">
               {visiblePackages.map((pkg) => {
                 const isSelected = pkg.id === selectedPackage?.id;
                 const imgCount = pkg.questions.filter((q) => Boolean(q.imageUrl)).length;
@@ -365,13 +386,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
                         onSelectPackage(pkg.id);
                       }
                     }}
-                    className={`relative flex items-start justify-between gap-3 p-3 sm:p-3.5 rounded-xl border transition-all cursor-pointer text-left ${
+                    className={`relative flex items-start justify-between gap-3 p-3.5 sm:p-4 rounded-xl border transition-all cursor-pointer text-left ${
                       isSelected
                         ? 'border-[#F2B705] bg-[#1E336A] shadow-md ring-1 ring-[#F2B705]/60'
                         : 'border-white/10 bg-[#0B142E]/75 hover:border-white/25 hover:bg-[#121E3E]'
                     }`}
                   >
-                    <div className="min-w-0 flex-1 space-y-1">
+                    <div className="min-w-0 flex-1 space-y-1.5">
                       <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-400">
                         <span className="text-[#34D399] font-bold">
                           {pkg.questions.length} Butir Soal
@@ -388,14 +409,14 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       </div>
 
                       <h3
-                        className={`text-xs sm:text-sm font-bold leading-snug truncate ${
-                          isSelected ? 'text-[#FFFDF7]' : 'text-slate-200'
+                        className={`text-sm sm:text-base font-bold leading-snug break-words ${
+                          isSelected ? 'text-[#FFFDF7]' : 'text-slate-100'
                         }`}
                       >
                         {pkg.name}
                       </h3>
 
-                      <p className="text-[11px] sm:text-xs text-slate-300 line-clamp-1">
+                      <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
                         {pkg.subtitle}
                       </p>
                     </div>

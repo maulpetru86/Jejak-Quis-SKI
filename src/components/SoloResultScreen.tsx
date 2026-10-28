@@ -169,7 +169,7 @@ export const SoloResultScreen: React.FC<SoloResultScreenProps> = ({
 
   return (
     <div className="relative min-h-[calc(100vh-64px)] w-full overflow-x-hidden bg-[#0F1B3D] py-4 sm:py-8">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl space-y-6 sm:space-y-8 animate-fade-slide-up">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl xl:max-w-6xl 2xl:max-w-7xl space-y-6 sm:space-y-8 animate-fade-slide-up">
         {/* TOP BANNER */}
         <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#F2B705]/50 bg-gradient-to-br from-[#162654] via-[#122047] to-[#0F1B3D] p-5 sm:p-8 text-center shadow-2xl">
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-bold text-[#F2B705]">
@@ -505,151 +505,258 @@ export const SoloResultScreen: React.FC<SoloResultScreenProps> = ({
                 ref={printablePaperRef}
                 className="mx-auto max-w-3xl rounded-xl border border-slate-300 bg-white p-6 sm:p-8 text-slate-900 shadow-2xl font-serif print:border-none print:shadow-none print:p-0"
               >
-                {/* KOP RESMI */}
-                <div className="text-center border-b-2 border-slate-900 pb-3 mb-4">
-                  <div className="text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-700">
-                    MADRASAH ALIYAH
+                {/* KOP RESMI MADRASAH ALIYAH KEMENAG RI */}
+                <div className="flex items-center justify-between gap-3 sm:gap-4 pb-2 border-b-2 border-slate-900 font-sans">
+                  <div className="shrink-0 w-14 h-14 sm:w-16 sm:h-16">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                      <circle cx="50" cy="50" r="47" stroke="#D97706" strokeWidth="2" strokeDasharray="3 2"/>
+                      <rect x="25" y="25" width="50" height="50" rx="4" fill="#047857" stroke="#F59E0B" strokeWidth="2"/>
+                      <rect x="25" y="25" width="50" height="50" rx="4" transform="rotate(45 50 50)" fill="#047857" stroke="#F59E0B" strokeWidth="2"/>
+                      <circle cx="50" cy="50" r="23" fill="#064E3B" stroke="#F59E0B" strokeWidth="1.5"/>
+                      <path d="M38 52C42 49 47 50 50 53C53 50 58 49 62 52V42C58 39 53 40 50 43C47 40 42 39 38 42V52Z" fill="#FFFDF7" stroke="#F59E0B" strokeWidth="1.2" strokeLinejoin="round"/>
+                      <path d="M50 33C48 33 46 34.5 46 36.5C46 38.5 48 40 50 40C49 39.5 48.5 38 48.5 36.5C48.5 35 49 33.5 50 33Z" fill="#F59E0B"/>
+                      <polygon points="52,35.5 53,37 54.5,37 53.2,38 53.7,39.5 52.5,38.5 51.3,39.5 51.8,38 50.5,37 52,37" fill="#F59E0B"/>
+                      <path d="M50 53L50 63M48.5 63L51.5 63" stroke="#F59E0B" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
                   </div>
-                  <div className="text-base sm:text-xl font-black uppercase text-slate-900 mt-0.5">
-                    LEMBAR HASIL EVALUASI PEMBELAJARAN MANDIRI
+
+                  <div className="flex-1 text-center">
+                    <div className="text-[10px] sm:text-[11px] font-extrabold tracking-widest uppercase text-slate-700">
+                      KEMENTERIAN AGAMA REPUBLIK INDONESIA
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase text-slate-500">
+                      DIREKTORAT JENDERAL PENDIDIKAN ISLAM · KANTOR WILAYAH MADRASAH
+                    </div>
+                    <div className="text-sm sm:text-base font-black uppercase text-slate-900 tracking-wide mt-0.5">
+                      MADRASAH ALIYAH SEJARAH KEBUDAYAAN ISLAM
+                    </div>
+                    <div className="text-[11px] sm:text-xs font-bold text-emerald-800 uppercase tracking-tight mt-0.5">
+                      LEMBAR HASIL ASESMEN EVALUASI PEMBELAJARAN MANDIRI (CBT)
+                    </div>
+                    <div className="text-[9.5px] sm:text-[10px] text-slate-500 italic">
+                      Berdasarkan Capaian Pembelajaran Kurikulum Resmi Kemenag RI
+                    </div>
                   </div>
-                  <div className="text-xs sm:text-sm font-bold text-emerald-800 mt-0.5">
-                    MATA PELAJARAN SEJARAH KEBUDAYAAN ISLAM (SKI)
-                  </div>
-                  <div className="text-[11px] text-slate-500 mt-1">
-                    Evaluasi Pembelajaran Mandiri Siswa
+
+                  <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 hidden min-[480px]:flex items-center justify-center">
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                      <circle cx="40" cy="40" r="38" stroke="#047857" strokeWidth="1.5"/>
+                      <polygon points="40,6 48,26 68,26 52,40 58,60 40,48 22,60 28,40 12,26 32,26" fill="#047857" opacity="0.12"/>
+                      <circle cx="40" cy="40" r="22" stroke="#D97706" strokeWidth="1.5"/>
+                      <text x="40" y="38" fontFamily="sans-serif" fontSize="9" fontWeight="bold" fill="#047857" textAnchor="middle">MA</text>
+                      <text x="40" y="47" fontFamily="sans-serif" fontSize="7" fontWeight="bold" fill="#D97706" textAnchor="middle">SKI</text>
+                    </svg>
                   </div>
                 </div>
 
-                {/* METADATA SISWA */}
-                <div className="rounded-lg border border-slate-300 bg-slate-50 p-3 mb-4 text-xs sm:text-sm">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <div>
-                      <span className="text-slate-500 font-sans">Nama Siswa:</span>{' '}
-                      <strong className="font-sans text-slate-900">{studentDisplayName}</strong>
+                {/* DOUBLE DIVIDER */}
+                <div className="mt-1.5 mb-3 border-t-2 border-slate-900 border-b border-amber-500 h-1"></div>
+
+                {/* METADATA STRIP */}
+                <div className="flex items-center justify-between text-[10px] text-slate-500 font-sans mb-3 px-0.5">
+                  <div>
+                    <span>ID Berkas: </span>
+                    <span className="font-mono font-bold text-slate-700 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">
+                      SKI-MA-{Date.now().toString(36).toUpperCase().slice(-6)}
+                    </span>
+                  </div>
+                  <div>
+                    <span>Status: </span>
+                    <strong className="text-emerald-700 font-bold">TERVALIDASI SISTEM CBT</strong>
+                  </div>
+                  <div>
+                    <span>Waktu: </span>
+                    <strong>{formattedDate}</strong>
+                  </div>
+                </div>
+
+                {/* METADATA SISWA CARD */}
+                <div className="rounded-lg border border-slate-300 bg-white mb-3.5 overflow-hidden text-xs font-sans">
+                  <div className="bg-slate-50 border-b border-slate-200 px-3 py-1.5 font-bold uppercase text-[10px] text-slate-700 flex justify-between">
+                    <span>A. Data Identitas Peserta Didik</span>
+                    <span className="text-slate-400 font-normal">Formatif Mandiri</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 p-2.5 sm:p-3 gap-2">
+                    <div className="flex items-baseline gap-1">
+                      <span className="w-24 text-slate-500 shrink-0 font-medium">Nama Siswa:</span>
+                      <strong className="text-slate-900 font-bold">{studentDisplayName}</strong>
                     </div>
-                    <div>
-                      <span className="text-slate-500 font-sans">Materi:</span>{' '}
-                      <strong className="font-sans text-slate-900">{packageName}</strong>
+                    <div className="flex items-baseline gap-1">
+                      <span className="w-24 text-slate-500 shrink-0 font-medium">Mata Pelajaran:</span>
+                      <span className="text-slate-900 font-bold">Sejarah Kebudayaan Islam (SKI)</span>
                     </div>
-                    <div>
-                      <span className="text-slate-500 font-sans">Jenjang / Kelas:</span>{' '}
-                      <strong className="font-sans text-slate-900">{gradeDisplayLabel}</strong>
+                    <div className="flex items-baseline gap-1">
+                      <span className="w-24 text-slate-500 shrink-0 font-medium">Tingkat / Kelas:</span>
+                      <span className="text-slate-900 font-bold">{gradeDisplayLabel}</span>
                     </div>
-                    <div>
-                      <span className="text-slate-500 font-sans">Waktu Pengerjaan:</span>{' '}
-                      <strong className="font-sans text-slate-900">{formattedDate}</strong>
+                    <div className="flex items-baseline gap-1">
+                      <span className="w-24 text-slate-500 shrink-0 font-medium">Materi Pokok:</span>
+                      <span className="text-emerald-800 font-bold truncate">{packageName}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* HASIL & PREDIKAT */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 text-center font-sans">
-                  <div className="rounded-lg border border-amber-400 bg-amber-50 p-2.5">
-                    <div className="text-2xl font-black text-amber-700">{percentage}</div>
-                    <div className="text-[10px] font-bold text-amber-800 uppercase tracking-wider">
-                      Nilai Akhir
+                {/* HASIL & PREDIKAT SHOWCASE PANEL */}
+                <div className="rounded-lg border-2 border-amber-500/80 bg-amber-50/40 p-3 sm:p-4 mb-4 font-sans shadow-xs">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-amber-300/80 pb-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-16 h-16 rounded-full border-2 border-amber-500 bg-white shadow-xs flex flex-col items-center justify-center shrink-0">
+                        <span className="text-2xl font-black text-slate-900 leading-none">{percentage}</span>
+                        <span className="text-[8px] font-bold text-amber-700 uppercase tracking-widest mt-0.5">/ 100</span>
+                      </div>
+                      <div className="space-y-1 text-left">
+                        <span
+                          className={`inline-block text-[10px] font-extrabold px-2 py-0.5 rounded border ${
+                            percentage >= 75
+                              ? 'bg-emerald-100 text-emerald-800 border-emerald-400'
+                              : 'bg-rose-100 text-rose-800 border-rose-400'
+                          }`}
+                        >
+                          {percentage >= 75 ? '✓ TUNTAS KKM (MEMENUHI SYARAT)' : '⚠ PERLU PENDAMPINGAN (REMIDI)'}
+                        </span>
+                        <div className="text-[11px] text-slate-600">
+                          Standar Kriteria Ketuntasan Minimal (KKM): <strong className="text-slate-900">75.00</strong>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="rounded-lg border border-emerald-300 bg-emerald-50 p-2.5">
-                    <div className="text-2xl font-black text-emerald-700">
-                      {soloState.correctCount} / {totalQuestions}
-                    </div>
-                    <div className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">
-                      Jawaban Benar
-                    </div>
-                  </div>
-                  <div className="rounded-lg border border-rose-300 bg-rose-50 p-2.5">
-                    <div className="text-2xl font-black text-rose-700">{soloState.wrongCount}</div>
-                    <div className="text-[10px] font-bold text-rose-800 uppercase tracking-wider">
-                      Jawaban Salah
-                    </div>
-                  </div>
-                  <div className="rounded-lg border border-blue-300 bg-blue-50 p-2.5">
-                    <div className="text-2xl font-black text-blue-700">{avgTimeSeconds}s</div>
-                    <div className="text-[10px] font-bold text-blue-800 uppercase tracking-wider">
-                      Rata-Rata Waktu
-                    </div>
-                  </div>
-                </div>
 
-                {/* PREDIKAT BOX */}
-                <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-2.5 text-center mb-5 font-sans">
-                  <div className="text-base font-bold text-amber-900 font-serif">
-                    {predikatArab}
+                    <div className="text-center sm:text-right">
+                      <div className="font-arabic text-xl sm:text-2xl font-bold text-blue-950">
+                        {predikatArab}
+                      </div>
+                      <div className="text-xs sm:text-sm font-bold text-slate-900">
+                        {predikatIndo}
+                      </div>
+                      <div className="text-[10px] text-slate-500 max-w-xs mt-0.5">
+                        {percentage >= 90
+                          ? 'Sangat memuaskan, menguasai substansi materi dan ibrah peristiwa sejarah Islam secara mendalam.'
+                          : percentage >= 75
+                            ? 'Kompeten dan tuntas. Disarankan mencermati kembali butir soal yang belum tepat.'
+                            : 'Belum mencapai ketuntasan minimum. Disarankan mengulang materi bab dan berlatih kembali.'}
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-xs text-amber-800 font-medium">
-                    {predikatIndo}
+
+                  {/* 4 STATS ROW */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                    <div className="rounded bg-white border border-slate-200 p-2 shadow-2xs">
+                      <div className="text-base font-black text-emerald-700">{soloState.correctCount} / {totalQuestions}</div>
+                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Jawaban Benar</div>
+                    </div>
+                    <div className="rounded bg-white border border-slate-200 p-2 shadow-2xs">
+                      <div className="text-base font-black text-rose-700">{soloState.wrongCount} Butir</div>
+                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Jawaban Salah</div>
+                    </div>
+                    <div className="rounded bg-white border border-slate-200 p-2 shadow-2xs">
+                      <div className="text-base font-black text-amber-600">{soloState.score} Poin</div>
+                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Total Skor Poin</div>
+                    </div>
+                    <div className="rounded bg-white border border-slate-200 p-2 shadow-2xs">
+                      <div className="text-base font-black text-blue-700">{avgTimeSeconds}s</div>
+                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Rata-Rata Waktu</div>
+                    </div>
                   </div>
                 </div>
 
                 {/* RINCIAN SOAL TABEL */}
                 <div className="mb-6 font-sans">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 border-b border-slate-200 pb-1">
-                    Rekapitulasi Butir Soal & Kunci Jawaban
-                  </h4>
-                  <div className="space-y-2">
-                    {soloState.answers.map((ans, idx) => (
-                      <div
-                        key={ans.questionId}
-                        className="rounded border border-slate-200 p-2.5 text-xs bg-white"
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1">
-                            <span className="font-bold text-slate-900 mr-1.5">{idx + 1}.</span>
-                            <span className="text-slate-800 font-serif">{ans.questionText}</span>
-                          </div>
-                          <span
-                            className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-black ${
-                              ans.isCorrect
-                                ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                                : 'bg-rose-100 text-rose-800 border border-rose-300'
-                            }`}
-                          >
-                            {ans.isCorrect ? 'BENAR' : 'SALAH'}
-                          </span>
-                        </div>
-                        <div className="mt-1 text-[11px] text-slate-600 flex flex-wrap gap-x-3 gap-y-1">
-                          <span>
-                            <strong>Jawaban Anda:</strong>{' '}
-                            {ans.selectedAnswer === '-'
-                              ? 'Tidak Dijawab'
-                              : `${ans.selectedAnswer} (${ans.options[ans.selectedAnswer as AnswerLetter] || '-'})`}
-                          </span>
-                          {!ans.isCorrect && (
-                            <span className="text-emerald-700 font-bold">
-                              Kunci: {ans.correctAnswer} ({ans.options[ans.correctAnswer] || '-'})
-                            </span>
-                          )}
-                        </div>
-                        {ans.pageReference && (
-                          <div className="mt-0.5 text-[10px] text-slate-400 italic">
-                            Rujukan: {ans.pageReference}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-800 mb-2 border-b border-slate-200 pb-1">
+                    <span>B. Rincian & Analisis Butir Soal Evaluasi</span>
+                    <span className="text-[10px] text-slate-500 font-semibold">{totalQuestions} Butir Soal</span>
+                  </div>
+
+                  <div className="overflow-hidden rounded-lg border border-slate-300">
+                    <table className="w-full border-collapse text-left text-xs">
+                      <thead className="bg-slate-900 text-white font-bold text-[11px]">
+                        <tr>
+                          <th className="p-2 text-center w-8">No</th>
+                          <th className="p-2">Pertanyaan & Analisis Materi</th>
+                          <th className="p-2 w-32">Pilihan Siswa</th>
+                          <th className="p-2 w-28">Kunci Resmi</th>
+                          <th className="p-2 text-center w-16">Hasil</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200">
+                        {soloState.answers.map((ans, idx) => (
+                          <tr key={ans.questionId} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
+                            <td className="p-2.5 text-center font-bold text-slate-500 align-top">{idx + 1}</td>
+                            <td className="p-2.5 align-top">
+                              <div className="font-bold text-slate-900 leading-snug">{ans.questionText}</div>
+                              {ans.explanation && (
+                                <div className="mt-1.5 p-1.5 bg-slate-100 rounded border-l-2 border-slate-800 text-[11px] text-slate-700 leading-relaxed">
+                                  <strong>Pembahasan:</strong> {ans.explanation}
+                                </div>
+                              )}
+                              {ans.pageReference && (
+                                <div className="mt-1 text-[10px] text-slate-500">
+                                  📖 <em>Rujukan Resmi: {ans.pageReference}</em>
+                                </div>
+                              )}
+                            </td>
+                            <td className="p-2.5 align-top text-[11px]">
+                              {ans.selectedAnswer === '-' ? (
+                                <span className="text-slate-400 italic">Tidak Dijawab</span>
+                              ) : (
+                                <span className={ans.isCorrect ? 'text-emerald-800 font-semibold' : 'text-rose-800 font-semibold'}>
+                                  <strong>{ans.selectedAnswer}</strong> — {ans.options[ans.selectedAnswer as AnswerLetter] || '-'}
+                                </span>
+                              )}
+                            </td>
+                            <td className="p-2.5 align-top text-[11px] text-emerald-800 font-semibold">
+                              <strong>{ans.correctAnswer}</strong> — {ans.options[ans.correctAnswer] || '-'}
+                            </td>
+                            <td className="p-2.5 text-center align-top">
+                              <span
+                                className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-extrabold ${
+                                  ans.isCorrect
+                                    ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                    : 'bg-rose-100 text-rose-800 border border-rose-300'
+                                }`}
+                              >
+                                {ans.isCorrect ? '✓ BENAR' : '✗ SALAH'}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
 
                 {/* KOLOM TANDA TANGAN */}
-                <div className="flex justify-between pt-4 border-t border-slate-300 text-xs font-sans">
-                  <div className="text-center w-48">
-                    <div>Mengetahui,</div>
-                    <div className="font-bold">Guru Mata Pelajaran SKI</div>
-                    <div className="h-16"></div>
-                    <div className="border-b border-slate-700 font-semibold">
-                      ..............................................
+                <div className="pt-2 font-sans text-xs">
+                  <div className="text-right text-[11px] text-slate-500 mb-3">
+                    Diterbitkan di: <strong>Madrasah Aliyah</strong>, {formattedDate}
+                  </div>
+                  <div className="flex justify-between px-4 sm:px-8">
+                    <div className="text-center w-52">
+                      <div className="text-slate-500 text-[11px]">Mengetahui,</div>
+                      <div className="font-bold text-slate-900 mt-0.5">Guru Pengampu Mata Pelajaran SKI</div>
+                      <div className="h-14 relative flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full border border-dashed border-slate-300 flex items-center justify-center text-[8px] text-slate-400">
+                          Stempel
+                        </div>
+                      </div>
+                      <div className="border-b-2 border-slate-800 font-bold text-slate-900 pb-0.5">
+                        ...................................................
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-1">NIP. ..........................................</div>
                     </div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">NIP. .................................</div>
+
+                    <div className="text-center w-52">
+                      <div className="text-slate-500 text-[11px]">Peserta Didik yang Dinilai,</div>
+                      <div className="font-bold text-slate-900 mt-0.5">Madrasah Aliyah</div>
+                      <div className="h-14"></div>
+                      <div className="border-b-2 border-slate-800 font-bold text-slate-900 pb-0.5">
+                        {studentDisplayName}
+                      </div>
+                      <div className="text-[10px] text-slate-500 mt-1">NIS / NISN: ................................</div>
+                    </div>
                   </div>
 
-                  <div className="text-center w-48">
-                    <div>Peserta Didik,</div>
-                    <div className="font-bold">Madrasah Aliyah</div>
-                    <div className="h-16"></div>
-                    <div className="border-b border-slate-700 font-semibold">{studentDisplayName}</div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">Siswa Peserta Kuis</div>
+                  <div className="mt-6 pt-2 border-t border-slate-200 text-[9.5px] text-slate-400 flex justify-between">
+                    <span>* Dokumen hasil evaluasi resmi diterbitkan melalui Sistem CBT Kuis SKI Madrasah Aliyah.</span>
+                    <span className="font-mono">Terverifikasi Resmi</span>
                   </div>
                 </div>
               </div>

@@ -49,6 +49,7 @@ export interface QuestionPackage {
   subtitle: string;
   updatedAt: string;
   questions: QuizQuestion[];
+  isCustom?: boolean;
 }
 
 export interface TeamKeyBindings {
@@ -98,8 +99,8 @@ export interface QuizSettings {
 }
 
 export const STORAGE_KEYS = {
-  PACKAGES: 'ski_quiz_packages_v9',
-  SELECTED_PACKAGE_ID: 'ski_quiz_selected_package_v9',
+  PACKAGES: 'ski_quiz_packages_v12',
+  SELECTED_PACKAGE_ID: 'ski_quiz_selected_package_v12',
   TEAMS: 'ski_quiz_teams_v5',
   SETTINGS: 'ski_quiz_settings_v6',
   TEACHER_PIN: 'ski_quiz_teacher_pin_v1',
@@ -1573,7 +1574,7 @@ export const INITIAL_KERAJAAN_ORGANISASI_QUESTIONS: QuizQuestion[] = [
     question: 'Organisasi Islam terbesar di Indonesia yang didirikan oleh KH Hasyim Asy\'ari pada 16 Rajab 1344 H (31 Januari 1926 M) di Surabaya untuk melestarikan ajaran Ahlussunnah wal Jama\'ah adalah...',
     options: {
       A: 'Muhammadiyah',
-      B: 'Muhammadiyah',
+      B: 'Nahdlatul Ulama',
       C: 'Al-Irsyad Al-Islamiyyah',
       D: 'Persatuan Islam (Persis)',
       E: 'Matla\'ul Anwar',
