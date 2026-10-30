@@ -1,4 +1,5 @@
 import { AnswerLetter, GradeLevel, SoloGameState } from '../config/quizConfig';
+import { KEMENAG_LOGO_BASE64 } from '../data/kemenagLogoBase64';
 
 export interface ReportPrintData {
   packageName: string;
@@ -53,8 +54,8 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
     .map((ans, idx) => {
       const isCorrect = ans.isCorrect;
       const statusBadge = isCorrect
-        ? `<span style="display:inline-block;padding:2px 8px;font-size:10px;font-weight:800;color:#065f46;background:#d1fae5;border-radius:4px;border:1px solid #10b981;letter-spacing:0.5px;">✓ BENAR</span>`
-        : `<span style="display:inline-block;padding:2px 8px;font-size:10px;font-weight:800;color:#991b1b;background:#fee2e2;border-radius:4px;border:1px solid #f87171;letter-spacing:0.5px;">✗ SALAH</span>`;
+        ? `<span style="display:inline-block;padding:2px 8px;font-size:10px;font-weight:800;color:#065f46;background:#d1fae5;border-radius:4px;border:1px solid #10b981;">✓ BENAR</span>`
+        : `<span style="display:inline-block;padding:2px 8px;font-size:10px;font-weight:800;color:#991b1b;background:#fee2e2;border-radius:4px;border:1px solid #f87171;">✗ SALAH</span>`;
 
       const studentAnsText =
         ans.selectedAnswer === '-'
@@ -102,27 +103,28 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
 <head>
   <meta charset="UTF-8">
   <title>Rapor Asesmen SKI - ${escapeHtml(studentName)}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     @page {
-      size: A4;
+      size: A4 portrait;
       margin: 10mm 12mm 12mm 12mm;
     }
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
+      letter-spacing: normal !important;
+      word-spacing: normal !important;
     }
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: #0f172a;
       background: #ffffff;
       margin: 0;
       padding: 0;
       font-size: 12px;
       line-height: 1.5;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
     }
     .print-bar {
       background: #0f172a;
@@ -135,7 +137,7 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       top: 0;
       z-index: 999;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     .print-btn {
       background: #f59e0b;
@@ -155,23 +157,24 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       background: #d97706;
     }
     .page-container {
-      max-width: 800px;
+      width: 780px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 16px 20px 28px;
       background: #ffffff;
     }
     
-    /* KOP RESMI MADRASAH ALIYAH */
+    /* KOP RESMI MGMP SKI KABUPATEN NGANJUK */
     .kop-wrapper {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding-bottom: 8px;
+      padding-bottom: 4px;
     }
     .kop-logo {
-      width: 66px;
-      height: 66px;
+      width: 74px;
+      height: 74px;
       flex-shrink: 0;
     }
     .kop-content {
@@ -180,66 +183,83 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
     }
     .kop-instansi {
       font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
+      font-weight: 700;
       text-transform: uppercase;
       color: #334155;
-      margin-bottom: 1px;
+      margin-bottom: 2px;
+      line-height: 1.3;
     }
     .kop-kemenag {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: #475569;
-      margin-bottom: 2px;
-    }
-    .kop-madrasah {
-      font-size: 15.5px;
-      font-weight: 900;
-      letter-spacing: 1.2px;
+      font-size: 11.5px;
+      font-weight: 800;
       text-transform: uppercase;
       color: #0f172a;
       margin-bottom: 2px;
+      line-height: 1.3;
     }
-    .kop-judul {
+    .kop-madrasah {
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #047857;
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+    .kop-subwilayah {
       font-size: 12px;
       font-weight: 800;
-      color: #047857;
-      letter-spacing: 0.5px;
       text-transform: uppercase;
+      color: #0f172a;
+      margin-bottom: 3px;
+      line-height: 1.3;
     }
-    .kop-sub {
-      font-size: 10px;
-      color: #64748b;
-      margin-top: 1px;
-      font-style: italic;
+    .kop-alamat {
+      font-size: 8.5px;
+      color: #475569;
+      line-height: 1.45;
+      margin-top: 2px;
     }
     .kop-divider {
-      margin-top: 6px;
-      margin-bottom: 12px;
+      margin-top: 8px;
+      margin-bottom: 10px;
       border-top: 2.5px solid #0f172a;
-      border-bottom: 1px solid #d97706;
+      border-bottom: 1px solid #047857;
       height: 4px;
     }
+    .kop-judul-doc {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .kop-judul-doc-title {
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #0f172a;
+      text-decoration: underline;
+      line-height: 1.4;
+    }
+    .kop-judul-doc-sub {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #047857;
+      text-transform: uppercase;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
 
-    /* REGISTRATION / VERIFICATION BAR */
-    .doc-meta-strip {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
+    /* DOCUMENT METADATA TABLE */
+    .doc-meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5px;
       color: #64748b;
       margin-bottom: 12px;
-      padding: 0 2px;
     }
     .doc-meta-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      display: inline-block;
       background: #f1f5f9;
       border: 1px solid #cbd5e1;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 4px;
       font-family: monospace;
       font-weight: 700;
@@ -261,38 +281,10 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       font-size: 10.5px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
       color: #334155;
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-    .student-card-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding: 8px 12px;
-      gap: 6px 16px;
-      font-size: 11.5px;
-    }
-    .data-row {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-    }
-    .data-label {
-      width: 110px;
-      flex-shrink: 0;
-      color: #64748b;
-      font-weight: 600;
-    }
-    .data-sep {
-      color: #94a3b8;
-      margin-right: 4px;
-    }
-    .data-val {
-      color: #0f172a;
-      font-weight: 700;
-      flex: 1;
     }
 
     /* SCORECARD & CERTIFICATE PANEL */
@@ -316,11 +308,12 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
     .score-medallion {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
     .score-circle {
-      width: 64px;
-      height: 64px;
+      width: 72px;
+      height: 72px;
+      min-width: 72px;
       border-radius: 50%;
       border: 3px solid #d97706;
       background: #ffffff;
@@ -331,17 +324,17 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       box-shadow: 0 2px 6px rgba(217, 119, 6, 0.2);
     }
     .score-number {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: 900;
       color: #0f172a;
       line-height: 1;
     }
     .score-sub {
-      font-size: 8.5px;
+      font-size: 8px;
       font-weight: 800;
       color: #d97706;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-top: 1px;
     }
     .score-verdict {
       display: flex;
@@ -353,9 +346,8 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       align-self: flex-start;
       font-size: 10px;
       font-weight: 800;
-      padding: 2px 8px;
+      padding: 2.5px 8px;
       border-radius: 4px;
-      letter-spacing: 0.5px;
       background: ${isPassed ? '#d1fae5' : '#fee2e2'};
       color: ${isPassed ? '#065f46' : '#991b1b'};
       border: 1px solid ${isPassed ? '#10b981' : '#f87171'};
@@ -364,49 +356,24 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       text-align: right;
     }
     .predikat-arab {
-      font-family: 'Amiri', 'Traditional Arabic', serif;
-      font-size: 21px;
+      font-family: 'Amiri', 'Traditional Arabic', 'Times New Roman', serif;
+      font-size: 20px;
       font-weight: 700;
       color: #1e3a8a;
-      line-height: 1.2;
+      line-height: 1.3;
     }
     .predikat-indo {
       font-size: 12px;
       font-weight: 800;
       color: #0f172a;
-      margin-top: 1px;
+      margin-top: 2px;
     }
     .predikat-desc {
-      font-size: 10.5px;
+      font-size: 10px;
       color: #475569;
-      margin-top: 1px;
-    }
-
-    /* STATS 4-GRID */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      text-align: center;
-    }
-    .stat-pill {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 6px 4px;
-    }
-    .stat-val {
-      font-size: 14px;
-      font-weight: 800;
-      color: #0f172a;
-    }
-    .stat-label {
-      font-size: 9.5px;
-      font-weight: 700;
-      color: #64748b;
-      text-transform: uppercase;
-      margin-top: 1px;
-      letter-spacing: 0.4px;
+      margin-top: 2px;
+      max-width: 320px;
+      line-height: 1.4;
     }
 
     /* QUESTION TABLE */
@@ -414,7 +381,6 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.6px;
       color: #0f172a;
       margin-bottom: 6px;
       display: flex;
@@ -436,7 +402,6 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       font-size: 11px;
       padding: 8px 10px;
       text-align: left;
-      letter-spacing: 0.5px;
     }
 
     /* TANDA TANGAN */
@@ -475,15 +440,19 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
       position: absolute;
       left: 20px;
       top: 10px;
-      width: 50px;
-      height: 50px;
-      border: 1px dashed #cbd5e1;
+      width: 52px;
+      height: 52px;
+      border: 1.5px dashed #10b981;
+      background: #ecfdf5;
       border-radius: 50%;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 8px;
-      color: #94a3b8;
+      font-size: 7.5px;
+      font-weight: 800;
+      color: #065f46;
+      line-height: 1.2;
     }
     .ttd-name {
       font-weight: 800;
@@ -542,92 +511,91 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
   </div>
 
   <div class="page-container">
-    <!-- KOP RESMI MADRASAH ALIYAH KEMENAG RI -->
+    <!-- KOP RESMI MGMP SKI KABUPATEN NGANJUK -->
     <div class="kop-wrapper">
-      <div class="kop-logo">
-        <svg width="66" height="66" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Outer Gold Star Ring -->
-          <circle cx="50" cy="50" r="47" stroke="#D97706" stroke-width="2" stroke-dasharray="3 2"/>
-          <!-- Rub el Hizb 8-Pointed Star -->
-          <rect x="25" y="25" width="50" height="50" rx="4" fill="#047857" stroke="#F59E0B" stroke-width="2"/>
-          <rect x="25" y="25" width="50" height="50" rx="4" transform="rotate(45 50 50)" fill="#047857" stroke="#F59E0B" stroke-width="2"/>
-          <!-- Inner Medallion -->
-          <circle cx="50" cy="50" r="23" fill="#064E3B" stroke="#F59E0B" stroke-width="1.5"/>
-          <!-- Open Book of Knowledge -->
-          <path d="M38 52C42 49 47 50 50 53C53 50 58 49 62 52V42C58 39 53 40 50 43C47 40 42 39 38 42V52Z" fill="#FFFDF7" stroke="#F59E0B" stroke-width="1.2" stroke-linejoin="round"/>
-          <!-- Crescent & Star -->
-          <path d="M50 33C48 33 46 34.5 46 36.5C46 38.5 48 40 50 40C49 39.5 48.5 38 48.5 36.5C48.5 35 49 33.5 50 33Z" fill="#F59E0B"/>
-          <polygon points="52,35.5 53,37 54.5,37 53.2,38 53.7,39.5 52.5,38.5 51.3,39.5 51.8,38 50.5,37 52,37" fill="#F59E0B"/>
-          <!-- Quill Pen Base -->
-          <path d="M50 53L50 63M48.5 63L51.5 63" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
+      <div class="kop-logo" style="display: flex; align-items: center; justify-content: center;">
+        <!-- Lambang Resmi Kementerian Agama RI -->
+        <img
+          src="${KEMENAG_LOGO_BASE64}"
+          alt="Logo Kementerian Agama Republik Indonesia"
+          style="width: 100%; height: 100%; object-fit: contain;"
+        />
       </div>
 
       <div class="kop-content">
         <div class="kop-instansi">KEMENTERIAN AGAMA REPUBLIK INDONESIA</div>
-        <div class="kop-kemenag">DIREKTORAT JENDERAL PENDIDIKAN ISLAM · KANTOR WILAYAH MADRASAH</div>
-        <div class="kop-madrasah">MADRASAH ALIYAH SEJARAH KEBUDAYAAN ISLAM</div>
-        <div class="kop-judul">LEMBAR HASIL ASESMEN EVALUASI PEMBELAJARAN MANDIRI (CBT)</div>
-        <div class="kop-sub">Berdasarkan Capaian Pembelajaran Kurikulum Resmi Kemenag RI</div>
+        <div class="kop-kemenag">KANTOR KEMENTERIAN AGAMA KABUPATEN NGANJUK</div>
+        <div class="kop-madrasah">MUSYAWARAH GURU MATA PELAJARAN (MGMP) SKI</div>
+        <div class="kop-subwilayah">MADRASAH ALIYAH KABUPATEN NGANJUK</div>
+        <div class="kop-alamat">Sekretariat: Jl. Dermojoyo No. 19, Payaman, Kec. Nganjuk, Kabupaten Nganjuk, Jawa Timur 64418<br>Surel: mgmpski.nganjuk@gmail.com · Laman: kemenagnganjuk.id</div>
       </div>
 
       <div class="kop-logo" style="display: flex; align-items: center; justify-content: center;">
-        <!-- Right Balancing Seal: Emblem Bintang Delapan -->
-        <svg width="60" height="60" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="40" cy="40" r="38" stroke="#047857" stroke-width="1.5"/>
-          <polygon points="40,6 48,26 68,26 52,40 58,60 40,48 22,60 28,40 12,26 32,26" fill="#047857" opacity="0.12"/>
-          <circle cx="40" cy="40" r="22" stroke="#D97706" stroke-width="1.5"/>
-          <text x="40" y="38" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="bold" fill="#047857" text-anchor="middle">MA</text>
-          <text x="40" y="47" font-family="'Plus Jakarta Sans', sans-serif" font-size="7" font-weight="bold" fill="#D97706" text-anchor="middle">SKI</text>
+        <!-- Lambang Resmi MGMP SKI Kabupaten Nganjuk -->
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+          <circle cx="50" cy="50" r="47" stroke="#D97706" stroke-width="2" stroke-dasharray="3 2"/>
+          <rect x="23" y="23" width="54" height="54" rx="5" fill="#064E3B" stroke="#F59E0B" stroke-width="2"/>
+          <rect x="23" y="23" width="54" height="54" rx="5" transform="rotate(45 50 50)" fill="#064E3B" stroke="#F59E0B" stroke-width="2"/>
+          <circle cx="50" cy="50" r="24" fill="#047857" stroke="#F59E0B" stroke-width="1.5"/>
+          <path d="M42 46 C42 38 58 38 58 46 H42 Z" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+          <path d="M50 34 V40" stroke="#F59E0B" stroke-width="1.5"/>
+          <circle cx="50" cy="33" r="1.5" fill="#F59E0B"/>
+          <text x="50" y="55" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7.5" font-weight="900" fill="#FFFDF7" text-anchor="middle">MGMP SKI</text>
+          <text x="50" y="63" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="6" font-weight="800" fill="#FDE68A" text-anchor="middle">NGANJUK</text>
         </svg>
       </div>
     </div>
 
     <div class="kop-divider"></div>
 
-    <!-- DOCUMENT METADATA STRIP -->
-    <div class="doc-meta-strip">
-      <div>
-        <span>ID Berkas: </span>
-        <span class="doc-meta-badge">${docRefId}</span>
-      </div>
-      <div>
-        <span>Status Dokumen: </span>
-        <strong style="color: #047857;">TERVALIDASI SISTEM CBT</strong>
-      </div>
-      <div>
-        <span>Waktu Asesmen: </span>
-        <strong>${dateString}</strong>
-      </div>
+    <div class="kop-judul-doc">
+      <div class="kop-judul-doc-title">LEMBAR HASIL ASESMEN EVALUASI PEMBELAJARAN (CBT)</div>
+      <div class="kop-judul-doc-sub">RAPOR KUIS SEJARAH KEBUDAYAAN ISLAM · MADRASAH ALIYAH KABUPATEN NGANJUK</div>
     </div>
+
+    <!-- DOCUMENT METADATA STRIP -->
+    <table class="doc-meta-table">
+      <tr>
+        <td style="text-align: left; padding: 2px 0;">
+          <span style="color: #64748b;">ID Berkas: </span>
+          <span class="doc-meta-badge">${docRefId}</span>
+        </td>
+        <td style="text-align: center; padding: 2px 0;">
+          <span style="color: #64748b;">Status Dokumen: </span>
+          <strong style="color: #047857;">TERVALIDASI SISTEM CBT</strong>
+        </td>
+        <td style="text-align: right; padding: 2px 0;">
+          <span style="color: #64748b;">Waktu Asesmen: </span>
+          <strong style="color: #0f172a;">${dateString}</strong>
+        </td>
+      </tr>
+    </table>
 
     <!-- IDENTITAS SISWA CARD -->
     <div class="student-card">
       <div class="student-card-header">
-        <span>A. Data Identitas Peserta Didik</span>
+        <span>A. DATA IDENTITAS PESERTA DIDIK</span>
         <span style="font-size: 10px; color: #64748b; font-weight: 600;">Formatif Mandiri</span>
       </div>
-      <div class="student-card-grid">
-        <div class="data-row">
-          <span class="data-label">Nama Siswa</span>
-          <span class="data-sep">:</span>
-          <span class="data-val" style="color: #0f172a; font-size: 12.5px;">${escapeHtml(studentName)}</span>
-        </div>
-        <div class="data-row">
-          <span class="data-label">Mata Pelajaran</span>
-          <span class="data-sep">:</span>
-          <span class="data-val">Sejarah Kebudayaan Islam (SKI)</span>
-        </div>
-        <div class="data-row">
-          <span class="data-label">Tingkat / Kelas</span>
-          <span class="data-sep">:</span>
-          <span class="data-val">${escapeHtml(gradeLabel)}</span>
-        </div>
-        <div class="data-row">
-          <span class="data-label">Materi Pokok / Bab</span>
-          <span class="data-sep">:</span>
-          <span class="data-val" style="color: #047857;">${escapeHtml(packageName)}</span>
-        </div>
+      <div style="padding: 10px 14px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
+          <tr>
+            <td style="width: 120px; padding: 4px 0; color: #64748b; font-weight: 600;">Nama Siswa</td>
+            <td style="width: 14px; padding: 4px 0; color: #94a3b8; text-align: center;">:</td>
+            <td style="padding: 4px 10px 4px 0; color: #0f172a; font-weight: 700; font-size: 12px;">${escapeHtml(studentName)}</td>
+            <td style="width: 130px; padding: 4px 0; color: #64748b; font-weight: 600;">Mata Pelajaran</td>
+            <td style="width: 14px; padding: 4px 0; color: #94a3b8; text-align: center;">:</td>
+            <td style="padding: 4px 0; color: #0f172a; font-weight: 700;">Sejarah Kebudayaan Islam (SKI)</td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 0; color: #64748b; font-weight: 600;">Tingkat / Kelas</td>
+            <td style="padding: 4px 0; color: #94a3b8; text-align: center;">:</td>
+            <td style="padding: 4px 10px 4px 0; color: #0f172a; font-weight: 700;">${escapeHtml(gradeLabel)}</td>
+            <td style="padding: 4px 0; color: #64748b; font-weight: 600;">Materi Pokok / Bab</td>
+            <td style="padding: 4px 0; color: #94a3b8; text-align: center;">:</td>
+            <td style="padding: 4px 0; color: #047857; font-weight: 700;">${escapeHtml(packageName)}</td>
+          </tr>
+        </table>
       </div>
     </div>
 
@@ -637,14 +605,14 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
         <div class="score-medallion">
           <div class="score-circle">
             <span class="score-number">${percentage}</span>
-            <span class="score-sub">NILAI / 100</span>
+            <span class="score-sub">SKOR (0-100)</span>
           </div>
           <div class="score-verdict">
             <span class="status-kkm-badge">
               ${isPassed ? '✓ TUNTAS KKM (MEMENUHI SYARAT)' : '⚠ PERLU PENDAMPINGAN (REMIDIAL)'}
             </span>
-            <div style="font-size: 11px; color: #475569; margin-top: 2px;">
-              Batas Kriteria Ketuntasan Minimal (KKM): <strong>75.00</strong>
+            <div style="font-size: 11px; color: #475569; margin-top: 3px;">
+              Batas Kriteria Ketuntasan Minimal (KKM): <strong style="color: #0f172a;">75.00</strong>
             </div>
           </div>
         </div>
@@ -664,25 +632,27 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
         </div>
       </div>
 
-      <!-- STATS 4-GRID -->
-      <div class="stats-row">
-        <div class="stat-pill">
-          <div class="stat-val" style="color: #059669;">${soloState.correctCount} / ${totalQuestions}</div>
-          <div class="stat-label">Jawaban Benar</div>
-        </div>
-        <div class="stat-pill">
-          <div class="stat-val" style="color: #dc2626;">${soloState.wrongCount} Butir</div>
-          <div class="stat-label">Jawaban Salah</div>
-        </div>
-        <div class="stat-pill">
-          <div class="stat-val" style="color: #d97706;">${soloState.score} Poin</div>
-          <div class="stat-label">Total Skor Poin</div>
-        </div>
-        <div class="stat-pill">
-          <div class="stat-val" style="color: #2563eb;">${avgTimeSeconds}s</div>
-          <div class="stat-label">Rata-Rata Waktu / Soal</div>
-        </div>
-      </div>
+      <!-- STATS 4-GRID (TABLE-BASED FOR PRECISION RENDERING) -->
+      <table style="width: 100%; border-collapse: separate; border-spacing: 8px 0; margin-top: 6px;">
+        <tr>
+          <td style="width: 25%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 6px; text-align: center;">
+            <div style="font-size: 14px; font-weight: 800; color: #059669;">${soloState.correctCount} / ${totalQuestions}</div>
+            <div style="font-size: 9.5px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-top: 2px;">Jawaban Benar</div>
+          </td>
+          <td style="width: 25%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 6px; text-align: center;">
+            <div style="font-size: 14px; font-weight: 800; color: #dc2626;">${soloState.wrongCount} Butir</div>
+            <div style="font-size: 9.5px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-top: 2px;">Jawaban Salah</div>
+          </td>
+          <td style="width: 25%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 6px; text-align: center;">
+            <div style="font-size: 14px; font-weight: 800; color: #d97706;">${soloState.score} Poin</div>
+            <div style="font-size: 9.5px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-top: 2px;">Total Skor Poin</div>
+          </td>
+          <td style="width: 25%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 6px; text-align: center;">
+            <div style="font-size: 14px; font-weight: 800; color: #2563eb;">${avgTimeSeconds}s</div>
+            <div style="font-size: 9.5px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-top: 2px;">Rata-Rata Waktu / Soal</div>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <!-- TABEL RINCIAN SOAL -->
@@ -709,7 +679,7 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
     <!-- LEMBAR PENGESAHAN / TANDA TANGAN -->
     <div class="ttd-wrapper">
       <div class="ttd-date-line">
-        Diterbitkan di: <strong>Madrasah Aliyah</strong>, ${dateString}
+        Diterbitkan di: <strong>Nganjuk, Jawa Timur</strong>, ${dateString}
       </div>
 
       <div class="ttd-columns">
@@ -717,15 +687,15 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
           <div style="font-size: 11px; color: #64748b;">Mengetahui,</div>
           <div class="ttd-role">Guru Pengampu Mata Pelajaran SKI</div>
           <div class="ttd-space">
-            <div class="ttd-seal-placeholder">Stempel/Paraf</div>
+            <div class="ttd-seal-placeholder">MGMP SKI<br>NGANJUK</div>
           </div>
           <div class="ttd-name">..........................................................</div>
           <div class="ttd-nip">NIP. .................................................</div>
         </div>
 
         <div class="ttd-card">
-          <div style="font-size: 11px; color: #64748b;">Peserta Didik yang Dinilai,</div>
-          <div class="ttd-role">Madrasah Aliyah</div>
+          <div style="font-size: 11px; color: #64748b;">Peserta Didik / Siswa,</div>
+          <div class="ttd-role">Madrasah Aliyah Kab. Nganjuk</div>
           <div class="ttd-space"></div>
           <div class="ttd-name">${escapeHtml(studentName)}</div>
           <div class="ttd-nip">NIS / NISN: .......................................</div>
@@ -736,11 +706,11 @@ export function generateOfficialReportHtml(data: ReportPrintData): string {
     <!-- DOCUMENT FOOTER -->
     <div class="doc-footer">
       <div>
-        <span>* Dokumen hasil evaluasi ini diterbitkan secara elektronik melalui Sistem Digital CBT SKI Madrasah Aliyah.</span>
+        <span>* Dokumen hasil evaluasi ini diterbitkan secara elektronik melalui Sistem Digital CBT MGMP SKI MA Kabupaten Nganjuk.</span>
       </div>
       <div>
         <span>Validitas: </span>
-        <strong style="color: #0f172a;">Resmi & Terverifikasi</strong>
+        <strong style="color: #047857;">Resmi & Terverifikasi MGMP</strong>
       </div>
     </div>
   </div>
@@ -880,11 +850,14 @@ function convertColorWithCanvas(colorStr: string): string {
  * in cloned documents before html2canvas parses CSS declarations.
  */
 function sanitizeOklchInDoc(doc: Document): void {
-  // 1. Remove all external Vite/Tailwind stylesheet links in cloned document
+  // 1. Only remove stylesheets that actually contain Tailwind or Vite
   try {
     const linkElements = doc.querySelectorAll('link[rel="stylesheet"]');
     linkElements.forEach((link) => {
-      link.remove();
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      if (href.includes('vite') || href.includes('tailwind') || href.includes('src/')) {
+        link.remove();
+      }
     });
   } catch {
     // ignore
@@ -895,8 +868,7 @@ function sanitizeOklchInDoc(doc: Document): void {
     const styleElements = doc.querySelectorAll('style');
     styleElements.forEach((styleTag) => {
       const text = styleTag.textContent || '';
-      if (text.includes('@theme') || text.includes('tailwindcss')) {
-        // Strip full Tailwind stylesheets from the print document
+      if (text.includes('@theme') || text.includes('@utility') || (text.includes('tailwindcss') && text.includes('oklch'))) {
         styleTag.remove();
       } else if (text.includes('oklch')) {
         styleTag.textContent = text.replace(/oklch\([^;}]*(\([^;}]*\)[^;}]*)*\)/gi, '#334155');
@@ -906,7 +878,7 @@ function sanitizeOklchInDoc(doc: Document): void {
     // ignore
   }
 
-  // 3. Patch the cloned document window's getComputedStyle so html2canvas never encounters oklch
+  // 3. Patch the cloned document window's getComputedStyle so html2canvas never encounters oklch or letter-spacing
   try {
     const win = doc.defaultView;
     if (win && win.getComputedStyle) {
@@ -915,6 +887,9 @@ function sanitizeOklchInDoc(doc: Document): void {
         const computed = originalGCS.call(this, el, pseudoElt);
         return new Proxy(computed, {
           get(target: CSSStyleDeclaration, prop: string | symbol) {
+            if (prop === 'letterSpacing') {
+              return 'normal';
+            }
             const value = Reflect.get(target, prop);
             if (typeof value === 'string' && (value.includes('oklch') || value.includes('oklab') || value.includes('color('))) {
               return convertColorWithCanvas(value);
@@ -922,6 +897,9 @@ function sanitizeOklchInDoc(doc: Document): void {
             if (typeof value === 'function') {
               if (prop === 'getPropertyValue') {
                 return function (propName: string): string {
+                  if (propName === 'letter-spacing') {
+                    return 'normal';
+                  }
                   const raw = target.getPropertyValue(propName);
                   if (typeof raw === 'string' && (raw.includes('oklch') || raw.includes('oklab') || raw.includes('color('))) {
                     return convertColorWithCanvas(raw);
@@ -946,6 +924,10 @@ function sanitizeOklchInDoc(doc: Document): void {
     all.forEach((node) => {
       const el = node as HTMLElement;
       if (!el.style) return;
+
+      if (el.style.letterSpacing && el.style.letterSpacing !== 'normal') {
+        el.style.letterSpacing = 'normal';
+      }
 
       const inlineCss = el.style.cssText;
       if (inlineCss && (inlineCss.includes('oklch') || inlineCss.includes('oklab') || inlineCss.includes('color('))) {
@@ -979,12 +961,13 @@ export async function exportReportToPdf(
       // Create isolated iframe with self-contained HTML (pure CSS, no Tailwind v4 oklch variables)
       tempIframe = document.createElement('iframe');
       tempIframe.style.position = 'fixed';
-      tempIframe.style.left = '-9999px';
       tempIframe.style.top = '0';
-      tempIframe.style.width = '820px';
+      tempIframe.style.left = '0';
+      tempIframe.style.width = '800px';
       tempIframe.style.height = '1200px';
-      tempIframe.style.border = 'none';
+      tempIframe.style.zIndex = '-9999';
       tempIframe.style.opacity = '0';
+      tempIframe.style.border = 'none';
       tempIframe.style.pointerEvents = 'none';
       document.body.appendChild(tempIframe);
 
@@ -995,8 +978,16 @@ export async function exportReportToPdf(
       iframeDoc.write(source);
       iframeDoc.close();
 
-      // Allow fonts and styles to initialize
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      if (iframeDoc.fonts?.ready) {
+        try {
+          await iframeDoc.fonts.ready;
+        } catch {
+          // ignore font loading error
+        }
+      }
+
+      // Allow DOM layout to settle
+      await new Promise((resolve) => setTimeout(resolve, 250));
 
       targetElement =
         (iframeDoc.querySelector('.page-container') as HTMLElement) || iframeDoc.body;
@@ -1010,7 +1001,8 @@ export async function exportReportToPdf(
       useCORS: true,
       logging: false,
       backgroundColor: '#ffffff',
-      windowWidth: 850,
+      windowWidth: 800,
+      width: 800,
       onclone: (clonedDoc) => {
         sanitizeOklchInDoc(clonedDoc);
       },
@@ -1092,6 +1084,7 @@ export function generateReportSummaryText(data: ReportPrintData): string {
 
   return `*HASIL EVALUASI LATIHAN KUIS SKI MANDIRI*
 ----------------------------------------
+🏛️ *MGMP SKI MA KABUPATEN NGANJUK*
 👤 *Nama Siswa:* ${studentName}
 📚 *Mata Pelajaran:* Sejarah Kebudayaan Islam (SKI)
 🏛️ *Jenjang:* ${gradeLabel}
@@ -1106,5 +1099,5 @@ export function generateReportSummaryText(data: ReportPrintData): string {
 • Total Poin: *${soloState.score}* poin
 • Rata-rata Waktu: *${avgTimeSeconds} detik / soal*
 
-_Dihasilkan melalui Aplikasi Kuis Interaktif SKI Madrasah Aliyah._`;
+_Diterbitkan melalui Sistem Asesmen Digital MGMP SKI Madrasah Aliyah Kabupaten Nganjuk, Jawa Timur._`;
 }

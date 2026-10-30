@@ -22,6 +22,7 @@ import {
   Sparkles,
   ZoomIn,
   X,
+  Send,
   Image as ImageIcon,
 } from 'lucide-react';
 import {
@@ -100,10 +101,57 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   // Conceal group answers: secret by default, optional peek for host/team
   const [revealedSecrets, setRevealedSecrets] = useState<Record<string, boolean>>({});
+  // Pending unconfirmed answers in team mode: allowing teams to choose and alter their choice before explicit submission
+  const [pendingTeamAnswers, setPendingTeamAnswers] = useState<Record<string, AnswerLetter | null>>({});
 
   useEffect(() => {
     setRevealedSecrets({});
+    setPendingTeamAnswers({});
   }, [questionIndex]);
+
+  const handleSelectPendingOption = (teamId: string, letter: AnswerLetter) => {
+    setPendingTeamAnswers((prev) => ({
+      ...prev,
+      [teamId]: prev[teamId] === letter ? null : letter,
+    }));
+  };
+
+  const handleSubmitTeamAnswer = (teamId: string) => {
+    const chosen = pendingTeamAnswers[teamId];
+    if (chosen) {
+      onSelectTeamAnswer(teamId, chosen);
+      setPendingTeamAnswers((prev) => {
+        const next = { ...prev };
+        delete next[teamId];
+        return next;
+      });
+    }
+  };
+
+  const handleResetSingleTeam = (teamId: string) => {
+    setPendingTeamAnswers((prev) => {
+      const next = { ...prev };
+      delete next[teamId];
+      return next;
+    });
+    onResetSingleTeamAnswer(teamId);
+  };
+
+  const handleResetAllTeams = () => {
+    setPendingTeamAnswers({});
+    onResetAllAnswers();
+  };
+
+  const handleSubmitAllPending = () => {
+    Object.entries(pendingTeamAnswers).forEach(([tId, ans]) => {
+      if (ans) {
+        onSelectTeamAnswer(tId, ans);
+      }
+    });
+    setPendingTeamAnswers({});
+  };
+
+  const pendingCount = Object.values(pendingTeamAnswers).filter(Boolean).length;
 
   const isSolo = settings.gameMode === 'solo';
   const isTrueFalse = question.type === 'true_false';
@@ -633,14 +681,25 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                     Pilih Jawaban Regu ({lockedCount}/{teams.length} Terkunci)
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-slate-400 hidden md:inline">
-                    Pintasan: Klik opsi di bawah atau gunakan tombol keyboard regu
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <span className="text-xs text-slate-400 hidden lg:inline">
+                    Pilih opsi huruf, lalu klik tombol Kirim untuk mengonfirmasi
                   </span>
+                  {pendingCount > 0 && !isRevealed && (
+                    <button
+                      type="button"
+                      onClick={handleSubmitAllPending}
+                      className="flex items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 px-2.5 py-1 text-xs font-bold text-white shadow-xs transition-colors active:scale-95 animate-pop-correct"
+                      title="Kirim semua jawaban regu yang sudah dipilih"
+                    >
+                      <Send className="h-3 w-3" />
+                      <span>Kirim Semua ({pendingCount})</span>
+                    </button>
+                  )}
                   {lockedCount > 0 && (
                     <button
                       type="button"
-                      onClick={onResetAllAnswers}
+                      onClick={handleResetAllTeams}
                       className="text-xs text-slate-300 hover:text-white underline transition-colors"
                     >
                       Reset Semua
@@ -663,14 +722,17 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
               >
                 {teams.map((team) => {
                   const isLocked = team.selectedAnswer !== null;
+                  const pending = pendingTeamAnswers[team.id];
 
                   return (
                     <div
                       key={team.id}
-                      className={`relative flex items-center justify-between gap-2.5 sm:gap-3 rounded-xl border p-2.5 sm:p-3 transition-all ${
+                      className={`relative flex items-center justify-between gap-2 sm:gap-3 rounded-xl border p-2.5 sm:p-3 transition-all ${
                         isLocked
                           ? 'border-[#F2B705]/70 bg-[#162754] shadow-md'
-                          : 'border-white/15 bg-[#0A122A]/85 hover:border-white/30'
+                          : pending
+                            ? 'border-emerald-500/50 bg-[#142654] ring-1 ring-emerald-500/30'
+                            : 'border-white/15 bg-[#0A122A]/85 hover:border-white/30'
                       }`}
                     >
                       {/* Left color bar */}
@@ -691,6 +753,11 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                             {isLocked ? (
                               <span className="text-[#34D399] font-medium flex items-center gap-1">
                                 <Lock className="h-3 w-3 text-[#F2B705]" /> Terkunci
+                              </span>
+                            ) : pending ? (
+                              <span className="text-[#FDE68A] font-semibold flex items-center gap-1">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#F2B705] animate-ping" />
+                                Dipilih: <strong className="text-white bg-[#F2B705]/20 border border-[#F2B705]/40 px-1 rounded">{pending}</strong>
                               </span>
                             ) : (
                               <span className="text-slate-400">Pilih opsi:</span>
@@ -725,25 +792,56 @@ export const QuestionScreen: React.FC<QuestionScreenProps> = ({
                           </button>
                           <button
                             type="button"
-                            onClick={() => onResetSingleTeamAnswer(team.id)}
+                            onClick={() => handleResetSingleTeam(team.id)}
                             className="h-8 rounded-lg bg-white/10 hover:bg-white/20 px-2.5 text-xs font-semibold text-slate-200 hover:text-white transition-colors"
+                            title="Buka kembali untuk mengubah opsi jawaban"
                           >
                             Ubah
                           </button>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
-                          {activeLetters.map((letter) => (
-                            <button
-                              key={letter}
-                              type="button"
-                              onClick={() => onSelectTeamAnswer(team.id, letter)}
-                              className="h-8 w-8 rounded-lg font-mono-tabular text-xs sm:text-sm font-bold bg-[#14234C] hover:bg-[#F2B705] hover:text-[#0A122C] text-slate-200 border border-white/15 transition-all active:scale-95 shadow-xs"
-                              title={`Pilih ${letter} untuk ${team.name}`}
-                            >
-                              {letter}
-                            </button>
-                          ))}
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {/* Option selector buttons (click to choose or switch before submit) */}
+                          <div className="flex items-center gap-1">
+                            {activeLetters.map((letter) => {
+                              const isSelected = pending === letter;
+                              return (
+                                <button
+                                  key={letter}
+                                  type="button"
+                                  onClick={() => handleSelectPendingOption(team.id, letter)}
+                                  className={`h-8 w-8 rounded-lg font-mono-tabular text-xs sm:text-sm font-bold transition-all active:scale-95 shadow-xs ${
+                                    isSelected
+                                      ? 'bg-[#F2B705] text-[#0A122C] border-2 border-white ring-2 ring-[#F2B705]/50 scale-105'
+                                      : 'bg-[#14234C] hover:bg-white/20 text-slate-200 border border-white/15'
+                                  }`}
+                                  title={`Pilih opsi ${letter} untuk ${team.name} (klik lagi untuk batal)`}
+                                >
+                                  {letter}
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          {/* Tombol Kirim Jawaban */}
+                          <button
+                            type="button"
+                            disabled={!pending}
+                            onClick={() => handleSubmitTeamAnswer(team.id)}
+                            className={`h-8 px-2.5 sm:px-3 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs ${
+                              pending
+                                ? 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white border border-emerald-300/40 active:scale-95 animate-pop-correct ring-2 ring-emerald-400/40'
+                                : 'bg-white/5 text-slate-500 border border-white/10 cursor-not-allowed opacity-40'
+                            }`}
+                            title={
+                              pending
+                                ? `Kirim jawaban (${pending}) untuk ${team.name}`
+                                : 'Pilih salah satu huruf opsi (A/B/C/D) terlebih dahulu'
+                            }
+                          >
+                            <Send className="h-3 w-3" />
+                            <span>Kirim</span>
+                          </button>
                         </div>
                       )}
                     </div>
